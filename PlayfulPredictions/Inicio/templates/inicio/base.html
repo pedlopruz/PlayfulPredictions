@@ -9,15 +9,10 @@
 <body>
   <div class="pgina-de-inicio">
   <div class="div">
-  <div class="overlap">
-  <div class="overlap-group">
-   <img class="logo" src="{% static 'Playful/img/Logo.jpg' %}" />
-  </div>
   <div class="cart-button"><div class="text-wrapper">Iniciar Sesión</div></div>
   <div class="div-wrapper"><div class="text-wrapper-2">Registro</div></div>
-  <div class="cart-button-2"><div class="text-wrapper-3">Ranking</div></div>
-  </div>
-  {% block content %} 
+  <img class="logo" src="{% static 'Playful/img/Logo.jpg' %}" />
+  {% block content %}
   {% endblock%}
   <div class="frame-2">
   <p class="futplayful-2">
@@ -27,11 +22,14 @@
   <br />Si al utilizar nuestos datos decide aplicarlos en alguna apuesta o juego de azar recuerde jugar simpre
   con responsabilidad&nbsp;&nbsp;<br />y solo si eres mayor de edad
   </p>
-  <br>
   <img class="element" src="{% static 'Playful/img/18.png' %}" />
   </div>
+  <div class="frame-3">
+  <div class="text-wrapper-3">Predicciones</div>
+  <div class="text-wrapper-4">Comparar Equipos</div>
+  <div class="text-wrapper-5">Porra Deportiva</div>
+  </div>
+  <div class="cart-button-2"><div class="text-wrapper-6">Ranking</div></div>
   </div>
   </div>
   </body>
-  </html>
-  
