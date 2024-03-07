@@ -1,15 +1,37 @@
+<!DOCTYPE html>
 <html>
-
+<head>
+  {% load static %}
+<meta charset="utf-8" />
+<link href="{% static 'Playful/css/gestion.css'%}" rel="stylesheet">
+<link href="{% static 'Playful/css/styleguide.css'%}" rel="stylesheet">
+</head>
 <body>
-    <h1> Se muestra el base</h1>
-
-  <!-- Contenido -->
-  {% block content %}
+  <div class="pgina-de-inicio">
+  <div class="div">
+  <div class="overlap">
+  <div class="overlap-group">
+   <img class="logo" src="{% static 'Playful/img/Logo.jpg' %}" />
+  </div>
+  <div class="cart-button"><div class="text-wrapper">Iniciar Sesión</div></div>
+  <div class="div-wrapper"><div class="text-wrapper-2">Registro</div></div>
+  <div class="cart-button-2"><div class="text-wrapper-3">Ranking</div></div>
+  </div>
+  {% block content %} 
   {% endblock%}
-
-	      
-
-</body>
-   <h1> Esta todo correcto</h1>
-
-</html>
+  <div class="frame-2">
+  <p class="futplayful-2">
+  FutPlayful Predictions no es una web para fomentar el uso de apuestas, sino más bien consienciar acerca uso
+  de los juegos de azar y ejemplificando que el fútbol como deporte no es una ciencia exacta, en la que todo
+  es posible. <br />
+  <br />Si al utilizar nuestos datos decide aplicarlos en alguna apuesta o juego de azar recuerde jugar simpre
+  con responsabilidad&nbsp;&nbsp;<br />y solo si eres mayor de edad
+  </p>
+  <br>
+  <img class="element" src="{% static 'Playful/img/18.png' %}" />
+  </div>
+  </div>
+  </div>
+  </body>
+  </html>
+  
