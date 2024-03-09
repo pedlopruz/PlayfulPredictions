@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Autenticacion',
     'Inicio',
+    'Predicciones',
 ]
 
 MIDDLEWARE = [
@@ -105,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'eu-es'
+LANGUAGE_CODE = 'es-Es'
 
 TIME_ZONE = 'UTC'
 
