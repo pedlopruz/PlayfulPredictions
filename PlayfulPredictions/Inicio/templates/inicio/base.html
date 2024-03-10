@@ -9,8 +9,13 @@
 <body>
   <div class="pgina-de-inicio">
   <div class="div">
-  <div class="cart-button"><div class="text-wrapper">Iniciar Sesión</div></div>
-  <div class="div-wrapper"><div class="text-wrapper-2">Registro</div></div>
+  {% if user.is_authenticated %}
+  <div class="cart-button"><div class="text-wrapper">Perfil Usuario</div></div>
+  <div class="div-wrapper"><div class="text-wrapper"><a href = "{% url 'logout' %}" style="color: aliceblue;">Cerrar Sesión</a></div></div>
+  {% else %}
+  <div class="cart-button"><div class="text-wrapper"><a href = "{% url 'login' %}"style="color: aliceblue;">Iniciar Sesión</a></div></div>
+  <div class="div-wrapper"><div class="text-wrapper-2"><a href = "{% url 'register' %}"style="color: aliceblue;">Registro</a></div></div>
+  {% endif %}
   <img class="logo" src="{% static 'Playful/img/Logo.jpg' %}" />
   {% block content %}
   {% endblock%}

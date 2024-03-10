@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load crispy_forms_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="post" action="" style="color: aliceblue;">
+    
+        {% csrf_token %}
+        <div style="width:75%; margin:auto;">
+            <h2 style="color: rgb(16, 15, 14); margin: auto;">Registro</h2><br>
+    
+        {{user_form|crispy}}
+    
+        <button type="submit" class="btn btn-sucess"> Registrarse</button>
+    </div>
+    </form> 
+</body>
+</html>

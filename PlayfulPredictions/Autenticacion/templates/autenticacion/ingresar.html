@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load crispy_forms_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="post" action="" style="color: rgb(9, 10, 11);">
+        {% csrf_token %}
+        <div style="width:75%; margin:auto;">
+            <h2 style="color: rgb(15, 9, 2); margin: auto;">Iniciar Sesión</h2>
+            {%if messages %}
+            {%for mensaje in messages%}
+            <span class="alert alert-{{mensaje.tags}}"> {{mensaje}}</span>
+            {%endfor%}
+            {%endif%}</br></br>
+            {{formulario|crispy}}
+    
+        <button type="submit" class="btn btn-sucess"> Iniciar Sesion</button>
+    </div>
+    </form>
+</body>
+</html>
