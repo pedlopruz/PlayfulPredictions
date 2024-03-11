@@ -35,9 +35,9 @@ def iniciar_Sesion(request):
                 login(request, acceso)
                 return redirect('Home')
             else:
-                return messages.error(request, "Usuario no encontrado")
+                return render(request, 'autenticacion/ingresar.html', {'mensaje':"Usuario Incorrecto",'formulario':formulario})
         else:
-            return messages.error(request, "Información Incorrecta")
+            return render(request, 'autenticacion/ingresar.html', {'mensaje':"Usuario Incorrecto",'formulario':formulario})
                      
     return render(request, 'autenticacion/ingresar.html', {'formulario':formulario})
 

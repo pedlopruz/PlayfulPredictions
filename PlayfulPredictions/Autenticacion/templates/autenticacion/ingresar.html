@@ -1,25 +1,31 @@
-<!DOCTYPE html>
+{% extends "inicio/base.html" %}
 {% load crispy_forms_tags %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form method="post" action="" style="color: rgb(9, 10, 11);">
+
+{% load static %}
+
+{% block content %}
+<p class="p2">Iniciar Sesión</p>
+  <div class="overlap-group2">
+  <div class="contenedorFormularioInicioSesion">
+    <form method="post" action="" style="color: rgb(9, 10, 11); text-align: center; margin-top: 30px;">
         {% csrf_token %}
-        <div style="width:75%; margin:auto;">
-            <h2 style="color: rgb(15, 9, 2); margin: auto;">Iniciar Sesión</h2>
-            {%if messages %}
-            {%for mensaje in messages%}
-            <span class="alert alert-{{mensaje.tags}}"> {{mensaje}}</span>
-            {%endfor%}
-            {%endif%}</br></br>
-            {{formulario|crispy}}
+        <div style="margin-bottom: 100px;margin-top: 50px;color: white; font-size: 30px;">
+        {%if mensaje %}
+        <span style="color: red;"> {{mensaje}}</span>
+        {%endif%}</br></br>
+        {{ formulario|crispy}}
+            <style>
+                input[type="text"], input[type="password"], textarea {
+                    font-size: 20px; 
+                    
+                }
+            </style>
+
+            <button type="submit" class="btn btn-success" style="margin-top: 20px; background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white;">Registro</button>
+        </div>
     
-        <button type="submit" class="btn btn-sucess"> Iniciar Sesion</button>
-    </div>
+        
     </form>
-</body>
-</html>
+  </div>
+  </div>
+{% endblock %}  

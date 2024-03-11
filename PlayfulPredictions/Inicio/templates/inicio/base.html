@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  {% load static %}
+{% load static %}
 <meta charset="utf-8" />
 <link href="{% static 'Playful/css/gestion.css'%}" rel="stylesheet">
 <link href="{% static 'Playful/css/styleguide.css'%}" rel="stylesheet">
@@ -16,7 +16,7 @@
   <div class="cart-button"><div class="text-wrapper"><a href = "{% url 'login' %}"style="color: aliceblue;">Iniciar Sesión</a></div></div>
   <div class="div-wrapper"><div class="text-wrapper-2"><a href = "{% url 'register' %}"style="color: aliceblue;">Registro</a></div></div>
   {% endif %}
-  <img class="logo" src="{% static 'Playful/img/Logo.jpg' %}" />
+  <a href = "{% url 'Home' %}"><img class="logo" src="{% static 'Playful/img/Logo.jpg' %}"/></a>
   {% block content %}
   {% endblock%}
   <div class="frame-2">

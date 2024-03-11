@@ -237,3 +237,96 @@
   line-height: 20.8px;
   white-space: nowrap;
 }
+
+.pgina-de-inicio .p2 {
+  position: absolute;
+  top: 287px;
+  left: 610px;
+  font-family: "Sora-Regular", Helvetica;
+  font-weight: 400;
+  color: #000000;
+  font-size: 39px;
+  text-align: center;
+  letter-spacing: -0.78px;
+  line-height: 46.8px;
+  white-space: nowrap;
+}
+
+.pgina-de-inicio .overlap-group2 {
+  position: absolute;
+  width: 1205px;
+  height: 400px;
+  top: 400px;
+  left: 120px;
+}
+
+.pgina-de-inicio .frameC {
+  width: 400px;
+  height: 390px;
+  top: 38px;
+  left: 520px;
+  position: absolute;
+  background-color: #1935c6;
+
+}
+
+.pgina-de-inicio .btn {
+  box-shadow: 0px 3px 3px 0px rgba(144, 3, 79, 1);
+}
+.pgina-de-inicio .contenedorFormulario{
+
+  background-color: #1935c6;
+  width: 50%;
+  margin: 10px auto;
+  border-radius: 5px;
+  padding: 1px 0px;
+
+
+
+}
+.pgina-de-inicio .p3 {
+  position: absolute;
+  top: 240px;
+  left: 660px;
+  font-family: "Sora-Regular", Helvetica;
+  font-weight: 400;
+  color: #000000;
+  font-size: 39px;
+  text-align: center;
+  letter-spacing: -0.78px;
+  line-height: 46.8px;
+  white-space: nowrap;
+}
+
+.pgina-de-inicio .contenedorFormularioRegistro{
+
+  background-color: #1935c6;
+  width: 50%;
+  margin: 10px auto;
+  border-radius: 5px;
+  padding: 1px 0px;
+
+
+
+}
+.pgina-de-inicio .contenedorFormularioInicioSesion{
+
+  background-color: #1935c6;
+  width: 50%;
+  margin: 10px auto;
+  border-radius: 5px;
+  padding: 1px 0px;
+
+
+
+}
+.pgina-de-inicio .overlap-groupRegister {
+  position: absolute;
+  width: 1205px;
+  height: 400px;
+  top: 320px;
+  bottom: 350px;
+  left: 120px;
+}
+
+
