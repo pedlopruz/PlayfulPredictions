@@ -8,6 +8,13 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name','username', 'email', 'password']
 
+class UserFormWithoutPassword(forms.ModelForm):
+    username = forms.CharField(label="Username")
+    email = forms.EmailField(label='Email', required=True, widget=forms.EmailInput(attrs={'autofocus': True}))
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name','username', 'email']
+
 class LoginForm(forms.ModelForm):
     
     class Meta:

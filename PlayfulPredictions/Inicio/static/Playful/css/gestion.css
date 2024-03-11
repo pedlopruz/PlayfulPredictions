@@ -329,4 +329,17 @@
   left: 120px;
 }
 
+.pgina-de-inicio .perfil {
+  position: absolute;
+  top: 240px;
+  left: 685px;
+  font-family: "Sora-Regular", Helvetica;
+  font-weight: 400;
+  color: #000000;
+  font-size: 39px;
+  text-align: center;
+  letter-spacing: -0.78px;
+  line-height: 46.8px;
+  white-space: nowrap;
+}
 

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import UserForm
+from .forms import UserForm, UserFormWithoutPassword
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
@@ -35,9 +35,9 @@ def iniciar_Sesion(request):
                 login(request, acceso)
                 return redirect('Home')
             else:
-                return render(request, 'autenticacion/ingresar.html', {'mensaje':"Usuario Incorrecto",'formulario':formulario})
+                return render(request, 'autenticacion/ingresar.html', {'mensaje':"Usuario o Contraseña Incorrecta",'formulario':formulario})
         else:
-            return render(request, 'autenticacion/ingresar.html', {'mensaje':"Usuario Incorrecto",'formulario':formulario})
+            return render(request, 'autenticacion/ingresar.html', {'mensaje':"Usuario Incorrecto o Contraseña Incorrecta",'formulario':formulario})
                      
     return render(request, 'autenticacion/ingresar.html', {'formulario':formulario})
 
@@ -45,3 +45,20 @@ def iniciar_Sesion(request):
 def cerrar_Session(request):
     logout(request)
     return redirect('Home')
+
+
+def actualizar_Perfil(request):
+    if request.method == 'POST':
+        user_form = UserFormWithoutPassword(request.POST, instance=request.user)
+
+        if user_form.is_valid():
+            user = user_form.save(commit=False)
+            user.save()
+            user = authenticate(username=user_form.cleaned_data['username'], password=request.user.password)
+            login(request, user)
+            return redirect('Home')
+
+    else:
+        user_form = UserFormWithoutPassword(instance=request.user)
+
+    return render(request, 'autenticacion/perfil.html', {'user_form': user_form})
