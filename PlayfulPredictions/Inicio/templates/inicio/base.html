@@ -10,7 +10,7 @@
   <div class="pgina-de-inicio">
   <div class="div">
     {% if user.is_staff %}
-    <div class="cart-button3"><div class="prueba"><a href="{% url 'perfil' %}" style="color: aliceblue;">Gestión Usuarios</a></div></div>
+    <div class="cart-button3"><div class="prueba"><a href="{% url 'user_admin' %}" style="color: aliceblue;">Gestión Usuarios</a></div></div>
     <div class="div-wrapper"><div class="text-wrapper"><a href="{% url 'logout' %}" style="color: aliceblue;">Cerrar Sesión</a></div></div>
   {% elif user.is_authenticated %}
     <div class="cart-button"><div class="text-wrapper"><a href="{% url 'perfil' %}" style="color: aliceblue;">Perfil Usuario</a></div></div>

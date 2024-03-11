@@ -1,18 +1,18 @@
 from django import forms
-from django.contrib.auth.models import User
+from .models import CustomUser
 
 class UserForm(forms.ModelForm):
     username = forms.CharField(label="Username")
     email = forms.EmailField(label='Email', required=True, widget=forms.EmailInput(attrs={'autofocus': True}))
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['first_name', 'last_name','username', 'email', 'password']
 
 class UserFormWithoutPassword(forms.ModelForm):
     username = forms.CharField(label="Username")
     email = forms.EmailField(label='Email', required=True, widget=forms.EmailInput(attrs={'autofocus': True}))
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['first_name', 'last_name','username', 'email']
 
 class UserPasswordForm(forms.Form):
@@ -22,5 +22,5 @@ class UserPasswordForm(forms.Form):
 class LoginForm(forms.ModelForm):
     
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['username', 'password']

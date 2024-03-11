@@ -3,6 +3,7 @@ from .forms import UserForm, UserFormWithoutPassword, UserPasswordForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
+from .models import CustomUser
 # Create your views here.
 
 def registro(request):
@@ -92,5 +93,12 @@ def actualizar_Contraseña(request):
             user_form = UserPasswordForm()
 
         return render(request, 'autenticacion/password.html', {'user_form': user_form})
+    else:
+        return redirect('Home')
+    
+def listar_Usuarios_Admin(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        usuarios = CustomUser.objects.all()
+        return render(request, 'autenticacion/usuariosAdmin.html', {"usuarios": usuarios})
     else:
         return redirect('Home')

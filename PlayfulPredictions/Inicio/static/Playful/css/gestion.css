@@ -398,3 +398,23 @@
   overflow: hidden;
 }
 
+.pgina-de-inicio .table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #8B4513; /* Color marrón */
+  color: white; /* Texto en blanco */
+}
+
+.pgina-de-inicio .th, td {
+  border: 1px solid white;
+  padding: 8px;
+  text-align: left;
+}
+
+.pgina-de-inicio .th {
+  background-color: #A52A2A; /* Color marrón más oscuro para encabezados */
+}
+
+.pgina-de-inicio .action-button {
+  margin-right: 10px;
+}
