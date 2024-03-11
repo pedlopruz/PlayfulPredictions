@@ -64,7 +64,6 @@
   line-height: 20.8px;
   white-space: nowrap;
 }
-
 .pgina-de-inicio .logo {
   position: absolute;
   width: 467px;
@@ -355,5 +354,47 @@
   letter-spacing: -0.78px;
   line-height: 46.8px;
   white-space: nowrap;
+}
+
+
+
+.pgina-de-inicio .text {
+  position: absolute;
+  width: 287px;
+  top: 55px;
+  left: 79px;
+  font-family: "Sora-Regular", Helvetica;
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 18px;
+  text-align: center;
+  letter-spacing: -0.36px;
+  line-height: 21.6px;
+}
+
+.pgina-de-inicio .prueba {
+  position: absolute;
+  height: 21px;
+  top: 12px;
+  left: 7px;
+  font-family: "Inter-SemiBold", Helvetica;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 20.8px;
+  white-space: nowrap;
+}
+
+.pgina-de-inicio .cart-button3 {
+  position: absolute;
+  width: 145px;
+  height: 48px;
+  top: 71px;
+  left: 1140px;
+  background-color: var(--azul);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
