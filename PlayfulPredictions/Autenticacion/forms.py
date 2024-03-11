@@ -15,6 +15,10 @@ class UserFormWithoutPassword(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name','username', 'email']
 
+class UserPasswordForm(forms.Form):
+    password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Confirmar contraseña', widget=forms.PasswordInput)
+
 class LoginForm(forms.ModelForm):
     
     class Meta:
