@@ -25,6 +25,7 @@ class PartidosEntrenamiento(models.Model):
     goles_en_contra_ultimos_5_partidos_equipo_visitante = models.IntegerField(default = -1)
     goles_en_contra_ultimos_5_partidos_local_siendo_local = models.IntegerField(default = -1)
     goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = models.IntegerField(default = -1)
+    falta = models.BooleanField(default = False)
     winner = models.CharField(max_length = 1)
     def __str__(self):
         return self.liga

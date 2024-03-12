@@ -1,9 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from .forms import UserForm, UserFormWithoutPassword, UserPasswordForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from .models import CustomUser
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import Http404
 # Create your views here.
 
 def registro(request):
@@ -99,6 +101,45 @@ def actualizar_Contraseña(request):
 def listar_Usuarios_Admin(request):
     if request.user.is_authenticated and request.user.is_staff:
         usuarios = CustomUser.objects.all()
-        return render(request, 'autenticacion/usuariosAdmin.html', {"usuarios": usuarios})
+        page = request.GET.get('page', 1)  # Obtener el número de página de la solicitud GET
+        
+        try:
+            paginator = Paginator(usuarios, 6)  # 6 usuarios por página
+            usuarios = paginator.page(page)
+        except PageNotAnInteger:
+            raise Http404
+        
+        return render(request, 'autenticacion/usuariosAdmin.html', {"entity": usuarios, "paginator":paginator})
     else:
         return redirect('Home')
+    
+def eliminar_Usuarios_Admin(request, user_id):
+    if request.user.is_authenticated and request.user.is_staff:
+        user = get_object_or_404(CustomUser, id=user_id)
+        
+
+        if request.method == 'POST':
+            user.delete()
+            return redirect('user_admin') 
+
+        return render(request, 'autenticacion/eliminarUsuarios.html', {'usuarios': user})
+    else:
+        return redirect('Home')
+    
+
+
+
+
+def buscar(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        if request.GET["usern"]:
+            user = request.GET["usern"]
+            if len(user)>20:
+               return render('Home')
+            else:
+                usuario = CustomUser.objects.filter(username__icontains=user)
+                return render(request, "autenticacion/busquedaUsuario.html", {"usuario":usuario})
+        else:
+            return redirect('user_admin')
+    else:
+        return render('Home')

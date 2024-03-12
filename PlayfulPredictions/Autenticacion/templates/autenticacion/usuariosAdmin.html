@@ -4,39 +4,43 @@
 {% load static %}
 
 {% block content %}
-<p class="perfil">Gestión de Usuarios</p>
+<p class="gestion">Gestión de Usuarios</p>
   <div class="overlap-groupRegister">
-  <div class="contenedorFormulario">
-    <table>
+    <form action="buscar/" method="GET" style="margin-left: 850px;">
+      <input type="text" name="usern">
+      <button class="btn2 btn-success" style="background-color: rgba(26, 53, 199, 1);color: aliceblue;">Buscar usuario por username</button>
+  </form>
+  <div class="contenedorFormularioGestion">
+    <table class ="table">
         <thead>
           <tr>
-            <th>Username</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Correo Electrónico</th>
+            <th class="th">Username</th>
+            <th class="th">Nombre</th>
+            <th class="th">Apellido</th>
+            <th class="th">Correo Electrónico</th>
+            <th class="th">Ultima Conexión</th>
+            <th class="th">Eliminar</th>
           </tr>
         </thead>
         <tbody>
-          {% for usuario in usuarios %}
+          {% for usuario in entity %}
             <tr>
-              <td>{{ usuario.user.username }}</td>
-              <td>{{ usuario.user.first_name }}</td>
-              <td>{{ usuario.user.last_name }}</td>
-              <td>{{ usuario.user.email }}</td>
-              <td>{{ usuario.direccion }}</td>
-              <td>{{ usuario.codigo_postal }}</td>
-              <td>{{ usuario.user.is_staff }}</td>
-              <td>{{ usuario.user.date_joined }}</td>
-              <td>{{ usuario.user.actualizado }}</td>
-              <td>
+              <td class="td">{{ usuario.username }}</td>
+              <td class="td">{{ usuario.first_name }}</td>
+              <td class="td">{{ usuario.last_name }}</td>
+              <td class="td">{{ usuario.email }}</td>
+              <td class="td">{{ usuario.last_login }}</td>
+              <td class="td">
                 {% if user.is_authenticated and user.is_staff %}
-                <button type="submit" class="btn btn-success" style="margin-top: 20px; background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white;"><a href="{% url 'pass' %}" style="color: aliceblue;">Eliminar Usuario</a></button>
+                <button type="submit" class="btn2 btn-success" style="margin-top: 20px; background-color: rgba(26, 53, 199, 1); border-radius: 10px; color: white;"><a href="{% url 'user_delete' usuario.id %}" style="color: aliceblue;">Eliminar Usuario</a></button>
                 {% endif %}
               </td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
+     
+{% include 'Autenticacion/paginator.html' %}
       
   </div>
   </div>

@@ -1,0 +1,47 @@
+{% extends "inicio/base.html" %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block content %}
+<p class="gestion">Gestión de Usuarios</p>
+  <div class="overlap-groupRegister">
+    <form action="buscar/" method="GET">
+      <input type="text" name="usern">
+      <button class="btn2 btn-success" style="background-color: rgba(26, 53, 199, 1);color: aliceblue;">Buscar usuario por username</button>
+  </form>
+  <div class="contenedorFormularioGestion">
+    <table class ="table">
+        <thead>
+          <tr>
+            <th class="th">Username</th>
+            <th class="th">Nombre</th>
+            <th class="th">Apellido</th>
+            <th class="th">Correo Electrónico</th>
+            <th class="th">Ultima Conexión</th>
+            <th class="th">Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for usuario in usuario %}
+            <tr>
+              <td class="td">{{ usuario.username }}</td>
+              <td class="td">{{ usuario.first_name }}</td>
+              <td class="td">{{ usuario.last_name }}</td>
+              <td class="td">{{ usuario.email }}</td>
+              <td class="td">{{ usuario.last_login }}</td>
+              <td class="td">
+                {% if user.is_authenticated and user.is_staff %}
+                <button type="submit" class="bton btn2-success" style="margin-top: 20px; background-color: rgba(26, 53, 199, 1); border-radius: 10px; color: white;"><a href="{% url 'user_delete' usuario.id %}" style="color: aliceblue;">Eliminar Usuario</a></button>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+     
+{% include 'Autenticacion/paginator.html' %}
+      
+  </div>
+  </div>
+{% endblock %}  

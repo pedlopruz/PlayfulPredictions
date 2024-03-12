@@ -24,3 +24,6 @@ class LoginForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'password']
+
+class UsernameForm(forms.Form):
+    username = forms.CharField()
