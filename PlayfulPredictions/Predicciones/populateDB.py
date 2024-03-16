@@ -1,12 +1,17 @@
-
-from .models import PartidosEntrenamiento
+from bs4 import BeautifulSoup
+import urllib.request
+from .models import PartidosEntrenamiento, PartidoReal
 import csv
 path = "data/futbolDatabase.csv"
 
-def populateDatabase():
+def populateDatabaseEntrenamiento():
     PartidosEntrenamiento.objects.all().delete()
     pe = cargarPartidoEntrenamiento()
     return pe
+def populateDatabaseReal():
+    PartidoReal.objects.all().delete()
+    pr = cargarPartidoReal()
+    return pr
 
 def cargarPartidoEntrenamiento():
     pe = None
@@ -169,3 +174,212 @@ def cargarPartidoEntrenamiento():
 
 
     return pe
+
+def cargarPartidoReal():
+    le = cargarPartidoRealLigaEsp()
+    pre = cargarPartidoRealPremier()
+    bu = cargarPartidoRealBundesliga()
+    sea = cargarPartidoRealSerieA()
+    li = cargarPartidoRealLigue1()
+    return (le, pre, bu, sea, li)
+
+
+def cargarPartidoRealLigaEsp():
+    id = 1
+    temporada = "2023/2024"
+    url = "https://www.marca.com/futbol/primera-division/calendario.html?intcmp=MENUMIGA&s_kw=calendario"
+    headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    request = urllib.request.Request(url, headers=headers)
+    jornada = 1
+    liga = "LaLiga EA Sports"
+    with urllib.request.urlopen(request) as f:
+        s = BeautifulSoup(f, "lxml")
+        encuentros = s.find("div", class_="recursos-deportivos").find("div", class_= "contenedorCalendarioInt").find_all("div", class_="jornada calendarioInternacional")
+        for encuentro in encuentros:
+            jornada = encuentro.find("table", class_="jor agendas").find("caption").string.strip()
+            partidos = encuentro.find("table", class_="jor agendas").find("tbody").find_all("tr")
+            for partido in partidos:
+                equipo_local = partido.find("td", class_="local").find("span").string.strip()
+                equipo_visitante = partido.find("td", class_="visitante").find("span").string.strip()
+                dat = partido.find("td", class_="resultado")
+                if dat.find("span", class_="resultado-partido"):
+                    resultado = dat.find("span", class_="resultado-partido").string.strip()
+                    resultado2 = resultado.split("-")
+                    goles_local = int(resultado2[0])
+                    goles_visitante = int(resultado2[1])
+                    if goles_local > goles_visitante:
+                        winner = "1"
+                    elif goles_visitante > goles_local:
+                        winner = "2"
+                    else:
+                        winner = "X"
+                else:
+                    goles_local = 0
+                    goles_visitante = 0
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, fecha = "hola" ,equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                id = id+1
+
+    return pr
+
+def cargarPartidoRealPremier():
+    id = 381
+    temporada = "2023/2024"
+    url = "https://www.marca.com/futbol/premier-league/calendario.html?intcmp=MENUPROD&s_kw=premier-league-calendario"
+    headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    request = urllib.request.Request(url, headers=headers)
+    jornada = 1
+    liga = "Premier League"
+    with urllib.request.urlopen(request) as f:
+        s = BeautifulSoup(f, "lxml")
+        encuentros = s.find("div", class_="recursos-deportivos").find("div", class_= "contenedorCalendarioInt").find_all("div", class_="jornada calendarioInternacional")
+        for encuentro in encuentros:
+            jornada = encuentro.find("table", class_="jor agendas").find("caption").string.strip()
+            partidos = encuentro.find("table", class_="jor agendas").find("tbody").find_all("tr")
+            for partido in partidos:
+                equipo_local = partido.find("td", class_="local").find("span").string.strip()
+                equipo_visitante = partido.find("td", class_="visitante").find("span").string.strip()
+                dat = partido.find("td", class_="resultado")
+                if dat.find("span", class_="resultado-partido"):
+                    resultado = dat.find("span", class_="resultado-partido").string.strip()
+                    resultado2 = resultado.split("-")
+                    goles_local = int(resultado2[0])
+                    goles_visitante = int(resultado2[1])
+                    if goles_local > goles_visitante:
+                        winner = "1"
+                    elif goles_visitante > goles_local:
+                        winner = "2"
+                    else:
+                        winner = "X"
+
+                else:
+                    goles_local = 0
+                    goles_visitante = 0
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, fecha = "hola" ,equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                id = id+1
+
+    return pr
+
+def cargarPartidoRealBundesliga():
+    id = 761
+    temporada = "2023/2024"
+    url = "https://www.marca.com/futbol/bundesliga/calendario.html?intcmp=MENUMIGA&s_kw=calendario"
+    headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    request = urllib.request.Request(url, headers=headers)
+    jornada = 1
+    liga = "Bundesliga"
+    with urllib.request.urlopen(request) as f:
+        s = BeautifulSoup(f, "lxml")
+        encuentros = s.find("div", class_="recursos-deportivos").find("div", class_= "contenedorCalendarioInt").find_all("div", class_="jornada calendarioInternacional")
+        for encuentro in encuentros:
+            jornada = encuentro.find("table", class_="jor agendas").find("caption").string.strip()
+            partidos = encuentro.find("table", class_="jor agendas").find("tbody").find_all("tr")
+            for partido in partidos:
+                equipo_local = partido.find("td", class_="local").find("span").string.strip()
+                equipo_visitante = partido.find("td", class_="visitante").find("span").string.strip()
+                dat = partido.find("td", class_="resultado")
+                if dat.find("span", class_="resultado-partido"):
+                    resultado = dat.find("span", class_="resultado-partido").string.strip()
+                    resultado2 = resultado.split("-")
+                    goles_local = int(resultado2[0])
+                    goles_visitante = int(resultado2[1])
+                    if goles_local > goles_visitante:
+                        winner = "1"
+                    elif goles_visitante > goles_local:
+                        winner = "2"
+                    else:
+                        winner = "X"
+
+                else:
+                    goles_local = 0
+                    goles_visitante = 0
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                id = id+1
+
+    return pr
+
+def cargarPartidoRealSerieA():
+    id = 1067
+    temporada = "2023/2024"
+    url = "https://www.marca.com/futbol/liga-italiana/calendario.html?intcmp=MENUPROD&s_kw=serie-a-calendario"
+    headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    request = urllib.request.Request(url, headers=headers)
+    jornada = 1
+    liga = "Serie A"
+    with urllib.request.urlopen(request) as f:
+        s = BeautifulSoup(f, "lxml")
+        encuentros = s.find("div", class_="recursos-deportivos").find("div", class_= "contenedorCalendarioInt").find_all("div", class_="jornada calendarioInternacional")
+        for encuentro in encuentros:
+            jornada = encuentro.find("table", class_="jor agendas").find("caption").string.strip()
+            partidos = encuentro.find("table", class_="jor agendas").find("tbody").find_all("tr")
+            for partido in partidos:
+                equipo_local = partido.find("td", class_="local").find("span").string.strip()
+                equipo_visitante = partido.find("td", class_="visitante").find("span").string.strip()
+                dat = partido.find("td", class_="resultado")
+                if dat.find("span", class_="resultado-partido"):
+                    resultado = dat.find("span", class_="resultado-partido").string.strip()
+                    resultado2 = resultado.split("-")
+                    goles_local = int(resultado2[0])
+                    goles_visitante = int(resultado2[1])
+                    if goles_local > goles_visitante:
+                        winner = "1"
+                    elif goles_visitante > goles_local:
+                        winner = "2"
+                    else:
+                        winner = "X"
+
+                else:
+                    goles_local = 0
+                    goles_visitante = 0
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                id = id+1
+
+    return pr
+
+def cargarPartidoRealLigue1():
+    id = 1447
+    temporada = "2023/2024"
+    url = "https://www.marca.com/futbol/liga-francesa/calendario.html?intcmp=MENUMIGA&s_kw=calendario"
+    headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    request = urllib.request.Request(url, headers=headers)
+    jornada = 1
+    liga = "Ligue 1"
+    with urllib.request.urlopen(request) as f:
+        s = BeautifulSoup(f, "lxml")
+        encuentros = s.find("div", class_="recursos-deportivos").find("div", class_= "contenedorCalendarioInt").find_all("div", class_="jornada calendarioInternacional")
+        for encuentro in encuentros:
+            jornada = encuentro.find("table", class_="jor agendas").find("caption").string.strip()
+            partidos = encuentro.find("table", class_="jor agendas").find("tbody").find_all("tr")
+            for partido in partidos:
+                equipo_local = partido.find("td", class_="local").find("span").string.strip()
+                equipo_visitante = partido.find("td", class_="visitante").find("span").string.strip()
+                dat = partido.find("td", class_="resultado")
+                if dat.find("span", class_="resultado-partido"):
+                    resultado = dat.find("span", class_="resultado-partido").string.strip()
+                    resultado2 = resultado.split("-")
+                    goles_local = int(resultado2[0])
+                    goles_visitante = int(resultado2[1])
+                    if goles_local > goles_visitante:
+                        winner = "1"
+                    elif goles_visitante > goles_local:
+                        winner = "2"
+                    else:
+                        winner = "X"
+
+                else:
+                    goles_local = 0
+                    goles_visitante = 0
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                id = id+1
+
+    return pr
+    
