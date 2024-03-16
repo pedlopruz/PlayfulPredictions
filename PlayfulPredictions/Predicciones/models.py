@@ -42,6 +42,8 @@ class PartidoReal(models.Model):
     goles_local = models.IntegerField(default = -1)
     goles_visitante = models.IntegerField(default = -1)
     winner = models.CharField(max_length = 1, blank = True)
+    def __str__(self):
+        return self.liga
 
 
 
