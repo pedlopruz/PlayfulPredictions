@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import urllib.request
-from .models import PartidosEntrenamiento, PartidoReal
+from .models import PartidosEntrenamiento, PartidoReal, PartidoSinPredecir
 import csv
 path = "data/futbolDatabase.csv"
 
@@ -11,6 +11,11 @@ def populateDatabaseEntrenamiento():
 def populateDatabaseReal():
     PartidoReal.objects.all().delete()
     pr = cargarPartidoReal()
+    return pr
+
+def populateDatabaseSinPredecir():
+    PartidoSinPredecir.objects.all().delete()
+    pr = cargarPartidoSinPredecir()
     return pr
 
 def cargarPartidoEntrenamiento():
@@ -61,8 +66,8 @@ def cargarPartidoEntrenamiento():
 
             goles_en_contra_ultimos_5_partidos_local_siendo_local = 0
             goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = 0
-            goles_en_contra__ultimos_5_partidos_equipo_local = 0
-            goles_en_contra__ultimos_5_partidos_equipo_visitante = 0
+            goles_en_contra_ultimos_5_partidos_equipo_local = 0
+            goles_en_contra_ultimos_5_partidos_equipo_visitante = 0
 
             for p in reversed(partidos_en_rango_ordenados):
 
@@ -83,7 +88,7 @@ def cargarPartidoEntrenamiento():
 
                             goles_ultimos_5_partidos_equipo_local = goles_ultimos_5_partidos_equipo_local + p.goles_local
                             puntos_ultimos_5_partidos_equipo_local = puntos_ultimos_5_partidos_equipo_local + p.puntos_local
-                            goles_en_contra__ultimos_5_partidos_equipo_local = goles_en_contra__ultimos_5_partidos_equipo_local + p.goles_visitante
+                            goles_en_contra_ultimos_5_partidos_equipo_local = goles_en_contra_ultimos_5_partidos_equipo_local + p.goles_visitante
 
                             goles_puntos_local_siendo_local = goles_puntos_local_siendo_local+1
                             goles_puntos_equipo_local = goles_puntos_equipo_local +1
@@ -111,7 +116,7 @@ def cargarPartidoEntrenamiento():
 
                             goles_ultimos_5_partidos_equipo_visitante = goles_ultimos_5_partidos_equipo_visitante + p.goles_visitante
                             puntos_ultimos_5_partidos_equipo_visitante = puntos_ultimos_5_partidos_equipo_visitante + p.puntos_visitante
-                            goles_en_contra__ultimos_5_partidos_equipo_visitante = goles_en_contra__ultimos_5_partidos_equipo_visitante + p.goles_local
+                            goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra_ultimos_5_partidos_equipo_visitante + p.goles_local
                                 
                             goles_puntos_visitante_siendo_visitante = goles_puntos_visitante_siendo_visitante+1
                             goles_puntos_equipo_visitante = goles_puntos_equipo_visitante+1
@@ -125,7 +130,7 @@ def cargarPartidoEntrenamiento():
                         elif goles_puntos_visitante_siendo_visitante >=5 and goles_puntos_equipo_visitante <5:
                             goles_ultimos_5_partidos_equipo_visitante = goles_ultimos_5_partidos_equipo_visitante + p.goles_visitante
                             puntos_ultimos_5_partidos_equipo_visitante = puntos_ultimos_5_partidos_equipo_visitante + p.puntos_visitante
-                            goles_en_contra__ultimos_5_partidos_equipo_visitante = goles_en_contra__ultimos_5_partidos_equipo_visitante + p.goles_local
+                            goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra_ultimos_5_partidos_equipo_visitante + p.goles_local
                             
                             goles_puntos_equipo_visitante = goles_puntos_equipo_visitante + 1
                         else:
@@ -133,18 +138,18 @@ def cargarPartidoEntrenamiento():
 
                     elif local == p.equipo_visitante:
                         if goles_puntos_equipo_local < 5:
-                            goles_ultimos_5_partidos_equipo_local = goles_ultimos_5_partidos_equipo_local + p.goles_local
-                            puntos_ultimos_5_partidos_equipo_local = puntos_ultimos_5_partidos_equipo_local + p.puntos_local
-                            goles_en_contra_ultimos_5_partidos_local_siendo_local = goles_en_contra_ultimos_5_partidos_local_siendo_local + p.goles_visitante
+                            goles_ultimos_5_partidos_equipo_local = goles_ultimos_5_partidos_equipo_local + p.goles_visitante
+                            puntos_ultimos_5_partidos_equipo_local = puntos_ultimos_5_partidos_equipo_local + p.puntos_visitante
+                            goles_en_contra_ultimos_5_partidos_equipo_local = goles_en_contra_ultimos_5_partidos_equipo_local + p.goles_local
 
                             goles_puntos_equipo_local = goles_puntos_equipo_local +1
                         else:
                             continue
                     elif visitante == p.equipo_local:
                         if goles_puntos_equipo_visitante < 5:
-                            goles_ultimos_5_partidos_equipo_visitante = goles_ultimos_5_partidos_equipo_visitante + p.goles_visitante
-                            puntos_ultimos_5_partidos_equipo_visitante = puntos_ultimos_5_partidos_equipo_visitante + p.puntos_visitante
-                            goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante + p.goles_local
+                            goles_ultimos_5_partidos_equipo_visitante = goles_ultimos_5_partidos_equipo_visitante + p.goles_local
+                            puntos_ultimos_5_partidos_equipo_visitante = puntos_ultimos_5_partidos_equipo_visitante + p.puntos_local
+                            goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra_ultimos_5_partidos_equipo_visitante + p.goles_visitante
                             
                             goles_puntos_equipo_visitante = goles_puntos_equipo_visitante + 1
                         else:
@@ -166,9 +171,9 @@ def cargarPartidoEntrenamiento():
                 partido.puntos_ultimos_5_partidos_equipo_visitante = puntos_ultimos_5_partidos_equipo_visitante
 
                 partido.goles_en_contra_ultimos_5_partidos_local_siendo_local = goles_en_contra_ultimos_5_partidos_local_siendo_local
-                partido.goles_en_contra_ultimos_5_partidos_equipo_local = goles_en_contra__ultimos_5_partidos_equipo_local
+                partido.goles_en_contra_ultimos_5_partidos_equipo_local = goles_en_contra_ultimos_5_partidos_equipo_local
                 partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante
-                partido.goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra__ultimos_5_partidos_equipo_visitante
+                partido.goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra_ultimos_5_partidos_equipo_visitante
                 partido.save()
                 
 
@@ -223,14 +228,24 @@ def cargarPartidoRealLigaEsp():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
+
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, fecha = "hola" ,equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -262,15 +277,24 @@ def cargarPartidoRealPremier():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
 
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, fecha = "hola" ,equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -302,15 +326,24 @@ def cargarPartidoRealBundesliga():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
 
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -342,15 +375,24 @@ def cargarPartidoRealSerieA():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
 
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -382,15 +424,24 @@ def cargarPartidoRealLigue1():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
 
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -422,15 +473,24 @@ def cargarPartidoRealLigaPortuguesa():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
 
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -462,15 +522,24 @@ def cargarPartidoRealEredivise():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
 
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -502,15 +571,24 @@ def cargarPartidoRealEsp2():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
 
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -542,15 +620,24 @@ def cargarPartidoRealMLS():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
 
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -582,15 +669,24 @@ def cargarPartidoRealBelga():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
 
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -622,15 +718,24 @@ def cargarPartidoRealRusia():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
 
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -662,15 +767,24 @@ def cargarPartidoRealTurca():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
 
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -702,16 +816,24 @@ def cargarPartidoRealBrasil():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
 
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                    winner = "X"
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -744,16 +866,24 @@ def cargarPartidoRealArgentina():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
 
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                    winner = "X"
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -785,16 +915,24 @@ def cargarPartidoRealJaponesa():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
 
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                    winner = "X"
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -826,16 +964,24 @@ def cargarPartidoRealChina():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
 
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                    winner = "X"
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -867,16 +1013,179 @@ def cargarPartidoRealMexico():
                     goles_visitante = int(resultado2[1])
                     if goles_local > goles_visitante:
                         winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
                     elif goles_visitante > goles_local:
                         winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
                     else:
                         winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
 
                 else:
+                    winner = "X"
                     goles_local = 0
                     goles_visitante = 0
-                    winner = "X"
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner)
+                    puntos_local = 1
+                    puntos_visitante = 1
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
+
+
+def cargarPartidoSinPredecir():
+    id = 0
+    numero_partidos = PartidoReal.objects.all().count()
+    for i in range(1,numero_partidos+1):
+        partidos_en_rango_ordenados = PartidoReal.objects.filter(id__range=(1, i+1)).order_by('id')
+        partido = partidos_en_rango_ordenados.last()
+        id = id+1
+        local = partido.equipo_local
+        visitante = partido.equipo_visitante
+        liga = partido.liga
+        jornada = partido.jornada
+        temporada = partido.temporada
+            
+        goles_ultimos_5_partidos_local_siendo_local = 0
+        goles_ultimos_5_partidos_visitante_siendo_visitante = 0
+        goles_ultimos_5_partidos_equipo_local = 0
+        goles_ultimos_5_partidos_equipo_visitante = 0
+
+        puntos_ultimos_5_partidos_local_siendo_local = 0
+        puntos_ultimos_5_partidos_visitante_siendo_visitante = 0
+        puntos_ultimos_5_partidos_equipo_local = 0
+        puntos_ultimos_5_partidos_equipo_visitante = 0
+
+        goles_puntos_local_siendo_local = 0
+        goles_puntos_visitante_siendo_visitante=0
+        goles_puntos_equipo_local = 0
+        goles_puntos_equipo_visitante=0
+
+        goles_en_contra_ultimos_5_partidos_local_siendo_local = 0
+        goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = 0
+        goles_en_contra_ultimos_5_partidos_equipo_local = 0
+        goles_en_contra_ultimos_5_partidos_equipo_visitante = 0
+
+        for p in reversed(partidos_en_rango_ordenados):
+
+            if goles_puntos_equipo_local >= 5 and goles_puntos_equipo_visitante >=5 and goles_puntos_local_siendo_local >=5 and goles_puntos_visitante_siendo_visitante >=5:
+                    continue
+            else:
+                if p.equipo_local == local and p.equipo_visitante == visitante:
+                    pass
+
+                elif p.equipo_local != local and p.equipo_visitante != visitante:
+                    continue
+
+                elif p.equipo_local == local and p.equipo_visitante != visitante:
+                    if goles_puntos_local_siendo_local <5  and goles_puntos_equipo_local <5:
+                        goles_ultimos_5_partidos_local_siendo_local = goles_ultimos_5_partidos_local_siendo_local + p.goles_local
+                        puntos_ultimos_5_partidos_local_siendo_local = puntos_ultimos_5_partidos_local_siendo_local + p.puntos_local
+                        goles_en_contra_ultimos_5_partidos_local_siendo_local = goles_en_contra_ultimos_5_partidos_local_siendo_local + p.goles_visitante
+
+                        goles_ultimos_5_partidos_equipo_local = goles_ultimos_5_partidos_equipo_local + p.goles_local
+                        puntos_ultimos_5_partidos_equipo_local = puntos_ultimos_5_partidos_equipo_local + p.puntos_local
+                        goles_en_contra_ultimos_5_partidos_equipo_local = goles_en_contra_ultimos_5_partidos_equipo_local + p.goles_visitante
+
+                        goles_puntos_local_siendo_local = goles_puntos_local_siendo_local+1
+                        goles_puntos_equipo_local = goles_puntos_equipo_local +1
+
+                    elif goles_puntos_local_siendo_local <5  and goles_puntos_equipo_local >=5:
+                        goles_ultimos_5_partidos_local_siendo_local = goles_ultimos_5_partidos_local_siendo_local + p.goles_local
+                        puntos_ultimos_5_partidos_local_siendo_local = puntos_ultimos_5_partidos_local_siendo_local + p.puntos_local
+                        goles_en_contra_ultimos_5_partidos_local_siendo_local = goles_en_contra_ultimos_5_partidos_local_siendo_local + p.goles_visitante
+                        goles_puntos_local_siendo_local = goles_puntos_local_siendo_local+1
+
+                    elif goles_puntos_local_siendo_local >=5  and goles_puntos_equipo_local <5:
+                        goles_ultimos_5_partidos_equipo_local = goles_ultimos_5_partidos_equipo_local + p.goles_local
+                        puntos_ultimos_5_partidos_equipo_local = puntos_ultimos_5_partidos_equipo_local + p.puntos_local
+                        goles_en_contra__ultimos_5_partidos_equipo_local = goles_en_contra__ultimos_5_partidos_equipo_local + p.goles_visitante
+
+                        goles_puntos_equipo_local = goles_puntos_equipo_local +1
+                    else:
+                        continue
+
+                elif p.equipo_local != local and p.equipo_visitante == visitante:
+                    if goles_puntos_visitante_siendo_visitante <5 and goles_puntos_equipo_visitante <5:
+                        goles_ultimos_5_partidos_visitante_siendo_visitante = goles_ultimos_5_partidos_visitante_siendo_visitante + p.goles_visitante
+                        puntos_ultimos_5_partidos_visitante_siendo_visitante = puntos_ultimos_5_partidos_visitante_siendo_visitante + p.puntos_visitante
+                        goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante + p.goles_local
+
+                        goles_ultimos_5_partidos_equipo_visitante = goles_ultimos_5_partidos_equipo_visitante + p.goles_visitante
+                        puntos_ultimos_5_partidos_equipo_visitante = puntos_ultimos_5_partidos_equipo_visitante + p.puntos_visitante
+                        goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra_ultimos_5_partidos_equipo_visitante + p.goles_local
+                                
+                        goles_puntos_visitante_siendo_visitante = goles_puntos_visitante_siendo_visitante+1
+                        goles_puntos_equipo_visitante = goles_puntos_equipo_visitante+1
+
+                    elif goles_puntos_visitante_siendo_visitante <5 and goles_puntos_equipo_visitante >=5:
+                        goles_ultimos_5_partidos_visitante_siendo_visitante = goles_ultimos_5_partidos_visitante_siendo_visitante + p.goles_visitante
+                        puntos_ultimos_5_partidos_visitante_siendo_visitante = puntos_ultimos_5_partidos_visitante_siendo_visitante + p.puntos_visitante
+                        goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante + p.goles_local
+                        goles_puntos_visitante_siendo_visitante = goles_puntos_visitante_siendo_visitante+1
+                            
+                    elif goles_puntos_visitante_siendo_visitante >=5 and goles_puntos_equipo_visitante <5:
+                        goles_ultimos_5_partidos_equipo_visitante = goles_ultimos_5_partidos_equipo_visitante + p.goles_visitante
+                        puntos_ultimos_5_partidos_equipo_visitante = puntos_ultimos_5_partidos_equipo_visitante + p.puntos_visitante
+                        goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra_ultimos_5_partidos_equipo_visitante + p.goles_local
+                            
+                        goles_puntos_equipo_visitante = goles_puntos_equipo_visitante + 1
+                    else:
+                        continue
+
+                elif local == p.equipo_visitante:
+                    if goles_puntos_equipo_local < 5:
+                        goles_ultimos_5_partidos_equipo_local = goles_ultimos_5_partidos_equipo_local + p.goles_visitante
+                        puntos_ultimos_5_partidos_equipo_local = puntos_ultimos_5_partidos_equipo_local + p.puntos_visitante
+                        goles_en_contra_ultimos_5_partidos_equipo_local = goles_en_contra_ultimos_5_partidos_equipo_local + p.goles_local
+
+                        goles_puntos_equipo_local = goles_puntos_equipo_local +1
+                    else:
+                        continue
+                elif visitante == p.equipo_local:
+                    if goles_puntos_equipo_visitante < 5:
+                        goles_ultimos_5_partidos_equipo_visitante = goles_ultimos_5_partidos_equipo_visitante + p.goles_local
+                        puntos_ultimos_5_partidos_equipo_visitante = puntos_ultimos_5_partidos_equipo_visitante + p.puntos_local
+                        goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra_ultimos_5_partidos_equipo_visitante + p.goles_visitante
+                            
+                        goles_puntos_equipo_visitante = goles_puntos_equipo_visitante + 1
+                    else:
+                        continue
+                
+
+        if goles_puntos_equipo_local < 5 and goles_puntos_equipo_visitante <5 and goles_puntos_local_siendo_local <5 and goles_puntos_visitante_siendo_visitante <5:
+            pe = PartidoSinPredecir.objects.create(id=id,
+                                                        liga=liga,
+                                                        jornada=jornada,
+                                                        temporada=temporada, 
+                                                        equipo_local = local, 
+                                                        equipo_visitante=visitante,
+                                                        falta = True)
+                    
+        else:
+            pe = PartidoSinPredecir.objects.create(id=id,
+                                                    liga=liga,
+                                                    jornada=jornada,
+                                                    temporada=temporada, 
+                                                    equipo_local = local, 
+                                                    equipo_visitante=visitante,
+                                                    goles_ultimos_5_partidos_equipo_local =  goles_ultimos_5_partidos_equipo_local,
+                                                    goles_ultimos_5_partidos_equipo_visitante = goles_ultimos_5_partidos_equipo_visitante, 
+                                                    puntos_ultimos_5_partidos_equipo_local = puntos_ultimos_5_partidos_equipo_local, 
+                                                    puntos_ultimos_5_partidos_equipo_visitante=puntos_ultimos_5_partidos_equipo_visitante, 
+                                                    goles_ultimos_5_partidos_local_siendo_local=goles_ultimos_5_partidos_local_siendo_local, 
+                                                    goles_ultimos_5_partidos_visitante_siendo_visitante = goles_ultimos_5_partidos_visitante_siendo_visitante,
+                                                    puntos_ultimos_5_partidos_local_siendo_local = puntos_ultimos_5_partidos_local_siendo_local,
+                                                    puntos_ultimos_5_partidos_visitante_siendo_visitante = puntos_ultimos_5_partidos_visitante_siendo_visitante,
+                                                    goles_en_contra_ultimos_5_partidos_equipo_local = goles_en_contra_ultimos_5_partidos_equipo_local,
+                                                    goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra_ultimos_5_partidos_equipo_visitante,
+                                                    goles_en_contra_ultimos_5_partidos_local_siendo_local = goles_en_contra_ultimos_5_partidos_local_siendo_local,
+                                                    goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante)
+                
+
+
+    return pe
+        
