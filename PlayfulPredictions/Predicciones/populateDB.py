@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import urllib.request
 from .models import PartidosEntrenamiento, PartidoReal, PartidoSinPredecir
 import csv
-path = "data/futbolDatabase.csv"
+path = "data/Entrenamiento.csv"
 
 def populateDatabaseEntrenamiento():
     PartidosEntrenamiento.objects.all().delete()
@@ -20,14 +20,14 @@ def populateDatabaseSinPredecir():
 
 def cargarPartidoEntrenamiento():
     pe = None
-    i = 0
     with open(path, newline='', encoding='utf-8') as csvfile:
         lector_csv = csv.DictReader(csvfile, delimiter=';')
         for numero_fila, fila in enumerate(lector_csv, start=1):
             try:
-                id = i+1
-                league = fila['\ufeffLeague'].lstrip('\ufeff')
+                id = fila['id']
                 season = fila['Season']
+                league = fila['League']
+                jornada = fila['Jornada']
                 home_team = fila['Home Team']
                 away_team = fila['Away Team']
                 home_goals = fila['Home Goals']
@@ -182,23 +182,8 @@ def cargarPartidoEntrenamiento():
 
 def cargarPartidoReal():
     le = cargarPartidoRealLigaEsp()
-    pre = cargarPartidoRealPremier()
-    bu = cargarPartidoRealBundesliga()
-    sea = cargarPartidoRealSerieA()
-    li = cargarPartidoRealLigue1()
-    lpo = cargarPartidoRealLigaPortuguesa()
-    erev = cargarPartidoRealEredivise()
     esp2 = cargarPartidoRealEsp2()
-    mls = cargarPartidoRealMLS()
-    belga = cargarPartidoRealBelga()
-    rus = cargarPartidoRealRusia()
-    tur = cargarPartidoRealTurca()
-    bra = cargarPartidoRealBrasil()
-    arg = cargarPartidoRealArgentina()
-    jap = cargarPartidoRealJaponesa()
-    chin = cargarPartidoRealChina()
-    mex = cargarPartidoRealMexico()
-    return (le, pre, bu, sea, li, lpo, erev, esp2, mls, belga, rus, tur, bra, arg, jap, chin, mex)
+    return (le,esp2)
 
 
 def cargarPartidoRealLigaEsp():
