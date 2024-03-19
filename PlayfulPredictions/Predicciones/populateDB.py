@@ -3,11 +3,15 @@ import urllib.request
 from .models import PartidosEntrenamiento, PartidoReal, PartidoSinPredecir
 import csv
 path = "data/Entrenamiento.csv"
+path = "data/Temporada19-23.csv"
 
 def populateDatabaseEntrenamiento():
     PartidosEntrenamiento.objects.all().delete()
-    pe = cargarPartidoEntrenamiento()
-    return pe
+    r = cargarPartidoEntrenamiento()
+    r18_19 = cargarPartidoEntrenamientoLigaEsp18_19()
+    r218_19 = cargarPartidoEntrenamientoLigaEsp2_18_19()
+    return (r,r18_19,r218_19)
+
 def populateDatabaseReal():
     PartidoReal.objects.all().delete()
     pr = cargarPartidoReal()
@@ -18,13 +22,18 @@ def populateDatabaseSinPredecir():
     pr = cargarPartidoSinPredecir()
     return pr
 
+def cargarPartidoReal():
+    le = cargarPartidoRealLigaEsp()
+    esp2 = cargarPartidoRealEsp2()
+    return (le,esp2)
+
 def cargarPartidoEntrenamiento():
     pe = None
     with open(path, newline='', encoding='utf-8') as csvfile:
         lector_csv = csv.DictReader(csvfile, delimiter=';')
         for numero_fila, fila in enumerate(lector_csv, start=1):
             try:
-                id = fila['id']
+                id = fila['\ufeffid'].lstrip('\ufeff')
                 season = fila['Season']
                 league = fila['League']
                 jornada = fila['Jornada']
@@ -35,7 +44,6 @@ def cargarPartidoEntrenamiento():
                 winner = fila['Winner']
                 home_points = fila['Home Points']
                 away_points = fila['Away Points']
-                i = i+1
                 pe = PartidosEntrenamiento.objects.create(id = id, liga=league, temporada=season, jornada=jornada,equipo_local=home_team, equipo_visitante=away_team, goles_local=home_goals, goles_visitante=away_goals, puntos_local=home_points, puntos_visitante=away_points, winner=winner)
             except Exception as e:
                 print(f"Error en la fila {numero_fila}: {e}")
@@ -43,15 +51,133 @@ def cargarPartidoEntrenamiento():
                 print(f"Contenido de la fila {numero_fila}: {fila}")
     return pe
 
-def cargarPartidoReal():
-    le = cargarPartidoRealLigaEsp()
-    esp2 = cargarPartidoRealEsp2()
-    return (le,esp2)
+def cargarPartidoEntrenamientoLigaEsp18_19():
+    id = 37148
+    temporada = "2018-19"
+    for p in range(1,39):
+        url = "https://resultados.as.com/resultados/futbol/primera/2018_2019/jornada/regular_a_"+ str(1) +"/"
+        headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+        request = urllib.request.Request(url, headers=headers)
+        liga = "LaLiga EA Sports"
+        jornada = p
+        try:
+            with urllib.request.urlopen(request) as f:
+                s = BeautifulSoup(f, "lxml")
+                encuentros = s.find("div", class_="container content").find("div", class_="row").find_next_sibling().find("div", class_="col-md-12").find("div", class_="row").find("div", class_="cont-resultados cf").find("ul").find_all("li", class_="list-resultado")
+                for encuentro in encuentros:
+                    equipo_local = encuentro.find("div", class_="equipo-local").find("a", itemprop="url").find("span", class_="nombre-equipo").string.strip()
+                    equipo_visitante = encuentro.find("div", class_="equipo-visitante").find("a", itemprop="url").find("span", class_="nombre-equipo").string.strip()
+                    resultado = encuentro.find("div", class_="cont-resultado finalizado").find("a", class_="resultado").string.strip()
+                    goles = resultado.split("-")
+                    goles_local = int(goles[0].strip())
+                    goles_visitante = int(goles[1].strip())
+                    if goles_local > goles_visitante:
+                        winner = "1"
+                        puntos_local = 3
+                        puntos_visitante = 0
+                    elif goles_visitante > goles_local:
+                        winner = "2"
+                        puntos_local = 0
+                        puntos_visitante = 3
+                    else:
+                        winner = "X"
+                        puntos_local = 1
+                        puntos_visitante = 1
+                    
+                    PartidosEntrenamiento.objects.create(id = id, liga = liga, temporada=temporada, jornada = jornada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante=goles_visitante, puntos_local=puntos_local, puntos_visitante=puntos_visitante, winner=winner)
+                    id = id+1
+                    
+        except Exception as e:
+            print(f"Ocurrió un error al procesar la jornada {1}: {e}")
+    return "Carga Completada"  
 
+import urllib.request
+from bs4 import BeautifulSoup
+
+def cargarPartidoEntrenamientoLigaEsp2_18_19():
+    id = 37529
+    temporada = "2018-19"
+    for p in range(1, 43):
+        url = "https://resultados.as.com/resultados/futbol/segunda/2018_2019/jornada/regular_a_" + str(p) + "/"
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+        request = urllib.request.Request(url, headers=headers)
+        liga = "LaLiga Hypermotion"
+        jornada = p
+        try:
+            with urllib.request.urlopen(request) as f:
+                s = BeautifulSoup(f, "lxml")
+                encuentros = s.find("div", class_="container content").find("div", class_="row").find_next_sibling().find_next_sibling().find("div", class_="col-md-12").find("div", class_="row").find("div", class_="cont-resultados cf").find("ul").find_all("li", class_="list-resultado")
+                for encuentro in encuentros:
+                    try:
+                        equipo_local = encuentro.find("div", class_="equipo-local").find("a", itemprop="url").find("span", class_="nombre-equipo").string.strip()
+                        equipo_visitante = encuentro.find("div", class_="equipo-visitante").find("a", itemprop="url").find("span", class_="nombre-equipo").string.strip()
+                        resultado = encuentro.find("div", class_="cont-resultado finalizado")
+                        if resultado.find("a", class_="resultado"):
+                            resultado = resultado.find("a", class_="resultado").string.strip()
+                            goles = resultado.split("-")
+                            goles_local = int(goles[0].strip())
+                            goles_visitante = int(goles[1].strip())
+                        else:
+                            resultado = resultado.find("span", class_="resultado").string.strip()
+                            goles = resultado.split("-")
+                            goles_local = int(goles[0].strip())
+                            goles_visitante = int(goles[1].strip())
+                        if goles_local > goles_visitante:
+                            winner = "1"
+                            puntos_local = 3
+                            puntos_visitante = 0
+                        elif goles_visitante > goles_local:
+                            winner = "2"
+                            puntos_local = 0
+                            puntos_visitante = 3
+                        else:
+                            winner = "X"
+                            puntos_local = 1
+                            puntos_visitante = 1
+
+                        PartidosEntrenamiento.objects.create(id=id, liga=liga, temporada=temporada, jornada=jornada,
+                                                              equipo_local=equipo_local, equipo_visitante=equipo_visitante,
+                                                              goles_local=goles_local, goles_visitante=goles_visitante,
+                                                              puntos_local=puntos_local, puntos_visitante=puntos_visitante,
+                                                              winner=winner)
+                        id = id + 1
+                    except Exception as e:
+                        print(f"Ocurrió un error al procesar el partido {equipo_local} vs {equipo_visitante} en la jornada {jornada} y resultado {resultado}: {e}")
+        except Exception as e:
+            print(f"Ocurrió un error al procesar la jornada {p}: {e}")
+    return "Carga Completada"
+  
+def cargarPartidoEntrenamientoTemporada19_23():
+    pe = None
+    with open(path, newline='', encoding='utf-8') as csvfile:
+        lector_csv = csv.DictReader(csvfile, delimiter=';')
+        for numero_fila, fila in enumerate(lector_csv, start=1):
+            try:
+                id = fila['\ufeffid'].lstrip('\ufeff')
+                season = fila['Season']
+                league = fila['League']
+                jornada = fila['Jornada']
+                home_team = fila['Home Team']
+                away_team = fila['Away Team']
+                home_goals = fila['Home Goals']
+                away_goals = fila['Away Goals']
+                winner = fila['Winner']
+                home_points = fila['Home Points']
+                away_points = fila['Away Points']
+                pe = PartidosEntrenamiento.objects.create(id = id, liga=league, temporada=season, jornada=jornada,equipo_local=home_team, equipo_visitante=away_team, goles_local=home_goals, goles_visitante=away_goals, puntos_local=home_points, puntos_visitante=away_points, winner=winner)
+            except Exception as e:
+                print(f"Error en la fila {numero_fila}: {e}")
+                # Opcional: Puedes añadir más información de la fila si es necesario
+                print(f"Contenido de la fila {numero_fila}: {fila}")
+    return pe
 
 def cargarPartidoRealLigaEsp():
     id = 1
-    temporada = "2023/2024"
+    temporada = "2023-24"
     url = "https://www.marca.com/futbol/primera-division/calendario.html?intcmp=MENUMIGA&s_kw=calendario"
     headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
@@ -100,7 +226,7 @@ def cargarPartidoRealLigaEsp():
 
 def cargarPartidoRealPremier():
     id = 381
-    temporada = "2023/2024"
+    temporada = "2023-24"
     url = "https://www.marca.com/futbol/premier-league/calendario.html?intcmp=MENUPROD&s_kw=premier-league-calendario"
     headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
@@ -393,7 +519,7 @@ def cargarPartidoRealEredivise():
     return pr
 
 def cargarPartidoRealEsp2():
-    id = 2365
+    id = 381
     temporada = "2023/2024"
     url = "https://www.marca.com/futbol/segunda-division/calendario.html?intcmp=MENUPROD&s_kw=segunda-division-calendario"
     headers = {

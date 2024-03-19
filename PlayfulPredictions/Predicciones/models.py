@@ -7,7 +7,7 @@ class PartidosEntrenamiento(models.Model):
     id = models.IntegerField(primary_key=True)
     liga = models.CharField(max_length=50)
     temporada = models.CharField(max_length=50)
-    jornada = models.CharField(max_length=50)
+    jornada = models.IntegerField(default=0)
     equipo_local = models.CharField(max_length=100)
     equipo_visitante = models.CharField(max_length=100)
     goles_local = models.IntegerField()
@@ -29,7 +29,7 @@ class PartidosEntrenamiento(models.Model):
     falta = models.BooleanField(default = False)
     winner = models.CharField(max_length = 1)
     def __str__(self):
-        return self.liga
+        return str(self.jornada)
     
 
 class PartidoReal(models.Model):

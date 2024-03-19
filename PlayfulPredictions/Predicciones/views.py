@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .populateDB import populateDatabaseEntrenamiento, populateDatabaseReal, populateDatabaseSinPredecir
 from .models import PartidosEntrenamiento, PartidoReal, PartidoSinPredecir
 # Create your views here.
-def cargar_Datos_Entreanmiento(request):
+def cargar_Datos_Entrenamiento(request):
     if populateDatabaseEntrenamiento():
         populateDatabaseEntrenamiento()
         partidos_entrenamiento = PartidosEntrenamiento.objects.all().count()
@@ -24,7 +24,7 @@ def cargar_Datos_Sin_Predecir(request):
     if populateDatabaseSinPredecir():
         populateDatabaseSinPredecir()
         partidos_real = PartidoSinPredecir.objects.all().count()
-        mensaje = "Se ha creado %d partidos real" % (partidos_real)
+        mensaje = "Se ha creado %d partidos sin predecir" % (partidos_real)
     else: 
         mensaje = "No funciona"
     return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": mensaje})
