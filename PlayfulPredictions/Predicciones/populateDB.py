@@ -30,6 +30,7 @@ def cargarPartidoReal():
     esp2 = cargarPartidoRealEsp2()
     return (le,esp2)
 
+
 def cargarPartidoEntrenamiento():
     pe = None
     with open(path, newline='', encoding='utf-8') as csvfile:
@@ -47,7 +48,10 @@ def cargarPartidoEntrenamiento():
                 winner = fila['Winner']
                 home_points = fila['Home Points']
                 away_points = fila['Away Points']
-                pe = PartidosEntrenamiento.objects.create(id = id, liga=league, temporada=season, jornada=jornada,equipo_local=home_team, equipo_visitante=away_team, goles_local=home_goals, goles_visitante=away_goals, puntos_local=home_points, puntos_visitante=away_points, winner=winner)
+                pe = PartidosEntrenamiento.objects.create(id = id, liga=league, temporada=season, jornada=jornada,
+                                                          equipo_local=home_team, equipo_visitante=away_team, goles_local=home_goals, 
+                                                          goles_visitante=away_goals, puntos_local=home_points, puntos_visitante=away_points, 
+                                                          winner=winner)
             except Exception as e:
                 print(f"Error en la fila {numero_fila}: {e}")
                 # Opcional: Puedes añadir más información de la fila si es necesario
@@ -58,7 +62,7 @@ def cargarPartidoEntrenamientoLigaEsp18_19():
     id = 37148
     temporada = "2018-19"
     for p in range(1,39):
-        url = "https://resultados.as.com/resultados/futbol/primera/2018_2019/jornada/regular_a_"+ str(1) +"/"
+        url = "https://resultados.as.com/resultados/futbol/primera/2018_2019/jornada/regular_a_"+ str(p) +"/"
         headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         }
@@ -89,7 +93,10 @@ def cargarPartidoEntrenamientoLigaEsp18_19():
                         puntos_local = 1
                         puntos_visitante = 1
                     
-                    PartidosEntrenamiento.objects.create(id = id, liga = liga, temporada=temporada, jornada = jornada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante=goles_visitante, puntos_local=puntos_local, puntos_visitante=puntos_visitante, winner=winner)
+                    PartidosEntrenamiento.objects.create(id = id, liga = liga, temporada=temporada, jornada = jornada,
+                                                          equipo_local=equipo_local, equipo_visitante=equipo_visitante, 
+                                                          goles_local=goles_local, goles_visitante=goles_visitante, puntos_local=puntos_local, 
+                                                          puntos_visitante=puntos_visitante, winner=winner)
                     id = id+1
                     
         except Exception as e:
@@ -168,7 +175,10 @@ def cargarPartidoEntrenamientoTemporada19_23():
                 home_points = fila['Home Points']
                 away_points = fila['Away Points']
                 jornada = fila['Jornada']
-                pe = PartidosEntrenamiento.objects.create(id = id, liga=league, temporada=season, jornada=jornada,equipo_local=home_team, equipo_visitante=away_team, goles_local=home_goals, goles_visitante=away_goals, puntos_local=home_points, puntos_visitante=away_points, winner=winner)
+                pe = PartidosEntrenamiento.objects.create(id = id, liga=league, temporada=season, jornada=jornada,
+                                                          equipo_local=home_team, equipo_visitante=away_team, 
+                                                          goles_local=home_goals, goles_visitante=away_goals, 
+                                                          puntos_local=home_points, puntos_visitante=away_points, winner=winner)
                 id = id+1
             except Exception as e:
                 print(f"Error en la fila {numero_fila}: {e}")
@@ -210,9 +220,6 @@ def cargarDatosEntrenamientoAdicionales():
             else:
                 if p.equipo_local == local and p.equipo_visitante == visitante:
                     pass
-
-                elif p.equipo_local != local and p.equipo_visitante != visitante:
-                    continue
 
                 elif p.equipo_local == local and p.equipo_visitante != visitante:
                     if goles_puntos_local_siendo_local <5  and goles_puntos_equipo_local <5:
@@ -288,6 +295,8 @@ def cargarDatosEntrenamientoAdicionales():
                         goles_puntos_equipo_visitante = goles_puntos_equipo_visitante + 1
                     else:
                         continue
+                else:
+                    continue
                 
 
         if goles_puntos_equipo_local < 5 and goles_puntos_equipo_visitante <5 and goles_puntos_local_siendo_local <5 and goles_puntos_visitante_siendo_visitante <5:
@@ -310,8 +319,6 @@ def cargarDatosEntrenamientoAdicionales():
             partido.goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra_ultimos_5_partidos_equipo_visitante
             partido.save()
                 
-
-
     return "Carga Completada"
 
 def cargarPartidoRealLigaEsp():
@@ -358,7 +365,10 @@ def cargarPartidoRealLigaEsp():
                     goles_visitante = 0
                     puntos_local = 1
                     puntos_visitante = 1
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
+                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, 
+                                                equipo_local=equipo_local, equipo_visitante=equipo_visitante, 
+                                                goles_local=goles_local, goles_visitante = goles_visitante, 
+                                                winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
                 id = id+1
 
     return pr
@@ -1190,9 +1200,6 @@ def cargarPartidoSinPredecir():
                 if p.equipo_local == local and p.equipo_visitante == visitante:
                     pass
 
-                elif p.equipo_local != local and p.equipo_visitante != visitante:
-                    continue
-
                 elif p.equipo_local == local and p.equipo_visitante != visitante:
                     if goles_puntos_local_siendo_local <5  and goles_puntos_equipo_local <5:
                         goles_ultimos_5_partidos_local_siendo_local = goles_ultimos_5_partidos_local_siendo_local + p.goles_local
@@ -1267,6 +1274,8 @@ def cargarPartidoSinPredecir():
                         goles_puntos_equipo_visitante = goles_puntos_equipo_visitante + 1
                     else:
                         continue
+                else:
+                    continue
                 
 
         if goles_puntos_equipo_local < 5 and goles_puntos_equipo_visitante <5 and goles_puntos_local_siendo_local <5 and goles_puntos_visitante_siendo_visitante <5:
