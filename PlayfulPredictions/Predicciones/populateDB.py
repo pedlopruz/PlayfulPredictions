@@ -4,6 +4,7 @@ from .models import PartidosEntrenamiento, PartidoReal, PartidoSinPredecir
 import csv
 path = "data/Entrenamiento.csv"
 path2 = "data/Temporada19-23.csv"
+path3 = "data/Partido_Entrenamiento.csv"
 
 def populateDatabaseEntrenamiento():
     PartidosEntrenamiento.objects.all().delete()
@@ -12,7 +13,7 @@ def populateDatabaseEntrenamiento():
     r218_19 = cargarPartidoEntrenamientoLigaEsp2_18_19()
     r19_23 = cargarPartidoEntrenamientoTemporada19_23()
     ad = cargarDatosEntrenamientoAdicionales()
-    return (r,r18_19,r218_19, r19_23,ad)
+    return (r, r18_19, r218_19, r19_23, ad)
 
 
 def populateDatabaseReal():
@@ -57,6 +58,7 @@ def cargarPartidoEntrenamiento():
                 # Opcional: Puedes añadir más información de la fila si es necesario
                 print(f"Contenido de la fila {numero_fila}: {fila}")
     return pe
+
 
 def cargarPartidoEntrenamientoLigaEsp18_19():
     id = 37148
