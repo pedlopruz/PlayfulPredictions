@@ -5,6 +5,14 @@ from django.http import HttpResponse
 import csv
 import codecs
 from django.utils.encoding import smart_str
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import accuracy_score, confusion_matrix
+import numpy as np
+from tabulate import tabulate
 # Create your views here.
 def cargar_Datos_Entrenamiento(request):
     if populateDatabaseEntrenamiento():
@@ -127,3 +135,108 @@ def PartidoEntrenamientoExportToCsv(request):
         )
 
     return response
+
+
+def entrenamientoModeloBayes(request):
+    partidos = PartidosEntrenamiento.objects.all()
+    equipos_locales = [partido.equipo_local for partido in partidos]
+    equipos_visitantes = [partido.equipo_visitante for partido in partidos]
+
+    todos_los_equipos = list(set(equipos_locales + equipos_visitantes))
+    label_encoder = LabelEncoder()
+    equipos_encoded = label_encoder.fit_transform(todos_los_equipos)
+    equipos_dict = dict(zip(todos_los_equipos, equipos_encoded))
+    X_encoded = np.array([[equipos_dict[equipo_local], equipos_dict[equipo_visitante]] for equipo_local, equipo_visitante in zip(equipos_locales, equipos_visitantes)])
+
+    goles_ultimos_5_partidos_equipos_locales = [partido.goles_ultimos_5_partidos_equipo_local for partido in partidos]
+    goles_ultimos_5_partidos_equipos_visitante = [partido.goles_ultimos_5_partidos_equipo_visitante for partido in partidos]
+    puntos_ultimos_5_partidos_equipos_locales = [partido.puntos_ultimos_5_partidos_equipo_local for partido in partidos]
+    puntos_ultimos_5_partidos_equipos_visitantes = [partido.puntos_ultimos_5_partidos_equipo_visitante for partido in partidos]
+    goles_ultimos_5_partidos_locales_siendo_local = [partido.goles_ultimos_5_partidos_local_siendo_local for partido in partidos]
+    goles_ultimos_5_partidos_visitantes_siendo_visitante = [partido.goles_ultimos_5_partidos_visitante_siendo_visitante for partido in partidos]
+    puntos_ultimos_5_partidos_locales_siendo_local = [partido.puntos_ultimos_5_partidos_local_siendo_local for partido in partidos]
+    puntos_ultimos_5_partidos_visitante_siendo_visitantes = [partido.puntos_ultimos_5_partidos_visitante_siendo_visitante for partido in partidos]
+    goles_en_contra_ultimos_5_partidos_equipo_locales = [partido.goles_en_contra_ultimos_5_partidos_equipo_local for partido in partidos]
+    goles_en_contra_ultimos_5_partidos_equipo_visitantes = [partido.goles_en_contra_ultimos_5_partidos_equipo_visitante for partido in partidos]
+    goles_en_contra_ultimos_5_partidos_locales_siendo_local = [partido.goles_en_contra_ultimos_5_partidos_local_siendo_local for partido in partidos]
+    goles_en_contra_ultimos_5_partidos_visitantees_siendo_visitante = [partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante for partido in partidos]
+    winners = [partido.winner for partido in partidos]
+    
+
+    X = np.column_stack((X_encoded,
+                        goles_ultimos_5_partidos_equipos_locales, 
+                        goles_ultimos_5_partidos_equipos_visitante,
+                        puntos_ultimos_5_partidos_equipos_locales,
+                        puntos_ultimos_5_partidos_equipos_visitantes,
+                        goles_ultimos_5_partidos_locales_siendo_local,
+                        goles_ultimos_5_partidos_visitantes_siendo_visitante,
+                        puntos_ultimos_5_partidos_locales_siendo_local,
+                        puntos_ultimos_5_partidos_visitante_siendo_visitantes,
+                        goles_en_contra_ultimos_5_partidos_equipo_locales,
+                        goles_en_contra_ultimos_5_partidos_equipo_visitantes,
+                        goles_en_contra_ultimos_5_partidos_locales_siendo_local,
+                        goles_en_contra_ultimos_5_partidos_visitantees_siendo_visitante))
+    Y = np.array(winners)
+
+    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+    model_nv = MultinomialNB()
+    model_nv.fit(X_train, winner_train)
+    winner_pred = model_nv.predict(X_test)
+    labels = ['0', "1", "2"]
+    conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
+    conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
+    accuracy = accuracy_score(winner_test, winner_pred)
+    
+    print(conf_matrix_table)
+    print(accuracy)
+
+    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+
+def entrenamientoModeloBayesConValidacionCruzada(request):
+    partidos = PartidosEntrenamiento.objects.all()
+    equipos_locales = [partido.equipo_local for partido in partidos]
+    equipos_visitantes = [partido.equipo_visitante for partido in partidos]
+
+    todos_los_equipos = list(set(equipos_locales + equipos_visitantes))
+    label_encoder = LabelEncoder()
+    equipos_encoded = label_encoder.fit_transform(todos_los_equipos)
+    equipos_dict = dict(zip(todos_los_equipos, equipos_encoded))
+    X_encoded = np.array([[equipos_dict[equipo_local], equipos_dict[equipo_visitante]] for equipo_local, equipo_visitante in zip(equipos_locales, equipos_visitantes)])
+
+    goles_ultimos_5_partidos_equipos_locales = [partido.goles_ultimos_5_partidos_equipo_local for partido in partidos]
+    goles_ultimos_5_partidos_equipos_visitante = [partido.goles_ultimos_5_partidos_equipo_visitante for partido in partidos]
+    puntos_ultimos_5_partidos_equipos_locales = [partido.puntos_ultimos_5_partidos_equipo_local for partido in partidos]
+    puntos_ultimos_5_partidos_equipos_visitantes = [partido.puntos_ultimos_5_partidos_equipo_visitante for partido in partidos]
+    goles_ultimos_5_partidos_locales_siendo_local = [partido.goles_ultimos_5_partidos_local_siendo_local for partido in partidos]
+    goles_ultimos_5_partidos_visitantes_siendo_visitante = [partido.goles_ultimos_5_partidos_visitante_siendo_visitante for partido in partidos]
+    puntos_ultimos_5_partidos_locales_siendo_local = [partido.puntos_ultimos_5_partidos_local_siendo_local for partido in partidos]
+    puntos_ultimos_5_partidos_visitante_siendo_visitantes = [partido.puntos_ultimos_5_partidos_visitante_siendo_visitante for partido in partidos]
+    goles_en_contra_ultimos_5_partidos_equipo_locales = [partido.goles_en_contra_ultimos_5_partidos_equipo_local for partido in partidos]
+    goles_en_contra_ultimos_5_partidos_equipo_visitantes = [partido.goles_en_contra_ultimos_5_partidos_equipo_visitante for partido in partidos]
+    goles_en_contra_ultimos_5_partidos_locales_siendo_local = [partido.goles_en_contra_ultimos_5_partidos_local_siendo_local for partido in partidos]
+    goles_en_contra_ultimos_5_partidos_visitantees_siendo_visitante = [partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante for partido in partidos]
+    winners = [partido.winner for partido in partidos]
+    
+
+    X = np.column_stack((X_encoded,
+                        goles_ultimos_5_partidos_equipos_locales, 
+                        goles_ultimos_5_partidos_equipos_visitante,
+                        puntos_ultimos_5_partidos_equipos_locales,
+                        puntos_ultimos_5_partidos_equipos_visitantes,
+                        goles_ultimos_5_partidos_locales_siendo_local,
+                        goles_ultimos_5_partidos_visitantes_siendo_visitante,
+                        puntos_ultimos_5_partidos_locales_siendo_local,
+                        puntos_ultimos_5_partidos_visitante_siendo_visitantes,
+                        goles_en_contra_ultimos_5_partidos_equipo_locales,
+                        goles_en_contra_ultimos_5_partidos_equipo_visitantes,
+                        goles_en_contra_ultimos_5_partidos_locales_siendo_local,
+                        goles_en_contra_ultimos_5_partidos_visitantees_siendo_visitante))
+    Y = np.array(winners)
+
+    model_nv = MultinomialNB()
+    scores = cross_val_score(model_nv, X, Y, cv=5)
+    
+    mean_accuracy = np.mean(scores)
+   
+
+    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": mean_accuracy})

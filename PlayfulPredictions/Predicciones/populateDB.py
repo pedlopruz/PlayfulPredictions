@@ -4,7 +4,7 @@ from .models import PartidosEntrenamiento, PartidoReal, PartidoSinPredecir
 import csv
 path = "data/Entrenamiento.csv"
 path2 = "data/Temporada19-23.csv"
-path3 = "data/Partido_Entrenamiento.csv"
+
 
 def populateDatabaseEntrenamiento():
     PartidosEntrenamiento.objects.all().delete()
