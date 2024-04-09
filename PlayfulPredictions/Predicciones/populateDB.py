@@ -7,7 +7,7 @@ path2 = "data/Temporada19-23.csv"
 path3 = "data/Partido_Entrenamiento.csv"
 
 
-'''def populateDatabaseEntrenamiento():
+def populateDatabaseEntrenamiento():
     PartidosEntrenamiento.objects.all().delete()
     r = cargarPartidoEntrenamiento()
     r18_19 = cargarPartidoEntrenamientoLigaEsp18_19()
@@ -15,12 +15,7 @@ path3 = "data/Partido_Entrenamiento.csv"
     r19_23 = cargarPartidoEntrenamientoTemporada19_23()
     ad = cargarDatosEntrenamientoAdicionales_Ultimos_5_Partidos()
     ad2 = cargarDatosEntrenamientoAdicionales_Ultimos_3_Partidos()
-    return (r,r18_19,r218_19,r19_23,ad,ad2)'''
-
-def populateDatabaseEntrenamiento():
-    PartidosEntrenamiento.objects.all().delete()
-    r = cargarPartidoEntrenamientoV2()
-    return r
+    return (r,r18_19,r218_19,r19_23,ad,ad2)
 
 
 def populateDatabaseReal():
@@ -66,86 +61,7 @@ def cargarPartidoEntrenamiento():
                 print(f"Contenido de la fila {numero_fila}: {fila}")
     return pe
 
-def cargarPartidoEntrenamientoV2():
-    pe = None
-    with open(path3, newline='', encoding='utf-8-sig') as csvfile:
-        lector_csv = csv.DictReader(csvfile, delimiter=';')
-        for numero_fila, fila in enumerate(lector_csv, start=1):
-            try:
-                id = fila['id']
-                league = fila['League']
-                season = fila['Season']
-                jornada = fila['Jornada']
-                home_team = fila['Home Team']
-                away_team = fila['Away Team']
-                home_goals = fila['Home Goals']
-                away_goals = fila['Away Goals']
-                home_points = fila['Home Points']
-                away_points = fila['Away Points']
-                goles_ultimos_5_partidos_equipo_local = fila['goles_ultimos_5_partidos_equipo_local']
-                goles_ultimos_5_partidos_equipo_visitante = fila['goles_ultimos_5_partidos_equipo_visitante']
-                puntos_ultimos_5_partidos_equipo_local = fila['puntos_ultimos_5_partidos_equipo_local']
-                puntos_ultimos_5_partidos_equipo_visitante = fila['puntos_ultimos_5_partidos_equipo_visitante']
-                goles_ultimos_5_partidos_local_siendo_local = fila['goles_ultimos_5_partidos_local_siendo_local']
-                goles_ultimos_5_partidos_visitante_siendo_visitante = fila['goles_ultimos_5_partidos_visitante_siendo_visitante']
-                puntos_ultimos_5_partidos_local_siendo_local = fila['puntos_ultimos_5_partidos_local_siendo_local']
-                puntos_ultimos_5_partidos_visitante_siendo_visitante = fila['puntos_ultimos_5_partidos_visitante_siendo_visitante']
-                goles_en_contra_ultimos_5_partidos_equipo_local = fila['goles_en_contra_ultimos_5_partidos_equipo_local']
-                goles_en_contra_ultimos_5_partidos_equipo_visitante = fila['goles_en_contra_ultimos_5_partidos_equipo_visitante']
-                goles_en_contra_ultimos_5_partidos_local_siendo_local = fila['goles_en_contra_ultimos_5_partidos_local_siendo_local']
-                goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = fila['goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante']
 
-                goles_ultimos_3_partidos_equipo_local = fila['goles_ultimos_3_partidos_equipo_local']
-                goles_ultimos_3_partidos_equipo_visitante = fila['goles_ultimos_3_partidos_equipo_visitante']
-                puntos_ultimos_3_partidos_equipo_local = fila['puntos_ultimos_3_partidos_equipo_local']
-                puntos_ultimos_3_partidos_equipo_visitante = fila['puntos_ultimos_3_partidos_equipo_visitante']
-                goles_ultimos_3_partidos_local_siendo_local = fila['goles_ultimos_3_partidos_local_siendo_local']
-                goles_ultimos_3_partidos_visitante_siendo_visitante = fila['goles_ultimos_3_partidos_visitante_siendo_visitante']
-                puntos_ultimos_3_partidos_local_siendo_local = fila['puntos_ultimos_3_partidos_local_siendo_local']
-                puntos_ultimos_3_partidos_visitante_siendo_visitante = fila['puntos_ultimos_3_partidos_visitante_siendo_visitante']
-                goles_en_contra_ultimos_3_partidos_equipo_local = fila['goles_en_contra_ultimos_3_partidos_equipo_local']
-                goles_en_contra_ultimos_3_partidos_equipo_visitante = fila['goles_en_contra_ultimos_3_partidos_equipo_visitante']
-                goles_en_contra_ultimos_3_partidos_local_siendo_local = fila['goles_en_contra_ultimos_3_partidos_local_siendo_local']
-                goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = fila['goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante']
-                falta = fila['falta']
-                winner = fila['Winner']
-                pe = PartidosEntrenamiento.objects.create(id = id, liga=league, temporada=season, jornada=jornada,
-                                                          equipo_local=home_team, equipo_visitante=away_team, goles_local=home_goals, 
-                                                          goles_visitante=away_goals, puntos_local=home_points, puntos_visitante=away_points,
-                                                          goles_ultimos_5_partidos_equipo_local = goles_ultimos_5_partidos_equipo_local,
-                                                          goles_ultimos_5_partidos_equipo_visitante = goles_ultimos_5_partidos_equipo_visitante,
-                                                          puntos_ultimos_5_partidos_equipo_local = puntos_ultimos_5_partidos_equipo_local,
-                                                          puntos_ultimos_5_partidos_equipo_visitante = puntos_ultimos_5_partidos_equipo_visitante,
-                                                            goles_ultimos_5_partidos_local_siendo_local = goles_ultimos_5_partidos_local_siendo_local,
-                                                            goles_ultimos_5_partidos_visitante_siendo_visitante = goles_ultimos_5_partidos_visitante_siendo_visitante,
-                                                            puntos_ultimos_5_partidos_local_siendo_local = puntos_ultimos_5_partidos_local_siendo_local,
-                                                            puntos_ultimos_5_partidos_visitante_siendo_visitante = puntos_ultimos_5_partidos_visitante_siendo_visitante,
-                                                            goles_en_contra_ultimos_5_partidos_equipo_local = goles_en_contra_ultimos_5_partidos_equipo_local,
-                                                            goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra_ultimos_5_partidos_equipo_visitante,
-                                                            goles_en_contra_ultimos_5_partidos_local_siendo_local = goles_en_contra_ultimos_5_partidos_local_siendo_local,
-                                                            goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante,
-
-                                                            goles_ultimos_3_partidos_equipo_local = goles_ultimos_3_partidos_equipo_local,
-                                                            goles_ultimos_3_partidos_equipo_visitante = goles_ultimos_3_partidos_equipo_visitante,
-                                                            puntos_ultimos_3_partidos_equipo_local = puntos_ultimos_3_partidos_equipo_local,
-                                                            puntos_ultimos_3_partidos_equipo_visitante = puntos_ultimos_3_partidos_equipo_visitante,
-                                                            goles_ultimos_3_partidos_local_siendo_local = goles_ultimos_3_partidos_local_siendo_local,
-                                                            goles_ultimos_3_partidos_visitante_siendo_visitante = goles_ultimos_3_partidos_visitante_siendo_visitante,
-                                                            puntos_ultimos_3_partidos_local_siendo_local = puntos_ultimos_3_partidos_local_siendo_local,
-                                                            puntos_ultimos_3_partidos_visitante_siendo_visitante = puntos_ultimos_3_partidos_visitante_siendo_visitante,
-                                                            goles_en_contra_ultimos_3_partidos_equipo_local = goles_en_contra_ultimos_3_partidos_equipo_local,
-                                                            goles_en_contra_ultimos_3_partidos_equipo_visitante = goles_en_contra_ultimos_3_partidos_equipo_visitante,
-                                                            goles_en_contra_ultimos_3_partidos_local_siendo_local = goles_en_contra_ultimos_3_partidos_local_siendo_local,
-                                                            goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante,
-                                                            falta = falta,
-
-                                                          winner=winner)
-                
-            except Exception as e:
-                print(f"Error en la fila {numero_fila}: {e}")
-                # Opcional: Puedes añadir más información de la fila si es necesario
-                print(f"Contenido de la fila {numero_fila}: {fila}")
-    return pe
 
 def cargarPartidoEntrenamientoLigaEsp18_19():
     id = 37148

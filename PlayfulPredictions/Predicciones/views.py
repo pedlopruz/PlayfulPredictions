@@ -5,23 +5,24 @@ from django.http import HttpResponse
 import csv
 import codecs
 from django.utils.encoding import smart_str
-from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.neighbors import KNeighborsClassifier
 import numpy as np
 from tabulate import tabulate
-from sklearn.preprocessing import StandardScaler
-from sklearn.pipeline import Pipeline
-from sklearn.model_selection import GridSearchCV
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import RandomForestClassifier
 from scipy.stats import randint
 from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import classification_report, roc_auc_score, roc_curve, precision_recall_curve, auc
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import StratifiedKFold
+from imblearn.over_sampling import SMOTE
+
 # Create your views here.
 def cargar_Datos_Entrenamiento(request):
     if populateDatabaseEntrenamiento():
@@ -170,7 +171,7 @@ def PartidoEntrenamientoExportToCsv(request):
 
     return response
 
-def calculoValoresIndpYDepen():
+def calculo_Valores_Indp_Y_Depen_Para_Datos_5_Ultimos_Partidos():
     partidos = PartidosEntrenamiento.objects.all()
 
     goles_ultimos_5_partidos_equipos_locales = [partido.goles_ultimos_5_partidos_equipo_local for partido in partidos]
@@ -205,9 +206,10 @@ def calculoValoresIndpYDepen():
     return X, Y
 
 
-def entrenamientoModeloBayes(request):
+def entrenamiento_Modelo_Bayes_Para_Datos_5_Ultimos_Partidos(request):
     
-    X,Y = calculoValoresIndpYDepen()
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_5_Ultimos_Partidos()
+    
     X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
     model_nv = MultinomialNB()
     model_nv.fit(X_train, winner_train)
@@ -222,9 +224,9 @@ def entrenamientoModeloBayes(request):
 
     return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
 
-def entrenamientoModeloBayesConValidacionCruzada(request):
+def entrenamiento_Modelo_Bayes_Con_Validacion_Cruzada_Para_Datos_5_Ultimos_Partidos(request):
 
-    X,Y = calculoValoresIndpYDepen()
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_5_Ultimos_Partidos()
 
     model_nv = MultinomialNB()
     scores = cross_val_score(model_nv, X, Y, cv=5)
@@ -235,9 +237,9 @@ def entrenamientoModeloBayesConValidacionCruzada(request):
     return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": mean_accuracy})
 
 
-def entrenamientoModeloKNN(request):
+def entrenamiento_Modelo_KNN_Para_Datos_5_Ultimos_Partidos(request):
     
-    X,Y = calculoValoresIndpYDepen()
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_5_Ultimos_Partidos()
     X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
     
     #model_knn = KNeighborsClassifier(n_neighbors=300, metric='manhattan', weights='uniform', algorithm='auto')
@@ -287,8 +289,8 @@ def entrenamientoModeloKNN(request):
 
     return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": random_search.best_score_}) '''
 
-def entrenamientoModeloRandomForest(request):
-    X,Y = calculoValoresIndpYDepen()
+def entrenamiento_Modelo_Random_Forest_Para_Datos_5_Ultimos_Partidos(request):
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_5_Ultimos_Partidos()
     X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
     model_rf = RandomForestClassifier(n_estimators=1000, max_depth=50, max_features='sqrt', min_samples_leaf=50, min_samples_split=20)
     model_rf.fit(X_train, winner_train), 
@@ -303,8 +305,8 @@ def entrenamientoModeloRandomForest(request):
 
     return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
 
-def entrenamientoModeloSVM(request):
-    X,Y = calculoValoresIndpYDepen()
+def entrenamiento_Modelo_SVM_Para_Datos_5_Ultimos_Partidos(request):
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_5_Ultimos_Partidos()
     X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
     model_svm = SVC(kernel='poly', C=1, random_state=42)
     model_svm.fit(X_train, winner_train), 
@@ -319,10 +321,10 @@ def entrenamientoModeloSVM(request):
 
     return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
 
-def entrenamientoModeloLR(request):
-    X,Y = calculoValoresIndpYDepen()
+def entrenamiento_Modelo_LR_Para_Datos_5_Ultimos_Partidos(request):
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_5_Ultimos_Partidos()
     X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
-    model_lr = LogisticRegression(penalty="l1", C=10, solver="liblinear", class_weight='balanced', max_iter=10000, random_state=42)
+    model_lr = LogisticRegression(penalty="l1", C=0.1, solver="liblinear", class_weight='balanced', max_iter=10000, random_state=42)
     model_lr.fit(X_train, winner_train), 
     winner_pred = model_lr.predict(X_test)
     labels = ['1', "0", "2"]
@@ -334,4 +336,421 @@ def entrenamientoModeloLR(request):
     print(accuracy)
 
     return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+
+def entrenamiento_Modelo_Gradient_Boosting_Classifier_Para_Datos_5_Ultimos_Partidos(request):
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_5_Ultimos_Partidos()
+    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+    model_gbc =  GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, subsample=0.9, random_state=42)
+    model_gbc.fit(X_train, winner_train), 
+    winner_pred = model_gbc.predict(X_test)
+    labels = ['1', "0", "2"]
+    conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
+    conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
+    accuracy = accuracy_score(winner_test, winner_pred)
+    
+    print(conf_matrix_table)
+    print(accuracy)
+
+    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+
+
+
+def calculo_Valores_Indp_Y_Depen_Para_Datos_3_Ultimos_Partidos():
+    partidos = PartidosEntrenamiento.objects.all()
+
+    goles_ultimos_3_partidos_equipos_locales = [partido.goles_ultimos_3_partidos_equipo_local for partido in partidos]
+    goles_ultimos_3_partidos_equipos_visitante = [partido.goles_ultimos_3_partidos_equipo_visitante for partido in partidos]
+    puntos_ultimos_3_partidos_equipos_locales = [partido.puntos_ultimos_3_partidos_equipo_local for partido in partidos]
+    puntos_ultimos_3_partidos_equipos_visitantes = [partido.puntos_ultimos_3_partidos_equipo_visitante for partido in partidos]
+    goles_ultimos_3_partidos_locales_siendo_local = [partido.goles_ultimos_3_partidos_local_siendo_local for partido in partidos]
+    goles_ultimos_3_partidos_visitantes_siendo_visitante = [partido.goles_ultimos_3_partidos_visitante_siendo_visitante for partido in partidos]
+    puntos_ultimos_3_partidos_locales_siendo_local = [partido.puntos_ultimos_3_partidos_local_siendo_local for partido in partidos]
+    puntos_ultimos_3_partidos_visitante_siendo_visitantes = [partido.puntos_ultimos_3_partidos_visitante_siendo_visitante for partido in partidos]
+    goles_en_contra_ultimos_3_partidos_equipo_locales = [partido.goles_en_contra_ultimos_3_partidos_equipo_local for partido in partidos]
+    goles_en_contra_ultimos_3_partidos_equipo_visitantes = [partido.goles_en_contra_ultimos_3_partidos_equipo_visitante for partido in partidos]
+    goles_en_contra_ultimos_3_partidos_locales_siendo_local = [partido.goles_en_contra_ultimos_3_partidos_local_siendo_local for partido in partidos]
+    goles_en_contra_ultimos_3_partidos_visitantees_siendo_visitante = [partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante for partido in partidos]
+    winners = [partido.winner for partido in partidos]
+    
+
+    X = np.column_stack((
+                        goles_ultimos_3_partidos_equipos_locales, 
+                        goles_ultimos_3_partidos_equipos_visitante,
+                        puntos_ultimos_3_partidos_equipos_locales,
+                        puntos_ultimos_3_partidos_equipos_visitantes,
+                        goles_en_contra_ultimos_3_partidos_equipo_locales,
+                        goles_en_contra_ultimos_3_partidos_equipo_visitantes,
+                        goles_ultimos_3_partidos_locales_siendo_local,
+                        goles_ultimos_3_partidos_visitantes_siendo_visitante,
+                        puntos_ultimos_3_partidos_locales_siendo_local,
+                        puntos_ultimos_3_partidos_visitante_siendo_visitantes,
+                        goles_en_contra_ultimos_3_partidos_locales_siendo_local,
+                        goles_en_contra_ultimos_3_partidos_visitantees_siendo_visitante))
+    Y = np.array(winners)
+    return X, Y
+
+
+def entrenamiento_Modelo_Bayes_Para_Datos_3_Ultimos_Partidos(request):
+    
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Ultimos_Partidos()
+    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+    model_nv = MultinomialNB()
+    model_nv.fit(X_train, winner_train)
+    winner_pred = model_nv.predict(X_test)
+    labels = ['1', "0", "2"]
+    conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
+    conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
+    accuracy = accuracy_score(winner_test, winner_pred)
+    
+    print(conf_matrix_table)
+    print(accuracy)
+
+    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+
+
+def entrenamiento_Modelo_KNN_Para_Datos_3_Ultimos_Partidos(request):
+    
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Ultimos_Partidos()
+    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+    
+    #model_knn = KNeighborsClassifier(n_neighbors=300, metric='manhattan', weights='uniform', algorithm='auto')
+    #model_knn = KNeighborsClassifier(n_neighbors=203, metric='euclidean', weights='uniform', algorithm='auto')
+    model_knn = KNeighborsClassifier(n_neighbors=203, metric='chebyshev', weights='uniform', algorithm='auto')
+    #model_knn = KNeighborsClassifier(n_neighbors=203, metric='minkowski', p=1,weights='uniform', algorithm='auto')
+    #model_knn = KNeighborsClassifier(n_neighbors=203, metric='minkowski', p=2,weights='distance', algorithm='brute')
+    model_knn.fit(X_train, winner_train)
+    winner_pred = model_knn.predict(X_test)
+    labels = ['1', "0", "2"]
+    conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
+    conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
+    accuracy = accuracy_score(winner_test, winner_pred)
+    
+    print(conf_matrix_table)
+    print(accuracy)
+
+    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+
+
+def entrenamiento_Modelo_Random_Forest_Para_Datos_3_Ultimos_Partidos(request):
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Ultimos_Partidos()
+    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+    model_rf = RandomForestClassifier(n_estimators=203, max_depth=50, max_features='sqrt', min_samples_leaf=50, min_samples_split=20)
+    model_rf.fit(X_train, winner_train), 
+    winner_pred = model_rf.predict(X_test)
+    labels = ['1', "0", "2"]
+    conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
+    conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
+    accuracy = accuracy_score(winner_test, winner_pred)
+    
+    print(conf_matrix_table)
+    print(accuracy)
+
+    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+
+def entrenamiento_Modelo_SVM_Para_Datos_3_Ultimos_Partidos(request):
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Ultimos_Partidos()
+    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+    model_svm = SVC(kernel='linear', C=1, random_state=42)
+    model_svm.fit(X_train, winner_train), 
+    winner_pred = model_svm.predict(X_test)
+    labels = ['1', "0", "2"]
+    conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
+    conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
+    accuracy = accuracy_score(winner_test, winner_pred)
+    
+    print(conf_matrix_table)
+    print(accuracy)
+
+    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+
+def entrenamiento_Modelo_LR_Para_Datos_3_Ultimos_Partidos(request):
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Ultimos_Partidos()
+    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+    for i in range(1,11):
+
+        if i <= 3:
+            penalty = "l1"
+            solver = "liblinear"
+        else:
+            penalty = "l2"
+            solver = "lbfgs" if i <= 6 else "saga"  # Utilizar otros solvers para las últimas combinaciones
+
+        C_values = [0.1, 1, 10] if i <= 9 else [0.1, 1, 10, 100]
+
+        model_lr = LogisticRegression(penalty=penalty, C=C_values[(i - 1) % len(C_values)], solver=solver, class_weight='balanced', max_iter=10000, random_state=42)
+        model_lr.fit(X_train, winner_train)
+        winner_pred = model_lr.predict(X_test)
+        labels = ['1', "0", "2"]
+        conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
+        conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
+        accuracy = accuracy_score(winner_test, winner_pred)
+
+        print(model_lr)
+        print(conf_matrix_table)
+        print(accuracy)
+
+    return HttpResponse("Todo Ok")
+
+def entrenamiento_Modelo_Gradient_Boosting_Classifier_Para_Datos_3_Ultimos_Partidos(request):
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Ultimos_Partidos()
+    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+    for i in range(1, 12):
+        if i == 1:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
+        elif i == 2:
+            model_gbc = GradientBoostingClassifier(n_estimators=200, learning_rate=0.1, max_depth=3, random_state=42)
+        elif i == 3:
+            model_gbc = GradientBoostingClassifier(n_estimators=300, learning_rate=0.1, max_depth=3, random_state=42)
+        elif i == 4:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.01, max_depth=3, random_state=42)
+        elif i == 5:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.001, max_depth=3, random_state=42)
+        elif i == 6:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=5, random_state=42)
+        elif i == 7:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=7, random_state=42)
+        elif i == 8:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, min_samples_split=2, min_samples_leaf=1, random_state=42)
+        elif i == 9:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, min_samples_split=5, min_samples_leaf=2, random_state=42)
+        elif i == 10:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, subsample=0.8, random_state=42)
+        elif i == 11:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, subsample=0.9, random_state=42)
+        model_gbc.fit(X_train, winner_train), 
+        winner_pred = model_gbc.predict(X_test)
+        labels = ['1', "0", "2"]
+        conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
+        conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
+        accuracy = accuracy_score(winner_test, winner_pred)
+    
+        print(conf_matrix_table)
+        print(accuracy)
+
+    return HttpResponse("Todo OK")
+
+def calculo_Valores_Indp_Y_Depen_Para_Datos_3_Y_5_Ultimos_Partidos():
+    partidos = PartidosEntrenamiento.objects.all()
+    goles_ultimos_5_partidos_equipos_locales = [partido.goles_ultimos_5_partidos_equipo_local for partido in partidos]
+    goles_ultimos_5_partidos_equipos_visitante = [partido.goles_ultimos_5_partidos_equipo_visitante for partido in partidos]
+    puntos_ultimos_5_partidos_equipos_locales = [partido.puntos_ultimos_5_partidos_equipo_local for partido in partidos]
+    puntos_ultimos_5_partidos_equipos_visitantes = [partido.puntos_ultimos_5_partidos_equipo_visitante for partido in partidos]
+    goles_ultimos_5_partidos_locales_siendo_local = [partido.goles_ultimos_5_partidos_local_siendo_local for partido in partidos]
+    goles_ultimos_5_partidos_visitantes_siendo_visitante = [partido.goles_ultimos_5_partidos_visitante_siendo_visitante for partido in partidos]
+    puntos_ultimos_5_partidos_locales_siendo_local = [partido.puntos_ultimos_5_partidos_local_siendo_local for partido in partidos]
+    puntos_ultimos_5_partidos_visitante_siendo_visitantes = [partido.puntos_ultimos_5_partidos_visitante_siendo_visitante for partido in partidos]
+    goles_en_contra_ultimos_5_partidos_equipo_locales = [partido.goles_en_contra_ultimos_5_partidos_equipo_local for partido in partidos]
+    goles_en_contra_ultimos_5_partidos_equipo_visitantes = [partido.goles_en_contra_ultimos_5_partidos_equipo_visitante for partido in partidos]
+    goles_en_contra_ultimos_5_partidos_locales_siendo_local = [partido.goles_en_contra_ultimos_5_partidos_local_siendo_local for partido in partidos]
+    goles_en_contra_ultimos_5_partidos_visitantees_siendo_visitante = [partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante for partido in partidos]
+    
+
+    goles_ultimos_3_partidos_equipos_locales = [partido.goles_ultimos_3_partidos_equipo_local for partido in partidos]
+    goles_ultimos_3_partidos_equipos_visitante = [partido.goles_ultimos_3_partidos_equipo_visitante for partido in partidos]
+    puntos_ultimos_3_partidos_equipos_locales = [partido.puntos_ultimos_3_partidos_equipo_local for partido in partidos]
+    puntos_ultimos_3_partidos_equipos_visitantes = [partido.puntos_ultimos_3_partidos_equipo_visitante for partido in partidos]
+    goles_ultimos_3_partidos_locales_siendo_local = [partido.goles_ultimos_3_partidos_local_siendo_local for partido in partidos]
+    goles_ultimos_3_partidos_visitantes_siendo_visitante = [partido.goles_ultimos_3_partidos_visitante_siendo_visitante for partido in partidos]
+    puntos_ultimos_3_partidos_locales_siendo_local = [partido.puntos_ultimos_3_partidos_local_siendo_local for partido in partidos]
+    puntos_ultimos_3_partidos_visitante_siendo_visitantes = [partido.puntos_ultimos_3_partidos_visitante_siendo_visitante for partido in partidos]
+    goles_en_contra_ultimos_3_partidos_equipo_locales = [partido.goles_en_contra_ultimos_3_partidos_equipo_local for partido in partidos]
+    goles_en_contra_ultimos_3_partidos_equipo_visitantes = [partido.goles_en_contra_ultimos_3_partidos_equipo_visitante for partido in partidos]
+    goles_en_contra_ultimos_3_partidos_locales_siendo_local = [partido.goles_en_contra_ultimos_3_partidos_local_siendo_local for partido in partidos]
+    goles_en_contra_ultimos_3_partidos_visitantees_siendo_visitante = [partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante for partido in partidos]
+    winners = [partido.winner for partido in partidos]
+    
+
+    X = np.column_stack((
+                        goles_ultimos_5_partidos_equipos_locales, 
+                        goles_ultimos_5_partidos_equipos_visitante,
+                        puntos_ultimos_5_partidos_equipos_locales,
+                        puntos_ultimos_5_partidos_equipos_visitantes,
+                        goles_en_contra_ultimos_5_partidos_equipo_locales,
+                        goles_en_contra_ultimos_5_partidos_equipo_visitantes,
+                        goles_ultimos_5_partidos_locales_siendo_local,
+                        goles_ultimos_5_partidos_visitantes_siendo_visitante,
+                        puntos_ultimos_5_partidos_locales_siendo_local,
+                        puntos_ultimos_5_partidos_visitante_siendo_visitantes,
+                        goles_en_contra_ultimos_5_partidos_locales_siendo_local,
+                        goles_en_contra_ultimos_5_partidos_visitantees_siendo_visitante,
+                        goles_ultimos_3_partidos_equipos_locales, 
+                        goles_ultimos_3_partidos_equipos_visitante,
+                        puntos_ultimos_3_partidos_equipos_locales,
+                        puntos_ultimos_3_partidos_equipos_visitantes,
+                        goles_en_contra_ultimos_3_partidos_equipo_locales,
+                        goles_en_contra_ultimos_3_partidos_equipo_visitantes,
+                        goles_ultimos_3_partidos_locales_siendo_local,
+                        goles_ultimos_3_partidos_visitantes_siendo_visitante,
+                        puntos_ultimos_3_partidos_locales_siendo_local,
+                        puntos_ultimos_3_partidos_visitante_siendo_visitantes,
+                        goles_en_contra_ultimos_3_partidos_locales_siendo_local,
+                        goles_en_contra_ultimos_3_partidos_visitantees_siendo_visitante))
+    Y = np.array(winners)
+    return X, Y
+
+
+def entrenamiento_Modelo_Bayes_Para_Datos_3_Y_5_Ultimos_Partidos(request):
+
+    
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Y_5_Ultimos_Partidos()
+    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+    model_nv = MultinomialNB()
+    model_nv.fit(X_train, winner_train)
+    winner_pred = model_nv.predict(X_test)
+    labels = ['1', "0", "2"]
+    conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
+    conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
+    accuracy = accuracy_score(winner_test, winner_pred)
+    
+    print(conf_matrix_table)
+    print(accuracy)
+
+    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+
+
+def entrenamiento_Modelo_KNN_Para_Datos_3_Y_5_Ultimos_Partidos(request):
+    
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Y_5_Ultimos_Partidos()
+    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+    
+    model_knn = KNeighborsClassifier(n_neighbors=300, metric='manhattan', weights='distance', algorithm='auto')
+    #model_knn = KNeighborsClassifier(n_neighbors=203, metric='euclidean', weights='uniform', algorithm='auto')
+    #model_knn = KNeighborsClassifier(n_neighbors=203, metric='chebyshev', weights='distance', algorithm='auto')
+    #model_knn = KNeighborsClassifier(n_neighbors=203, metric='minkowski', p=1,weights='uniform', algorithm='auto')
+    #model_knn = KNeighborsClassifier(n_neighbors=203, metric='minkowski', p=2,weights='distance', algorithm='brute')
+    model_knn.fit(X_train, winner_train)
+    winner_pred = model_knn.predict(X_test)
+    labels = ['1', "0", "2"]
+    conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
+    conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
+    accuracy = accuracy_score(winner_test, winner_pred)
+    
+    print(conf_matrix_table)
+    print(accuracy)
+
+    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+
+
+def entrenamiento_Modelo_Random_Forest_Para_Datos_3_Y_5_Ultimos_Partidos(request):
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Y_5_Ultimos_Partidos()
+    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+    model_rf = RandomForestClassifier(n_estimators=203, max_depth=20, max_features='sqrt', class_weight="balanced",min_samples_leaf=3, min_samples_split=10)
+    model_rf.fit(X_train, winner_train), 
+    winner_pred = model_rf.predict(X_test)
+    labels = ['1', "0", "2"]
+    conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
+    conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
+    accuracy = accuracy_score(winner_test, winner_pred)
+    report = classification_report(winner_test, winner_pred)
+    print(conf_matrix_table)
+    print(accuracy)
+    print(report)
+
+    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+
+def entrenamiento_Modelo_SVM_Para_Datos_3_Y_5_Ultimos_Partidos(request):
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Y_5_Ultimos_Partidos()
+    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+    model_svm = SVC(kernel='poly', C=1, class_weight="balanced", random_state=42)
+    model_svm.fit(X_train, winner_train), 
+    winner_pred = model_svm.predict(X_test)
+    labels = ['1', "0", "2"]
+    conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
+    conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
+    accuracy = accuracy_score(winner_test, winner_pred)
+    report = classification_report(winner_test, winner_pred)
+    
+    print(conf_matrix_table)
+    print(accuracy)
+    print(report)
+
+    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+
+def entrenamiento_Modelo_LR_Para_Datos_3_Y_5_Ultimos_Partidos(request):
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Y_5_Ultimos_Partidos()
+    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+    for i in range(1,11):
+
+        if i <= 3:
+            penalty = "l1"
+            solver = "liblinear"
+        else:
+            penalty = "l2"
+            solver = "lbfgs" if i <= 6 else "saga"  # Utilizar otros solvers para las últimas combinaciones
+
+        C_values = [0.1, 1, 10] if i <= 9 else [0.1, 1, 10, 100]
+
+        model_lr = LogisticRegression(penalty=penalty, C=C_values[(i - 1) % len(C_values)],solver=solver, class_weight='balanced', max_iter=10000, random_state=42)
+        model_lr.fit(X_train, winner_train)
+        winner_pred = model_lr.predict(X_test)
+        labels = ['1', "0", "2"]
+        conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
+        conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
+        accuracy = accuracy_score(winner_test, winner_pred)
+
+        conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
+        conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
+        accuracy = accuracy_score(winner_test, winner_pred)
+        report = classification_report(winner_test, winner_pred)
+    
+        print(conf_matrix_table)
+        print(accuracy)
+        print(report)
+
+    return HttpResponse("Todo Ok")
+
+
+
+def entrenamiento_Modelo_Gradient_Boosting_Classifier_Para_Datos_3_Y_5_Ultimos_Partidos(request):
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Y_5_Ultimos_Partidos()
+    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+    for i in range(1, 12):
+        if i == 1:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
+            print( model_gbc)
+        elif i == 2:
+            model_gbc = GradientBoostingClassifier(n_estimators=200, learning_rate=0.1, max_depth=3, random_state=42)
+            print( model_gbc)
+        elif i == 3:
+            model_gbc = GradientBoostingClassifier(n_estimators=300, learning_rate=0.1, max_depth=3, random_state=42)
+            print( model_gbc)
+        elif i == 4:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.01, max_depth=3, random_state=42)
+            print( model_gbc)
+        elif i == 5:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.001, max_depth=3, random_state=42)
+            print( model_gbc)
+        elif i == 6:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=5, random_state=42)
+            print( model_gbc)
+        elif i == 7:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=7, random_state=42)
+            print( model_gbc)
+        elif i == 8:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, min_samples_split=2, min_samples_leaf=1, random_state=42)
+            print( model_gbc)
+        elif i == 9:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, min_samples_split=5, min_samples_leaf=2, random_state=42)
+            print( model_gbc)
+        elif i == 10:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, subsample=0.8, random_state=42)
+            print( model_gbc)
+        elif i == 11:
+            model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, subsample=0.9, random_state=42)
+            print( model_gbc)
+        model_gbc.fit(X_train, winner_train), 
+        winner_pred = model_gbc.predict(X_test)
+        labels = ['1', "0", "2"]
+        conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
+        conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
+        accuracy = accuracy_score(winner_test, winner_pred)
+        report = classification_report(winner_test, winner_pred)
+    
+        print(conf_matrix_table)
+        print(accuracy)
+        print(report)
+
+    return HttpResponse("Todo Ok")
+
+
 
