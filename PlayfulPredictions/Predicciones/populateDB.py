@@ -18,21 +18,14 @@ def populateDatabaseEntrenamiento():
     return (r,r18_19,r218_19,r19_23,ad,ad2)
 
 
-def populateDatabaseReal():
-    PartidoReal.objects.all().delete()
-    pr = cargarPartidoReal()
-    return pr
-
 def populateDatabaseSinPredecir():
     PartidoSinPredecir.objects.all().delete()
-    pr = cargarPartidoSinPredecir()
-    return pr
-
-def cargarPartidoReal():
+    PartidoReal.objects.all().delete()
     le = cargarPartidoRealLigaEsp()
     esp2 = cargarPartidoRealEsp2()
-    return (le,esp2)
-
+    pr = cargarPartidoSinPredecir_Ultimos_5_Partidos()
+    pr2 = cargarPartidoSinPredecir_Ultimos_3_Partidos()
+    return (le,esp2,pr,pr2)
 
 def cargarPartidoEntrenamiento():
     pe = None
@@ -1297,7 +1290,7 @@ def cargarPartidoRealMexico():
     return pr
 
 
-def cargarPartidoSinPredecir():
+def cargarPartidoSinPredecir_Ultimos_5_Partidos():
     id = 0
     numero_partidos = PartidoReal.objects.all().count()
     for i in range(1,numero_partidos+1):
@@ -1448,4 +1441,144 @@ def cargarPartidoSinPredecir():
 
 
     return pe
+
+def cargarPartidoSinPredecir_Ultimos_3_Partidos():
+    numero_partidos = PartidoReal.objects.all().count()
+    for i in range(1,numero_partidos+1):
+        
+        partidos_en_rango_ordenados = PartidoReal.objects.filter(id__range=(1, i+1)).order_by('id')
+        partido = partidos_en_rango_ordenados.last()
+        local = partido.equipo_local
+        visitante = partido.equipo_visitante
+        partido_actualizar = PartidoSinPredecir.objects.get(id=i)
+            
+        goles_ultimos_3_partidos_local_siendo_local = 0
+        goles_ultimos_3_partidos_visitante_siendo_visitante = 0
+        goles_ultimos_3_partidos_equipo_local = 0
+        goles_ultimos_3_partidos_equipo_visitante = 0
+
+        puntos_ultimos_3_partidos_local_siendo_local = 0
+        puntos_ultimos_3_partidos_visitante_siendo_visitante = 0
+        puntos_ultimos_3_partidos_equipo_local = 0
+        puntos_ultimos_3_partidos_equipo_visitante = 0
+
+        goles_puntos_local_siendo_local_ultimos_3 = 0
+        goles_puntos_visitante_siendo_visitante_ultimos_3=0
+        goles_puntos_equipo_local_ultimos_3 = 0
+        goles_puntos_equipo_visitante_ultimos_3=0
+
+        goles_en_contra_ultimos_3_partidos_local_siendo_local = 0
+        goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = 0
+        goles_en_contra_ultimos_3_partidos_equipo_local = 0
+        goles_en_contra_ultimos_3_partidos_equipo_visitante = 0
+
+        for p in reversed(partidos_en_rango_ordenados):
+
+            if goles_puntos_equipo_local_ultimos_3 >= 3 and goles_puntos_equipo_visitante_ultimos_3 >=3 and goles_puntos_local_siendo_local_ultimos_3 >=3 and goles_puntos_visitante_siendo_visitante_ultimos_3 >=3:
+                    continue
+            else:
+                if p.equipo_local == local and p.equipo_visitante == visitante:
+                    pass
+
+                elif p.equipo_local == local and p.equipo_visitante != visitante:
+                    if goles_puntos_local_siendo_local_ultimos_3 <3  and goles_puntos_equipo_local_ultimos_3 <3:
+                        goles_ultimos_3_partidos_local_siendo_local = goles_ultimos_3_partidos_local_siendo_local + p.goles_local
+                        puntos_ultimos_3_partidos_local_siendo_local = puntos_ultimos_3_partidos_local_siendo_local + p.puntos_local
+                        goles_en_contra_ultimos_3_partidos_local_siendo_local = goles_en_contra_ultimos_3_partidos_local_siendo_local + p.goles_visitante
+
+                        goles_ultimos_3_partidos_equipo_local = goles_ultimos_3_partidos_equipo_local + p.goles_local
+                        puntos_ultimos_3_partidos_equipo_local = puntos_ultimos_3_partidos_equipo_local + p.puntos_local
+                        goles_en_contra_ultimos_3_partidos_equipo_local = goles_en_contra_ultimos_3_partidos_equipo_local + p.goles_visitante
+
+                        goles_puntos_local_siendo_local_ultimos_3 = goles_puntos_local_siendo_local_ultimos_3+1
+                        goles_puntos_equipo_local_ultimos_3 = goles_puntos_equipo_local_ultimos_3 +1
+
+                    elif goles_puntos_local_siendo_local_ultimos_3 <3  and goles_puntos_equipo_local_ultimos_3 >=3:
+                        goles_ultimos_3_partidos_local_siendo_local = goles_ultimos_3_partidos_local_siendo_local + p.goles_local
+                        puntos_ultimos_3_partidos_local_siendo_local = puntos_ultimos_3_partidos_local_siendo_local + p.puntos_local
+                        goles_en_contra_ultimos_3_partidos_local_siendo_local = goles_en_contra_ultimos_3_partidos_local_siendo_local + p.goles_visitante
+                        goles_puntos_local_siendo_local_ultimos_3 = goles_puntos_local_siendo_local_ultimos_3+1
+
+                    elif goles_puntos_local_siendo_local_ultimos_3 >=3  and goles_puntos_equipo_local_ultimos_3 <3:
+                        goles_ultimos_3_partidos_equipo_local = goles_ultimos_3_partidos_equipo_local + p.goles_local
+                        puntos_ultimos_3_partidos_equipo_local = puntos_ultimos_3_partidos_equipo_local + p.puntos_local
+                        goles_en_contra__ultimos_3_partidos_equipo_local = goles_en_contra__ultimos_3_partidos_equipo_local + p.goles_visitante
+
+                        goles_puntos_equipo_local_ultimos_3 = goles_puntos_equipo_local_ultimos_3 +1
+                    else:
+                        continue
+
+                elif p.equipo_local != local and p.equipo_visitante == visitante:
+                    if goles_puntos_visitante_siendo_visitante_ultimos_3 <3 and goles_puntos_equipo_visitante_ultimos_3 <3:
+                        goles_ultimos_3_partidos_visitante_siendo_visitante = goles_ultimos_3_partidos_visitante_siendo_visitante + p.goles_visitante
+                        puntos_ultimos_3_partidos_visitante_siendo_visitante = puntos_ultimos_3_partidos_visitante_siendo_visitante + p.puntos_visitante
+                        goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante + p.goles_local
+
+                        goles_ultimos_3_partidos_equipo_visitante = goles_ultimos_3_partidos_equipo_visitante + p.goles_visitante
+                        puntos_ultimos_3_partidos_equipo_visitante = puntos_ultimos_3_partidos_equipo_visitante + p.puntos_visitante
+                        goles_en_contra_ultimos_3_partidos_equipo_visitante = goles_en_contra_ultimos_3_partidos_equipo_visitante + p.goles_local
+                                
+                        goles_puntos_visitante_siendo_visitante_ultimos_3 = goles_puntos_visitante_siendo_visitante_ultimos_3+1
+                        goles_puntos_equipo_visitante_ultimos_3 = goles_puntos_equipo_visitante_ultimos_3+1
+
+                    elif goles_puntos_visitante_siendo_visitante_ultimos_3 <3 and goles_puntos_equipo_visitante_ultimos_3 >=3:
+                        goles_ultimos_3_partidos_visitante_siendo_visitante = goles_ultimos_3_partidos_visitante_siendo_visitante + p.goles_visitante
+                        puntos_ultimos_3_partidos_visitante_siendo_visitante = puntos_ultimos_3_partidos_visitante_siendo_visitante + p.puntos_visitante
+                        goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante + p.goles_local
+                        goles_puntos_visitante_siendo_visitante_ultimos_3 = goles_puntos_visitante_siendo_visitante_ultimos_3+1
+                            
+                    elif goles_puntos_visitante_siendo_visitante_ultimos_3 >=3 and goles_puntos_equipo_visitante_ultimos_3 <3:
+                        goles_ultimos_3_partidos_equipo_visitante = goles_ultimos_3_partidos_equipo_visitante + p.goles_visitante
+                        puntos_ultimos_3_partidos_equipo_visitante = puntos_ultimos_3_partidos_equipo_visitante + p.puntos_visitante
+                        goles_en_contra_ultimos_3_partidos_equipo_visitante = goles_en_contra_ultimos_3_partidos_equipo_visitante + p.goles_local
+                            
+                        goles_puntos_equipo_visitante_ultimos_3 = goles_puntos_equipo_visitante_ultimos_3 + 1
+                    else:
+                        continue
+
+                elif local == p.equipo_visitante:
+                    if goles_puntos_equipo_local_ultimos_3 < 3:
+                        goles_ultimos_3_partidos_equipo_local = goles_ultimos_3_partidos_equipo_local + p.goles_visitante
+                        puntos_ultimos_3_partidos_equipo_local = puntos_ultimos_3_partidos_equipo_local + p.puntos_visitante
+                        goles_en_contra_ultimos_3_partidos_equipo_local = goles_en_contra_ultimos_3_partidos_equipo_local + p.goles_local
+
+                        goles_puntos_equipo_local_ultimos_3 = goles_puntos_equipo_local_ultimos_3 +1
+                    else:
+                        continue
+                elif visitante == p.equipo_local:
+                    if goles_puntos_equipo_visitante_ultimos_3 < 3:
+                        goles_ultimos_3_partidos_equipo_visitante = goles_ultimos_3_partidos_equipo_visitante + p.goles_local
+                        puntos_ultimos_3_partidos_equipo_visitante = puntos_ultimos_3_partidos_equipo_visitante + p.puntos_local
+                        goles_en_contra_ultimos_3_partidos_equipo_visitante = goles_en_contra_ultimos_3_partidos_equipo_visitante + p.goles_visitante
+                            
+                        goles_puntos_equipo_visitante_ultimos_3 = goles_puntos_equipo_visitante_ultimos_3 + 1
+                    else:
+                        continue
+                else:
+                    continue
+                
+
+        if goles_puntos_equipo_local_ultimos_3 < 3 and goles_puntos_equipo_visitante_ultimos_3 <3 and goles_puntos_local_siendo_local_ultimos_3 <3 and goles_puntos_visitante_siendo_visitante_ultimos_3 <3:
+            partido_actualizar.falta = True
+            partido_actualizar.save()
+        else:
+            partido_actualizar.goles_ultimos_3_partidos_local_siendo_local = goles_ultimos_3_partidos_local_siendo_local
+            partido_actualizar.goles_ultimos_3_partidos_equipo_local = goles_ultimos_3_partidos_equipo_local
+            partido_actualizar.goles_ultimos_3_partidos_visitante_siendo_visitante = goles_ultimos_3_partidos_visitante_siendo_visitante
+            partido_actualizar.goles_ultimos_3_partidos_equipo_visitante = goles_ultimos_3_partidos_equipo_visitante
+
+            partido_actualizar.puntos_ultimos_3_partidos_local_siendo_local = puntos_ultimos_3_partidos_local_siendo_local
+            partido_actualizar.puntos_ultimos_3_partidos_equipo_local = puntos_ultimos_3_partidos_equipo_local
+            partido_actualizar.puntos_ultimos_3_partidos_visitante_siendo_visitante = puntos_ultimos_3_partidos_visitante_siendo_visitante
+            partido_actualizar.puntos_ultimos_3_partidos_equipo_visitante = puntos_ultimos_3_partidos_equipo_visitante
+
+            partido_actualizar.goles_en_contra_ultimos_3_partidos_local_siendo_local = goles_en_contra_ultimos_3_partidos_local_siendo_local
+            partido_actualizar.goles_en_contra_ultimos_3_partidos_equipo_local = goles_en_contra_ultimos_3_partidos_equipo_local
+            partido_actualizar.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante
+            partido_actualizar.goles_en_contra_ultimos_3_partidos_equipo_visitante = goles_en_contra_ultimos_3_partidos_equipo_visitante
+            partido_actualizar.save()
+                
+
+
+    
         

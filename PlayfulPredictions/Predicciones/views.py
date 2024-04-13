@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .populateDB import populateDatabaseEntrenamiento, populateDatabaseReal, populateDatabaseSinPredecir
-from .models import PartidosEntrenamiento, PartidoReal, PartidoSinPredecir
+from .populateDB import populateDatabaseEntrenamiento, populateDatabaseSinPredecir
+from .models import PartidosEntrenamiento, PartidoSinPredecir, PartidosPredichos
 from django.http import HttpResponse
 import csv
 import codecs
@@ -14,14 +14,9 @@ import numpy as np
 from tabulate import tabulate
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import RandomForestClassifier
-from scipy.stats import randint
 from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import classification_report, roc_auc_score, roc_curve, precision_recall_curve, auc
-from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import StratifiedKFold
-from imblearn.over_sampling import SMOTE
+from sklearn.metrics import classification_report
 
 # Create your views here.
 def cargar_Datos_Entrenamiento(request):
@@ -33,14 +28,6 @@ def cargar_Datos_Entrenamiento(request):
         mensaje = "No funciona"
     return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": mensaje})
 
-def cargar_Datos_Real(request):
-    if populateDatabaseReal():
-        populateDatabaseReal()
-        partidos_real = PartidoReal.objects.all().count()
-        mensaje = "Se ha creado %d partidos real" % (partidos_real)
-    else: 
-        mensaje = "No funciona"
-    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": mensaje})
 
 def cargar_Datos_Sin_Predecir(request):
     if populateDatabaseSinPredecir():
@@ -752,5 +739,142 @@ def entrenamiento_Modelo_Gradient_Boosting_Classifier_Para_Datos_3_Y_5_Ultimos_P
 
     return HttpResponse("Todo Ok")
 
+def obtencion_valores_para_predecir_partido_sin_predecir():
+    partidos = PartidoSinPredecir.objects.all()
+    goles_ultimos_5_partidos_equipos_locales = [partido.goles_ultimos_5_partidos_equipo_local for partido in partidos]
+    goles_ultimos_5_partidos_equipos_visitante = [partido.goles_ultimos_5_partidos_equipo_visitante for partido in partidos]
+    puntos_ultimos_5_partidos_equipos_locales = [partido.puntos_ultimos_5_partidos_equipo_local for partido in partidos]
+    puntos_ultimos_5_partidos_equipos_visitantes = [partido.puntos_ultimos_5_partidos_equipo_visitante for partido in partidos]
+    goles_ultimos_5_partidos_locales_siendo_local = [partido.goles_ultimos_5_partidos_local_siendo_local for partido in partidos]
+    goles_ultimos_5_partidos_visitantes_siendo_visitante = [partido.goles_ultimos_5_partidos_visitante_siendo_visitante for partido in partidos]
+    puntos_ultimos_5_partidos_locales_siendo_local = [partido.puntos_ultimos_5_partidos_local_siendo_local for partido in partidos]
+    puntos_ultimos_5_partidos_visitante_siendo_visitantes = [partido.puntos_ultimos_5_partidos_visitante_siendo_visitante for partido in partidos]
+    goles_en_contra_ultimos_5_partidos_equipo_locales = [partido.goles_en_contra_ultimos_5_partidos_equipo_local for partido in partidos]
+    goles_en_contra_ultimos_5_partidos_equipo_visitantes = [partido.goles_en_contra_ultimos_5_partidos_equipo_visitante for partido in partidos]
+    goles_en_contra_ultimos_5_partidos_locales_siendo_local = [partido.goles_en_contra_ultimos_5_partidos_local_siendo_local for partido in partidos]
+    goles_en_contra_ultimos_5_partidos_visitantees_siendo_visitante = [partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante for partido in partidos]
+    
 
+    goles_ultimos_3_partidos_equipos_locales = [partido.goles_ultimos_3_partidos_equipo_local for partido in partidos]
+    goles_ultimos_3_partidos_equipos_visitante = [partido.goles_ultimos_3_partidos_equipo_visitante for partido in partidos]
+    puntos_ultimos_3_partidos_equipos_locales = [partido.puntos_ultimos_3_partidos_equipo_local for partido in partidos]
+    puntos_ultimos_3_partidos_equipos_visitantes = [partido.puntos_ultimos_3_partidos_equipo_visitante for partido in partidos]
+    goles_ultimos_3_partidos_locales_siendo_local = [partido.goles_ultimos_3_partidos_local_siendo_local for partido in partidos]
+    goles_ultimos_3_partidos_visitantes_siendo_visitante = [partido.goles_ultimos_3_partidos_visitante_siendo_visitante for partido in partidos]
+    puntos_ultimos_3_partidos_locales_siendo_local = [partido.puntos_ultimos_3_partidos_local_siendo_local for partido in partidos]
+    puntos_ultimos_3_partidos_visitante_siendo_visitantes = [partido.puntos_ultimos_3_partidos_visitante_siendo_visitante for partido in partidos]
+    goles_en_contra_ultimos_3_partidos_equipo_locales = [partido.goles_en_contra_ultimos_3_partidos_equipo_local for partido in partidos]
+    goles_en_contra_ultimos_3_partidos_equipo_visitantes = [partido.goles_en_contra_ultimos_3_partidos_equipo_visitante for partido in partidos]
+    goles_en_contra_ultimos_3_partidos_locales_siendo_local = [partido.goles_en_contra_ultimos_3_partidos_local_siendo_local for partido in partidos]
+    goles_en_contra_ultimos_3_partidos_visitantees_siendo_visitante = [partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante for partido in partidos]
+    
+
+    XP = np.column_stack((
+                        goles_ultimos_5_partidos_equipos_locales, 
+                        goles_ultimos_5_partidos_equipos_visitante,
+                        puntos_ultimos_5_partidos_equipos_locales,
+                        puntos_ultimos_5_partidos_equipos_visitantes,
+                        goles_en_contra_ultimos_5_partidos_equipo_locales,
+                        goles_en_contra_ultimos_5_partidos_equipo_visitantes,
+                        goles_ultimos_5_partidos_locales_siendo_local,
+                        goles_ultimos_5_partidos_visitantes_siendo_visitante,
+                        puntos_ultimos_5_partidos_locales_siendo_local,
+                        puntos_ultimos_5_partidos_visitante_siendo_visitantes,
+                        goles_en_contra_ultimos_5_partidos_locales_siendo_local,
+                        goles_en_contra_ultimos_5_partidos_visitantees_siendo_visitante,
+                        goles_ultimos_3_partidos_equipos_locales, 
+                        goles_ultimos_3_partidos_equipos_visitante,
+                        puntos_ultimos_3_partidos_equipos_locales,
+                        puntos_ultimos_3_partidos_equipos_visitantes,
+                        goles_en_contra_ultimos_3_partidos_equipo_locales,
+                        goles_en_contra_ultimos_3_partidos_equipo_visitantes,
+                        goles_ultimos_3_partidos_locales_siendo_local,
+                        goles_ultimos_3_partidos_visitantes_siendo_visitante,
+                        puntos_ultimos_3_partidos_locales_siendo_local,
+                        puntos_ultimos_3_partidos_visitante_siendo_visitantes,
+                        goles_en_contra_ultimos_3_partidos_locales_siendo_local,
+                        goles_en_contra_ultimos_3_partidos_visitantees_siendo_visitante))
+    return XP
+    
+
+
+def prediccion_partidos_sin_predecir(request):
+    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Y_5_Ultimos_Partidos()
+    XP = obtencion_valores_para_predecir_partido_sin_predecir()
+    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+    model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
+    model_gbc.fit(X_train, winner_train),
+    predicciones = model_gbc.predict(XP)
+    predicciones_modificadas = ['X' if pred == '0' else pred for pred in predicciones]
+    partidos = PartidoSinPredecir.objects.all()
+    i = 0
+    for partido in partidos:
+        liga = partido.liga
+        jornada = partido.jornada
+        temporada = partido.temporada
+        equipo_local = partido.equipo_local
+        equipo_visitante = partido.equipo_visitante
+        goles_ultimos_5_partidos_equipo_local = partido.goles_ultimos_5_partidos_equipo_local
+        goles_ultimos_5_partidos_equipo_visitante = partido.goles_ultimos_5_partidos_equipo_visitante
+        puntos_ultimos_5_partidos_equipo_local = partido.puntos_ultimos_5_partidos_equipo_local
+        puntos_ultimos_5_partidos_equipo_visitante = partido.puntos_ultimos_5_partidos_equipo_visitante
+        goles_ultimos_5_partidos_local_siendo_local = partido.goles_ultimos_5_partidos_local_siendo_local
+        goles_ultimos_5_partidos_visitante_siendo_visitante = partido.goles_ultimos_5_partidos_visitante_siendo_visitante
+        puntos_ultimos_5_partidos_local_siendo_local = partido.puntos_ultimos_5_partidos_local_siendo_local
+        puntos_ultimos_5_partidos_visitante_siendo_visitante = partido.puntos_ultimos_5_partidos_visitante_siendo_visitante
+        goles_en_contra_ultimos_5_partidos_equipo_local = partido.goles_en_contra_ultimos_5_partidos_equipo_local
+        goles_en_contra_ultimos_5_partidos_equipo_visitante = partido.goles_en_contra_ultimos_5_partidos_equipo_visitante
+        goles_en_contra_ultimos_5_partidos_local_siendo_local = partido.goles_en_contra_ultimos_5_partidos_local_siendo_local
+        goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante
+        goles_ultimos_3_partidos_equipo_local = partido.goles_ultimos_3_partidos_equipo_local
+        goles_ultimos_3_partidos_equipo_visitante = partido.goles_ultimos_3_partidos_equipo_visitante
+        puntos_ultimos_3_partidos_equipo_local = partido.puntos_ultimos_3_partidos_equipo_local
+        puntos_ultimos_3_partidos_equipo_visitante = partido.puntos_ultimos_3_partidos_equipo_visitante
+        goles_ultimos_3_partidos_local_siendo_local = partido.goles_ultimos_3_partidos_local_siendo_local
+        goles_ultimos_3_partidos_visitante_siendo_visitante = partido.goles_ultimos_3_partidos_visitante_siendo_visitante
+        puntos_ultimos_3_partidos_local_siendo_local = partido.puntos_ultimos_3_partidos_local_siendo_local
+        puntos_ultimos_3_partidos_visitante_siendo_visitante = partido.puntos_ultimos_3_partidos_visitante_siendo_visitante
+        goles_en_contra_ultimos_3_partidos_equipo_local = partido.goles_en_contra_ultimos_3_partidos_equipo_local
+        goles_en_contra_ultimos_3_partidos_equipo_visitante = partido.goles_en_contra_ultimos_3_partidos_equipo_visitante
+        goles_en_contra_ultimos_3_partidos_local_siendo_local = partido.goles_en_contra_ultimos_3_partidos_local_siendo_local
+        goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante
+        winner = predicciones_modificadas[i]
+
+        PartidosPredichos.objects.create(
+                                    id=i,
+                                    liga=liga,
+                                    jornada=jornada,
+                                    temporada=temporada, 
+                                    equipo_local = equipo_local, 
+                                    equipo_visitante=equipo_visitante,
+                                    goles_ultimos_5_partidos_equipo_local =  goles_ultimos_5_partidos_equipo_local,
+                                    goles_ultimos_5_partidos_equipo_visitante = goles_ultimos_5_partidos_equipo_visitante, 
+                                    puntos_ultimos_5_partidos_equipo_local = puntos_ultimos_5_partidos_equipo_local, 
+                                    puntos_ultimos_5_partidos_equipo_visitante=puntos_ultimos_5_partidos_equipo_visitante, 
+                                    goles_ultimos_5_partidos_local_siendo_local=goles_ultimos_5_partidos_local_siendo_local, 
+                                    goles_ultimos_5_partidos_visitante_siendo_visitante = goles_ultimos_5_partidos_visitante_siendo_visitante,
+                                    puntos_ultimos_5_partidos_local_siendo_local = puntos_ultimos_5_partidos_local_siendo_local,
+                                    puntos_ultimos_5_partidos_visitante_siendo_visitante = puntos_ultimos_5_partidos_visitante_siendo_visitante,
+                                    goles_en_contra_ultimos_5_partidos_equipo_local = goles_en_contra_ultimos_5_partidos_equipo_local,
+                                    goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra_ultimos_5_partidos_equipo_visitante,
+                                    goles_en_contra_ultimos_5_partidos_local_siendo_local = goles_en_contra_ultimos_5_partidos_local_siendo_local,
+                                    goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante,
+
+                                    goles_ultimos_3_partidos_equipo_local =  goles_ultimos_3_partidos_equipo_local,
+                                    goles_ultimos_3_partidos_equipo_visitante = goles_ultimos_3_partidos_equipo_visitante, 
+                                    puntos_ultimos_3_partidos_equipo_local = puntos_ultimos_3_partidos_equipo_local, 
+                                    puntos_ultimos_3_partidos_equipo_visitante=puntos_ultimos_3_partidos_equipo_visitante, 
+                                    goles_ultimos_3_partidos_local_siendo_local=goles_ultimos_3_partidos_local_siendo_local, 
+                                    goles_ultimos_3_partidos_visitante_siendo_visitante = goles_ultimos_3_partidos_visitante_siendo_visitante,
+                                    puntos_ultimos_3_partidos_local_siendo_local = puntos_ultimos_3_partidos_local_siendo_local,
+                                    puntos_ultimos_3_partidos_visitante_siendo_visitante = puntos_ultimos_3_partidos_visitante_siendo_visitante,
+                                    goles_en_contra_ultimos_3_partidos_equipo_local = goles_en_contra_ultimos_3_partidos_equipo_local,
+                                    goles_en_contra_ultimos_3_partidos_equipo_visitante = goles_en_contra_ultimos_3_partidos_equipo_visitante,
+                                    goles_en_contra_ultimos_3_partidos_local_siendo_local = goles_en_contra_ultimos_3_partidos_local_siendo_local,
+                                    goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante,
+                                    winner = winner)
+        i = i+1
+        
+
+    return HttpResponse("Partidos de Predichos Cargados")
 
