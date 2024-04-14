@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .populateDB import populateDatabaseEntrenamiento, populateDatabaseSinPredecir
 from .models import PartidosEntrenamiento, PartidoSinPredecir, PartidosPredichos
 from django.http import HttpResponse
@@ -17,6 +17,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
+from django.core.paginator import Paginator, PageNotAnInteger
+from django.http import Http404
 
 # Create your views here.
 def cargar_Datos_Entrenamiento(request):
@@ -799,6 +801,7 @@ def obtencion_valores_para_predecir_partido_sin_predecir():
 
 
 def prediccion_partidos_sin_predecir(request):
+    PartidosPredichos.objects.all().delete()
     X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Y_5_Ultimos_Partidos()
     XP = obtencion_valores_para_predecir_partido_sin_predecir()
     X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
@@ -877,4 +880,16 @@ def prediccion_partidos_sin_predecir(request):
         
 
     return HttpResponse("Partidos de Predichos Cargados")
+
+def mostrar_partidos_predichos(request):
+    partidos = PartidosPredichos.objects.all()
+    page = request.GET.get('page', 1)  # Obtener el número de página de la solicitud GET
+        
+    try:
+        paginator = Paginator(partidos, 10)  # 6 predicciones por página
+        partidos = paginator.page(page)
+    except PageNotAnInteger:
+        raise Http404
+        
+    return render(request, 'predicciones/mostrarPredicciones.html', {"entity": partidos, "paginator":paginator})
 

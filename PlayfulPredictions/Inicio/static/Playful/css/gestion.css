@@ -161,10 +161,11 @@
 }
 
 .pgina-de-inicio .frame-3 {
-  width: 1431px;
+  width: 1500px;
   height: 133px;
-  top: 130px;
+  bottom: 750px;
   left: 0;
+  right: 0;
   position: absolute;
   background-color: var(--azul);
 }
@@ -287,6 +288,18 @@
 
 
 }
+
+.pgina-de-inicio .contenedorFormularioE{
+
+  background-color: #1935c6;
+  width: 50%;
+  margin: 100px auto;
+  border-radius: 5px;
+  padding: 1px 0px;
+
+
+
+}
 .pgina-de-inicio .p3 {
   position: absolute;
   top: 240px;
@@ -301,16 +314,35 @@
   white-space: nowrap;
 }
 
-.pgina-de-inicio .contenedorFormularioRegistro{
+.pgina-de-inicio .contenedorFormularioPerfil{
 
   background-color: #1935c6;
   width: 50%;
-  margin: 10px auto;
+  margin: 20px auto;
   border-radius: 5px;
   padding: 1px 0px;
 
 
 
+}
+.pgina-de-inicio .boRE {
+  width: 1500px;
+  height: 157px;
+  margin-top: calc(100% - 550px);
+  left: 0;
+  right: 0;
+  position: relative;
+  background-color: var(--azul);
+}
+
+.pgina-de-inicio .boE {
+  width: 1500px;
+  height: 157px;
+  margin-top: calc(100% - 550px);
+  left: 0;
+  right: 0;
+  position: relative;
+  background-color: var(--azul);
 }
 .pgina-de-inicio .contenedorFormularioInicioSesion{
 
@@ -322,6 +354,15 @@
 
 
 
+}
+.pgina-de-inicio .boIni {
+  width: 1500px;
+  height: 157px;
+  margin-top: calc(100% - 550px);
+  left: 0;
+  right: 0;
+  position: relative;
+  background-color: var(--azul);
 }
 .pgina-de-inicio .overlap-groupRegister {
   position: absolute;
@@ -414,6 +455,7 @@
 
 }
 
+
 .pgina-de-inicio .table {
   border-collapse: collapse;
   width: 100%;
@@ -428,8 +470,14 @@
 .pgina-de-inicio .th,
 .pgina-de-inicio td {
   border: 1px solid white;
-  padding: 8px;
-  text-align: left;
+  padding: 2px;
+  text-align: center;
+}
+.pgina-de-inicio .td2 {
+  border: 1px solid white;
+  padding: 2px;
+  text-align: center;
+  color: #000;
 }
 
 .pgina-de-inicio .th {
@@ -442,10 +490,29 @@
 }
 
 .pgina-de-inicio .bo {
-  width: 1440px;
+  width: 1500px;
   height: 157px;
-  margin-top: calc(100% - 500px); /* La altura del contenedor menos la altura del elemento .bo */
+  margin-top: calc(100% - 500px);
   left: 0;
+  right: 0;
+  position: relative;
+  background-color: var(--azul);
+}
+.pgina-de-inicio .contenedorListaPredicciones {
+  background-color: rgb(255, 255, 255);
+  width: 50%;
+  margin-top: 400px;
+  margin-bottom: 0px;
+  border-radius: 5px;
+  padding: 10px 0; 
+}
+
+.pgina-de-inicio .boPre {
+  width: 1500px;
+  height: 157px;
+  margin-top: calc(100% - 1300px);
+  left: 0;
+  right: 0;
   position: relative;
   background-color: var(--azul);
 }
@@ -454,6 +521,20 @@
   position: absolute;
   top: 240px;
   left: 560px;
+  font-family: "Sora-Regular", Helvetica;
+  font-weight: 400;
+  color: #000000;
+  font-size: 39px;
+  text-align: center;
+  letter-spacing: -0.78px;
+  line-height: 46.8px;
+  white-space: nowrap;
+}
+
+.pgina-de-inicio .pred {
+  position: absolute;
+  top: 240px;
+  left: 620px;
   font-family: "Sora-Regular", Helvetica;
   font-weight: 400;
   color: #000000;
@@ -506,4 +587,24 @@
   .d-sm-block {
     display: block !important;
   }
+}
+
+.pgina-de-inicio .contenedorListaPredicciones {
+  background-color: rgb(255, 255, 255);
+  width: 50%;
+  margin-top: 350px;
+  margin-bottom: 0px;
+  margin-left: 400px;
+  border-radius: 5px;
+  padding: 10px 0; 
+}
+
+.pgina-de-inicio .boPre {
+  width: 1500px;
+  height: 157px;
+  margin-top: calc(100% - 1400px);
+  left: 0;
+  right: 0;
+  position: relative;
+  background-color: var(--azul);
 }

@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserForm, UserFormWithoutPassword, UserPasswordForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from .models import CustomUser
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.paginator import Paginator, PageNotAnInteger
 from django.http import Http404
 # Create your views here.
 

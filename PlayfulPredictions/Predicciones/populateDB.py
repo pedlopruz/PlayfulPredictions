@@ -25,7 +25,8 @@ def populateDatabaseSinPredecir():
     esp2 = cargarPartidoRealEsp2()
     pr = cargarPartidoSinPredecir_Ultimos_5_Partidos()
     pr2 = cargarPartidoSinPredecir_Ultimos_3_Partidos()
-    return (le,esp2,pr,pr2)
+    el = PartidoSinPredecir.objects.last().delete()
+    return (le,esp2,pr,pr2, el)
 
 def cargarPartidoEntrenamiento():
     pe = None

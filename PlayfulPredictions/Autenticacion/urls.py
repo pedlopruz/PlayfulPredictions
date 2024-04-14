@@ -10,7 +10,6 @@ urlpatterns = [
     path('actualizarContraseña/', actualizar_Contraseña, name="pass"),
     path('gestionUsuarios/', listar_Usuarios_Admin, name="user_admin"),
     path('eliminarusuario/<int:user_id>/', eliminar_Usuarios_Admin, name="user_delete"),
-   # path('busqueda_usuarios/', buscar_usuarios),
     path('gestionUsuarios/buscar/', buscar),
     
 ]

@@ -5,7 +5,7 @@
 
 {% block content %}
   <div class="overlap-groupRegister">
-  <div class="contenedorFormulario">
+  <div class="contenedorFormularioE">
     <h1 style="color: aliceblue; margin-left:70px; margin-right:auto;">¿Estás seguro de que deseas eliminar al usuario "{{ usuarios.username }}"?</h1>
   <form method="post">
     {% csrf_token %}
@@ -14,4 +14,14 @@
   <br>
   </div>
   </div>
+  <div class="boE">
+    <p class="futplayful-2">
+    FutPlayful Predictions no es una web para fomentar el uso de apuestas, sino más bien consienciar acerca uso
+    de los juegos de azar y ejemplificando que el fútbol como deporte no es una ciencia exacta, en la que todo
+    es posible. <br />
+    <br />Si al utilizar nuestos datos decide aplicarlos en alguna apuesta o juego de azar recuerde jugar simpre
+    con responsabilidad&nbsp;&nbsp;<br />y solo si eres mayor de edad
+    </p>
+    <img class="element" src="{% static 'Playful/img/18.png' %}" />
+</div>
 {% endblock %}  
