@@ -4,7 +4,40 @@
 {% load static %}
 
 {% block content %}
+
 <p class="pred">Predicciones</p>
+<div class="contenedorFormularioFiltro">
+  <form method="post" action="" style="color: aliceblue;">
+    {% csrf_token %}
+    <div style="width:75%; margin:auto;">
+      <h2 style="color: aliceblue;margin-left: 250px;">Filtrar Partidos</h2><br>
+      <div style="display: flex; flex-wrap: wrap;">
+        <div style="margin-right: 20px;">
+          <label for="id_liga" style="color: aliceblue;">Liga:</label>
+          {{ formulario.liga }}
+        </div>
+        <div style="margin-right: 20px;">
+          <label for="id_jornada" style="color: aliceblue;">Jornada:</label>
+          {{ formulario.jornada }}
+        </div>
+        <div style="margin-right: 20px;">
+          <label for="id_local" style="color: aliceblue;">Equipo Local:</label>
+          {{ formulario.local }}
+        </div>
+        <div style="margin-right: 20px;">
+          <label for="id_visitante" style="color: aliceblue;">Equipo Visitante:</label>
+          {{ formulario.visitante }}
+        </div>
+        <div style="margin-right: 20px;">
+          <label for="id_winner" style="color: aliceblue;">Ganador:</label>
+          {{ formulario.winner }}
+        </div>
+        <!-- Agrega más campos aquí si es necesario -->
+      </div>
+      <button type="submit" class="btn btn-success" style="margin-top: 20px; background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white;">Buscar</button>
+    </div>
+  </form>
+</div>
 <div class="contenedorListaPredicciones">
     <table class ="table">
         <thead>

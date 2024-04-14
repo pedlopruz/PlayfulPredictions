@@ -592,11 +592,29 @@
 .pgina-de-inicio .contenedorListaPredicciones {
   background-color: rgb(255, 255, 255);
   width: 50%;
-  margin-top: 350px;
+  margin-top: 0px;
   margin-bottom: 0px;
-  margin-left: 400px;
+  margin-left: 200px;
   border-radius: 5px;
   padding: 10px 0; 
+}
+
+.pgina-de-inicio .contenedorListaPrediccionesFiltradas {
+  background-color: rgb(255, 255, 255);
+  width: 50%;
+  margin-top: 350px;
+  margin-bottom: 0px;
+  margin-left: 200px;
+  border-radius: 5px;
+  padding: 10px 0; 
+}
+.pgina-de-inicio .contenedorFormularioFiltro{
+  background-color: #1935c6;
+  margin-top: 350px;
+  margin-left: 200px;
+  border-radius: 5px;
+  padding: 10px; /* Aumentamos el padding para separar los elementos del borde */
+  display: inline-block; /* Cambiamos a display inline-block para que se ajuste al contenido */
 }
 
 .pgina-de-inicio .boPre {
@@ -607,4 +625,5 @@
   right: 0;
   position: relative;
   background-color: var(--azul);
+
 }

@@ -19,6 +19,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.http import Http404
+from .forms import formulario_prediccion
+from django.urls import reverse
 
 # Create your views here.
 def cargar_Datos_Entrenamiento(request):
@@ -881,15 +883,164 @@ def prediccion_partidos_sin_predecir(request):
 
     return HttpResponse("Partidos de Predichos Cargados")
 
-def mostrar_partidos_predichos(request):
-    partidos = PartidosPredichos.objects.all()
-    page = request.GET.get('page', 1)  # Obtener el número de página de la solicitud GET
-        
-    try:
-        paginator = Paginator(partidos, 10)  # 6 predicciones por página
-        partidos = paginator.page(page)
-    except PageNotAnInteger:
-        raise Http404
-        
-    return render(request, 'predicciones/mostrarPredicciones.html', {"entity": partidos, "paginator":paginator})
 
+
+def mostrar_predicciones(request):
+    partidos = None
+    paginator = None
+    if request.method =='POST':
+        formulario = formulario_prediccion(request.POST)
+        if formulario.is_valid():
+            liga = formulario.cleaned_data["liga"]
+            jornada =formulario.cleaned_data["jornada"]
+            local = formulario.cleaned_data["local"]
+            visitante = formulario.cleaned_data["visitante"]
+            winner = formulario.cleaned_data["winner"]
+
+
+
+            if liga and local and visitante:
+                return redirect(reverse('Filtrar_Predicciones') + f'?liga={liga}&local={local}&visitante={visitante}')
+            elif liga and winner and jornada:
+                return redirect(reverse('Filtrar_Predicciones') + f'?liga={liga}&winner={winner}&jornada={jornada}')
+            elif liga and winner and  local:
+                return redirect(reverse('Filtrar_Predicciones') + f'?liga={liga}&winner={winner}&local={local}')
+            elif liga and winner and visitante:
+                return redirect(reverse('Filtrar_Predicciones') + f'?liga={liga}&winner={winner}&visitante={visitante}')
+            elif liga and local:
+                return redirect(reverse('Filtrar_Predicciones') + f'?liga={liga}&local={local}')
+            elif liga and visitante:
+                return redirect(reverse('Filtrar_Predicciones') + f'?liga={liga}&visitante={visitante}')
+            elif liga and jornada:
+                return redirect(reverse('Filtrar_Predicciones') + f'?liga={liga}&jornada={jornada}')
+            elif liga and winner:
+                return redirect(reverse('Filtrar_Predicciones') + f'?liga={liga}&winner={winner}')
+            elif liga:
+                return redirect(reverse('Filtrar_Predicciones') + f'?liga={liga}')
+            
+
+        
+    else:
+        formulario = formulario_prediccion()
+        partidos = PartidosPredichos.objects.all()
+        page = request.GET.get('page', 1)  # Obtener el número de página de la solicitud GET
+        try:
+            paginator = Paginator(partidos, 10)  # 6 predicciones por página
+            partidos = paginator.page(page)
+        except PageNotAnInteger:
+                raise Http404
+
+        return render(request, 'predicciones/mostrarPredicciones.html', {"formulario":formulario, "entity": partidos, "paginator":paginator})
+
+
+def filtrado_predicciones(request):
+    liga = request.GET.get("liga")
+    jornada = request.GET.get("jornada")
+    local = request.GET.get("local")
+    print(local)
+    visitante = request.GET.get("visitante")
+    winner = request.GET.get("winner")
+    if liga is None:
+        liga = None
+    else:
+        liga = liga  
+    if jornada is None:
+        jornada = None
+    else:
+        jornada = jornada
+    if local is None:
+        local = None
+    else:
+        local = local
+    if local is None:
+        local = None
+    else:
+        local = local
+    if visitante is None:
+        visitante = None
+    else:
+        visitante = visitante
+    
+    if jornada is None and liga is not None and visitante is None and local is None and winner is None:
+        partidos = PartidosPredichos.objects.filter(liga = liga)
+        page = request.GET.get('page', 1)  # Obtener el número de página de la solicitud GET
+        
+        try:
+            paginator = Paginator(partidos, 10)  # 6 predicciones por página
+            partidos = paginator.page(page)
+        except PageNotAnInteger:
+            raise Http404
+    elif jornada is not None and liga is not None and visitante is None and local is None and winner is None:
+        partidos = PartidosPredichos.objects.filter(liga = liga, jornada = jornada)
+        page = request.GET.get('page', 1)  # Obtener el número de página de la solicitud GET
+        
+        try:
+            paginator = Paginator(partidos, 10)  # 6 predicciones por página
+            partidos = paginator.page(page)
+        except PageNotAnInteger:
+            raise Http404
+    elif jornada is None and liga is not None and visitante is None and local is not None and winner is None:
+        partidos = PartidosPredichos.objects.filter(liga = liga, equipo_local = local)
+        page = request.GET.get('page', 1)  # Obtener el número de página de la solicitud GET
+        
+        try:
+            paginator = Paginator(partidos, 10)  # 6 predicciones por página
+            partidos = paginator.page(page)
+        except PageNotAnInteger:
+                raise Http404
+    elif jornada is None and liga is not None and visitante is not None and local is None and winner is None:
+        partidos = PartidosPredichos.objects.filter(liga = liga, equipo_visitante = visitante)
+        page = request.GET.get('page', 1)  # Obtener el número de página de la solicitud GET
+        
+        try:
+            paginator = Paginator(partidos, 10)  # 6 predicciones por página
+            partidos = paginator.page(page)
+        except PageNotAnInteger:
+                raise Http404
+    elif jornada is None and liga is not None and visitante is not None and local is not None and winner is None:
+        partidos = PartidosPredichos.objects.filter(liga = liga, equipo_local = local, equipo_visitante = visitante)
+        page = request.GET.get('page', 1)  # Obtener el número de página de la solicitud GET
+        
+        try:
+            paginator = Paginator(partidos, 10)  # 6 predicciones por página
+            partidos = paginator.page(page)
+        except PageNotAnInteger:
+                raise Http404
+    elif jornada is None and liga is not None and visitante is None and local is None and winner is not None:
+        partidos = PartidosPredichos.objects.filter(liga = liga, winner = winner)
+        page = request.GET.get('page', 1)  # Obtener el número de página de la solicitud GET
+        
+        try:
+            paginator = Paginator(partidos, 10)  # 6 predicciones por página
+            partidos = paginator.page(page)
+        except PageNotAnInteger:
+                raise Http404
+    elif jornada is not None and liga is not None and visitante is None and local is None and winner is not None:
+        partidos = PartidosPredichos.objects.filter(liga = liga, jornada = jornada, winner = winner)
+        page = request.GET.get('page', 1)  # Obtener el número de página de la solicitud GET
+        
+        try:
+            paginator = Paginator(partidos, 10)  # 6 predicciones por página
+            partidos = paginator.page(page)
+        except PageNotAnInteger:
+                raise Http404
+    elif jornada is None and liga is not None and visitante is None and local is not None and winner is not None:
+        partidos = PartidosPredichos.objects.filter(liga = liga, equipo_local = local, winner = winner)
+        page = request.GET.get('page', 1)  # Obtener el número de página de la solicitud GET
+        
+        try:
+            paginator = Paginator(partidos, 10)  # 6 predicciones por página
+            partidos = paginator.page(page)
+        except PageNotAnInteger:
+                raise Http404
+        
+    elif jornada is None and liga is not None and visitante is not None and local is None and winner is not None:
+        partidos = PartidosPredichos.objects.filter(liga = liga, equipo_visitante = visitante, winner = winner)
+        page = request.GET.get('page', 1)  # Obtener el número de página de la solicitud GET
+        
+        try:
+            paginator = Paginator(partidos, 10)  # 6 predicciones por página
+            partidos = paginator.page(page)
+        except PageNotAnInteger:
+                raise Http404
+    return render(request, 'predicciones/mostrarPrediccionesFiltradas.html', {"entity": partidos, "paginator":paginator})

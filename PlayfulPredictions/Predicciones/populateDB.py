@@ -468,6 +468,7 @@ def cargarPartidoRealLigaEsp():
         encuentros = s.find("div", class_="recursos-deportivos").find("div", class_= "contenedorCalendarioInt").find_all("div", class_="jornada calendarioInternacional")
         for encuentro in encuentros:
             jornada = encuentro.find("table", class_="jor agendas").find("caption").string.strip()
+            jornada = int(jornada.replace("Jornada", ""))
             partidos = encuentro.find("table", class_="jor agendas").find("tbody").find_all("tr")
             for partido in partidos:
                 equipo_local = partido.find("td", class_="local").find("span").string.strip()
@@ -814,6 +815,7 @@ def cargarPartidoRealEsp2():
         encuentros = s.find("div", class_="recursos-deportivos").find("div", class_= "contenedorCalendarioInt").find_all("div", class_="jornada calendarioInternacional")
         for encuentro in encuentros:
             jornada = encuentro.find("table", class_="jor agendas").find("caption").string.strip()
+            jornada = int(jornada.replace("Jornada", ""))
             partidos = encuentro.find("table", class_="jor agendas").find("tbody").find_all("tr")
             for partido in partidos:
                 equipo_local = partido.find("td", class_="local").find("span").string.strip()

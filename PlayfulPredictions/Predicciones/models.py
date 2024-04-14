@@ -48,7 +48,7 @@ class PartidosEntrenamiento(models.Model):
 class PartidoReal(models.Model):
     id = models.IntegerField(primary_key=True)
     liga = models.CharField(max_length=50)
-    jornada = models.CharField(max_length=50)
+    jornada = models.IntegerField()
     temporada = models.CharField(max_length=50)
     equipo_local = models.CharField(max_length=100)
     equipo_visitante = models.CharField(max_length=100)
@@ -63,7 +63,7 @@ class PartidoReal(models.Model):
 class PartidoSinPredecir(models.Model):
     id = models.IntegerField(primary_key=True)
     liga = models.CharField(max_length=50)
-    jornada = models.CharField(max_length=50)
+    jornada = models.IntegerField()
     temporada = models.CharField(max_length=50)
     equipo_local = models.CharField(max_length=100)
     equipo_visitante = models.CharField(max_length=100)
@@ -99,7 +99,7 @@ class PartidoSinPredecir(models.Model):
 class PartidosPredichos(models.Model):
     id = models.IntegerField(primary_key=True)
     liga = models.CharField(max_length=50)
-    jornada = models.CharField(max_length=50)
+    jornada = models.IntegerField()
     temporada = models.CharField(max_length=50)
     equipo_local = models.CharField(max_length=100)
     equipo_visitante = models.CharField(max_length=100)
