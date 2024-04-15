@@ -29,8 +29,9 @@ urlpatterns = [
    path("predecir/GBC/3_y_5_partidos",entrenamiento_Modelo_Gradient_Boosting_Classifier_Para_Datos_3_Y_5_Ultimos_Partidos),
 
    path("predecir/partidos_sin_predecir", prediccion_partidos_sin_predecir),
-   #path("mostrarPredicciones/", mostrar_partidos_predichos, name = "Partidos_Predichos")
    path("mostrarPredicciones/", mostrar_predicciones, name = "Partidos_Predichos"),
    path("filtrarPredicciones/", filtrado_predicciones, name = "Filtrar_Predicciones"),
+   path("compararEquipos/", comparar_equipos, name = "Comparar_Equipos"),
+
    
 ]

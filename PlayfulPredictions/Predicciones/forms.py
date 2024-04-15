@@ -28,3 +28,13 @@ class formulario_prediccion(forms.Form):
 
         self.fields['local'].choices = choices
         self.fields['visitante'].choices = choices
+
+class formulario_equipos(forms.Form):
+    local = forms.ChoiceField(label="Seleccione un equipo local", choices=[])
+    visitante = forms.ChoiceField(label="Seleccione un equipo visitante", choices=[])
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        equipos_locales = PartidosPredichos.objects.values_list('equipo_local', flat=True).distinct()
+        self.fields['local'].choices = [(equipo_local, equipo_local) for equipo_local in equipos_locales]
+        self.fields['visitante'].choices = [(equipo_local, equipo_local) for equipo_local in equipos_locales]

@@ -21,6 +21,8 @@ from django.core.paginator import Paginator, PageNotAnInteger
 from django.http import Http404
 from .forms import formulario_prediccion
 from django.urls import reverse
+from django.db.models import Q
+from django.db.models import Max, Min
 
 # Create your views here.
 def cargar_Datos_Entrenamiento(request):
@@ -244,6 +246,7 @@ def entrenamiento_Modelo_KNN_Para_Datos_5_Ultimos_Partidos(request):
     conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
     conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
     accuracy = accuracy_score(winner_test, winner_pred)
+    from django.db.models import Q
     
     print(conf_matrix_table)
     print(accuracy)
@@ -1044,3 +1047,168 @@ def filtrado_predicciones(request):
         except PageNotAnInteger:
                 raise Http404
     return render(request, 'predicciones/mostrarPrediccionesFiltradas.html', {"entity": partidos, "paginator":paginator})
+
+
+def comparar_equipos(request):
+    partidos_local_visitante = None
+    existe = True
+    winner = None
+    partidos_cruzados = None
+    ultimos_partidos_partidos_local = None
+    partidos_local_siendo_local = None
+    partidos_visitante_siendo_visitante = None
+    ultimos_partidos_visitante = None
+    local = None
+    visitante = None
+    prediccion = None
+    max_goles_ultimos_5_partidos_equipo_local = None
+    max_goles_ultimos_5_partidos_equipo_visitante = None
+    max_puntos_ultimos_5_partidos_equipo_local = None
+    max_puntos_ultimos_5_partidos_equipo_visitante = None
+    max_goles_ultimos_5_partidos_local_siendo_local =None
+    max_goles_ultimos_5_partidos_visitante_siendo_visitante = None
+    max_puntos_ultimos_5_partidos_local_siendo_local = None
+    max_puntos_ultimos_5_partidos_visitante_siendo_visitante = None
+    min_goles_en_contra_ultimos_5_partidos_equipo_local = None
+    min_goles_en_contra_ultimos_5_partidos_equipo_visitante = None
+    min_goles_en_contra_ultimos_5_partidos_local_siendo_local = None
+    min_goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = None
+                    
+    max_goles_ultimos_3_partidos_equipo_local = None
+    max_goles_ultimos_3_partidos_equipo_visitante = None
+    max_puntos_ultimos_3_partidos_equipo_local = None
+    max_puntos_ultimos_3_partidos_equipo_visitante = None
+    max_goles_ultimos_3_partidos_local_siendo_local = None
+    max_goles_ultimos_3_partidos_visitante_siendo_visitante = None
+    max_puntos_ultimos_3_partidos_local_siendo_local = None
+    max_puntos_ultimos_3_partidos_visitante_siendo_visitante = None
+    min_goles_en_contra_ultimos_3_partidos_equipo_local = None
+    min_goles_en_contra_ultimos_3_partidos_equipo_visitante = None
+    min_goles_en_contra_ultimos_3_partidos_local_siendo_local = None
+    min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = None
+    if request.method =='POST':
+        formulario = formulario_prediccion(request.POST)
+        if formulario.is_valid():
+            local = formulario.cleaned_data["local"]
+            visitante = formulario.cleaned_data["visitante"]
+            if local == visitante:
+                formulario = formulario_prediccion()
+            else:
+                partidos_local_visitante=PartidosEntrenamiento.objects.filter(equipo_local = local, equipo_visitante = visitante).order_by("-id")[:5]
+                partidos_cruzados = PartidosEntrenamiento.objects.filter(Q(equipo_local=local, equipo_visitante=visitante) | Q(equipo_local=visitante, equipo_visitante=local)).order_by("-id")[:5]
+                ultimos_partidos_partidos_local = PartidosEntrenamiento.objects.filter(Q(equipo_local=local) | Q(equipo_visitante=local)).order_by("-id")[:5]
+                partidos_local_siendo_local = PartidosEntrenamiento.objects.filter(equipo_local = local).order_by("-id")[:5]
+                partidos_visitante_siendo_visitante = PartidosEntrenamiento.objects.filter(Q(equipo_visitante=visitante) | Q(equipo_local=visitante)).order_by("-id")[:5]
+                ultimos_partidos_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante = visitante).order_by("-id")[:5]
+
+                prediccion = PartidosPredichos.objects.filter(equipo_local = local, equipo_visitante = visitante)
+                if prediccion.exists():
+                    prediccion = prediccion
+                    existe = True
+                else:
+                    existe = False
+                    max_goles_ultimos_5_partidos_equipo_local = PartidosEntrenamiento.objects.filter(equipo_local=local).aggregate(max_goles_ultimos_5_partidos_equipo_local=Max('goles_ultimos_5_partidos_equipo_local'))['max_goles_ultimos_5_partidos_equipo_local']
+                    max_goles_ultimos_5_partidos_equipo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante=visitante).aggregate(max_goles_ultimos_5_partidos_equipo_visitante=Max('goles_ultimos_5_partidos_equipo_visitante'))['max_goles_ultimos_5_partidos_equipo_visitante']
+                    max_puntos_ultimos_5_partidos_equipo_local = PartidosEntrenamiento.objects.filter(equipo_local=local).aggregate(max_puntos_ultimos_5_partidos_equipo_local=Max('puntos_ultimos_5_partidos_equipo_local'))['max_puntos_ultimos_5_partidos_equipo_local']
+                    max_puntos_ultimos_5_partidos_equipo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante=visitante).aggregate(max_puntos_ultimos_5_partidos_equipo_visitante=Max('puntos_ultimos_5_partidos_equipo_visitante'))['max_puntos_ultimos_5_partidos_equipo_visitante']
+                    max_goles_ultimos_5_partidos_local_siendo_local = PartidosEntrenamiento.objects.filter(equipo_local=local).aggregate(max_goles_ultimos_5_partidos_local_siendo_local=Max('goles_ultimos_5_partidos_local_siendo_local'))['max_goles_ultimos_5_partidos_local_siendo_local']
+                    max_goles_ultimos_5_partidos_visitante_siendo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante=visitante).aggregate(max_goles_ultimos_5_partidos_visitante_siendo_visitante=Max('goles_ultimos_5_partidos_visitante_siendo_visitante'))['max_goles_ultimos_5_partidos_visitante_siendo_visitante']
+                    max_puntos_ultimos_5_partidos_local_siendo_local = PartidosEntrenamiento.objects.filter(equipo_local=local).aggregate(max_puntos_ultimos_5_partidos_local_siendo_local=Max('puntos_ultimos_5_partidos_local_siendo_local'))['max_puntos_ultimos_5_partidos_local_siendo_local']
+                    max_puntos_ultimos_5_partidos_visitante_siendo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante=visitante).aggregate(max_puntos_ultimos_5_partidos_visitante_siendo_visitante=Max('puntos_ultimos_5_partidos_visitante_siendo_visitante'))['max_puntos_ultimos_5_partidos_visitante_siendo_visitante']
+                    min_goles_en_contra_ultimos_5_partidos_equipo_local = PartidosEntrenamiento.objects.filter(equipo_local=local).aggregate(min_goles_en_contra_ultimos_5_partidos_equipo_local=Min('goles_en_contra_ultimos_5_partidos_equipo_local'))['min_goles_en_contra_ultimos_5_partidos_equipo_local']
+                    min_goles_en_contra_ultimos_5_partidos_equipo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante=visitante).aggregate(min_goles_en_contra_ultimos_5_partidos_equipo_visitante=Min('goles_en_contra_ultimos_5_partidos_equipo_visitante'))['min_goles_en_contra_ultimos_5_partidos_equipo_visitante']
+                    min_goles_en_contra_ultimos_5_partidos_local_siendo_local = PartidosEntrenamiento.objects.filter(equipo_local=local).aggregate(min_goles_en_contra_ultimos_5_partidos_local_siendo_local=Min('goles_en_contra_ultimos_5_partidos_local_siendo_local'))['min_goles_en_contra_ultimos_5_partidos_local_siendo_local']
+                    min_goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante=visitante).aggregate(min_goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante=Min('goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante'))['min_goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante']
+                    
+                    max_goles_ultimos_3_partidos_equipo_local = PartidosEntrenamiento.objects.filter(equipo_local=local).aggregate(max_goles_ultimos_3_partidos_equipo_local=Max('goles_ultimos_3_partidos_equipo_local'))['max_goles_ultimos_3_partidos_equipo_local']
+                    max_goles_ultimos_3_partidos_equipo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante=visitante).aggregate(max_goles_ultimos_3_partidos_equipo_visitante=Max('goles_ultimos_3_partidos_equipo_visitante'))['max_goles_ultimos_3_partidos_equipo_visitante']
+                    max_puntos_ultimos_3_partidos_equipo_local = PartidosEntrenamiento.objects.filter(equipo_local=local).aggregate(max_puntos_ultimos_3_partidos_equipo_local=Max('puntos_ultimos_3_partidos_equipo_local'))['max_puntos_ultimos_3_partidos_equipo_local']
+                    max_puntos_ultimos_3_partidos_equipo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante=visitante).aggregate(max_puntos_ultimos_3_partidos_equipo_visitante=Max('puntos_ultimos_3_partidos_equipo_visitante'))['max_puntos_ultimos_3_partidos_equipo_visitante']
+                    max_goles_ultimos_3_partidos_local_siendo_local = PartidosEntrenamiento.objects.filter(equipo_local=local).aggregate(max_goles_ultimos_3_partidos_local_siendo_local=Max('goles_ultimos_3_partidos_local_siendo_local'))['max_goles_ultimos_3_partidos_local_siendo_local']
+                    max_goles_ultimos_3_partidos_visitante_siendo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante=visitante).aggregate(max_goles_ultimos_3_partidos_visitante_siendo_visitante=Max('goles_ultimos_3_partidos_visitante_siendo_visitante'))['max_goles_ultimos_3_partidos_visitante_siendo_visitante']
+                    max_puntos_ultimos_3_partidos_local_siendo_local = PartidosEntrenamiento.objects.filter(equipo_local=local).aggregate(max_puntos_ultimos_3_partidos_local_siendo_local=Max('puntos_ultimos_3_partidos_local_siendo_local'))['max_puntos_ultimos_3_partidos_local_siendo_local']
+                    max_puntos_ultimos_3_partidos_visitante_siendo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante=visitante).aggregate(max_puntos_ultimos_3_partidos_visitante_siendo_visitante=Max('puntos_ultimos_3_partidos_visitante_siendo_visitante'))['max_puntos_ultimos_3_partidos_visitante_siendo_visitante']
+                    min_goles_en_contra_ultimos_3_partidos_equipo_local = PartidosEntrenamiento.objects.filter(equipo_local=local).aggregate(min_goles_en_contra_ultimos_3_partidos_equipo_local=Min('goles_en_contra_ultimos_3_partidos_equipo_local'))['min_goles_en_contra_ultimos_3_partidos_equipo_local']
+                    min_goles_en_contra_ultimos_3_partidos_equipo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante=visitante).aggregate(min_goles_en_contra_ultimos_3_partidos_equipo_visitante=Min('goles_en_contra_ultimos_3_partidos_equipo_visitante'))['min_goles_en_contra_ultimos_3_partidos_equipo_visitante']
+                    min_goles_en_contra_ultimos_3_partidos_local_siendo_local = PartidosEntrenamiento.objects.filter(equipo_local=local).aggregate(min_goles_en_contra_ultimos_3_partidos_local_siendo_local=Min('goles_en_contra_ultimos_3_partidos_local_siendo_local'))['min_goles_en_contra_ultimos_3_partidos_local_siendo_local']
+                    min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante=visitante).aggregate(min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante=Min('goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante'))['min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante']
+                    
+                    XP = np.column_stack((
+                                        max_goles_ultimos_5_partidos_equipo_local,
+                                        max_goles_ultimos_5_partidos_equipo_visitante,
+                                        max_puntos_ultimos_5_partidos_equipo_local,
+                                        max_puntos_ultimos_5_partidos_equipo_visitante,
+                                        min_goles_en_contra_ultimos_5_partidos_equipo_local,
+                                        min_goles_en_contra_ultimos_5_partidos_equipo_visitante,
+                                        max_goles_ultimos_5_partidos_local_siendo_local,
+                                        max_goles_ultimos_5_partidos_visitante_siendo_visitante,
+                                        max_puntos_ultimos_5_partidos_local_siendo_local,
+                                        max_puntos_ultimos_5_partidos_visitante_siendo_visitante,
+                                        min_goles_en_contra_ultimos_5_partidos_local_siendo_local,
+                                        min_goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante,
+
+                                        max_goles_ultimos_3_partidos_equipo_local,
+                                        max_goles_ultimos_3_partidos_equipo_visitante,
+                                        max_puntos_ultimos_3_partidos_equipo_local,
+                                        max_puntos_ultimos_3_partidos_equipo_visitante,
+                                        min_goles_en_contra_ultimos_3_partidos_equipo_local,
+                                        min_goles_en_contra_ultimos_3_partidos_equipo_visitante,
+                                        max_goles_ultimos_3_partidos_local_siendo_local,
+                                        max_goles_ultimos_3_partidos_visitante_siendo_visitante,
+                                        max_puntos_ultimos_3_partidos_local_siendo_local,
+                                        max_puntos_ultimos_3_partidos_visitante_siendo_visitante,
+                                        min_goles_en_contra_ultimos_3_partidos_local_siendo_local,
+                                        min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante))
+                    X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Y_5_Ultimos_Partidos()
+                    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+                    model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
+                    model_gbc.fit(X_train, winner_train),
+                    predicciones = model_gbc.predict(XP)
+                    winner = ['X' if pred == '0' else pred for pred in predicciones]
+
+
+
+            
+    else:
+        formulario = formulario_prediccion()
+    return render(request, 'predicciones/compararEquipos.html', {"formulario":formulario, 
+                                                                 "entity": partidos_local_visitante, 
+                                                                 "entity2": partidos_cruzados,
+                                                                 "entity3": ultimos_partidos_partidos_local,
+                                                                 "entity4": partidos_local_siendo_local,
+                                                                 "entity5":partidos_visitante_siendo_visitante,
+                                                                 "entity6": ultimos_partidos_visitante, "local":local, 
+                                                                 "visitante":visitante, 
+                                                                 "prediccion":prediccion,
+                                                                 "winner":winner,
+                                                                 "existe":existe,
+                                                                 "goles_ultimos_5_partidos_equipo_local":max_goles_ultimos_5_partidos_equipo_local,
+                                                                 "goles_ultimos_5_partidos_equipo_visitante":max_goles_ultimos_5_partidos_equipo_visitante,
+                                                                 "puntos_ultimos_5_partidos_equipo_local":max_puntos_ultimos_5_partidos_equipo_local,
+                                                                 "puntos_ultimos_5_partidos_equipo_visitante":max_puntos_ultimos_5_partidos_equipo_visitante,
+                                                                 "goles_ultimos_5_partidos_local_siendo_local":max_goles_ultimos_5_partidos_local_siendo_local,
+                                                                 "goles_ultimos_5_partidos_visitante_siendo_visitante":max_goles_ultimos_5_partidos_visitante_siendo_visitante,
+                                                                 "puntos_ultimos_5_partidos_local_siendo_local":max_puntos_ultimos_5_partidos_local_siendo_local,
+                                                                 "puntos_ultimos_5_partidos_visitante_siendo_visitante":max_puntos_ultimos_5_partidos_visitante_siendo_visitante,
+                                                                 "goles_en_contra_ultimos_5_partidos_equipo_local":min_goles_en_contra_ultimos_5_partidos_equipo_local,
+                                                                 "goles_en_contra_ultimos_5_partidos_equipo_visitante":min_goles_en_contra_ultimos_5_partidos_equipo_visitante,
+                                                                 "goles_en_contra_ultimos_5_partidos_local_siendo_local":min_goles_en_contra_ultimos_5_partidos_local_siendo_local,
+                                                                 "goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante":min_goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante,
+
+                                                                 "goles_ultimos_3_partidos_equipo_local":max_goles_ultimos_3_partidos_equipo_local,
+                                                                 "goles_ultimos_3_partidos_equipo_visitante":max_goles_ultimos_3_partidos_equipo_visitante,
+                                                                 "puntos_ultimos_3_partidos_equipo_local":max_puntos_ultimos_3_partidos_equipo_local,
+                                                                 "puntos_ultimos_3_partidos_equipo_visitante":max_puntos_ultimos_3_partidos_equipo_visitante,
+                                                                 "goles_ultimos_3_partidos_local_siendo_local":max_goles_ultimos_3_partidos_local_siendo_local,
+                                                                 "goles_ultimos_3_partidos_visitante_siendo_visitante":max_goles_ultimos_3_partidos_visitante_siendo_visitante,
+                                                                 "puntos_ultimos_3_partidos_local_siendo_local":max_puntos_ultimos_3_partidos_local_siendo_local,
+                                                                 "puntos_ultimos_3_partidos_visitante_siendo_visitante":max_puntos_ultimos_3_partidos_visitante_siendo_visitante,
+                                                                 "goles_en_contra_ultimos_3_partidos_equipo_local":min_goles_en_contra_ultimos_3_partidos_equipo_local,
+                                                                 "goles_en_contra_ultimos_3_partidos_equipo_visitante":min_goles_en_contra_ultimos_3_partidos_equipo_visitante,
+                                                                 "goles_en_contra_ultimos_3_partidos_local_siendo_local":min_goles_en_contra_ultimos_3_partidos_local_siendo_local,
+                                                                 "goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante":min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante,
+                                                                 })
+
+
+
+    
