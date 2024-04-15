@@ -25,7 +25,7 @@
     </div>
   </form>
 </div>
-
+{% if entity %}
 <div class="contenedorListaComparar">
   <h2 style="color: black;margin-left: 425px;">Ultimos 5 Encuentros Disputados {{local}} siendo Local y {{visitante}} Visitante</h2><br>
     <table class ="table">
@@ -343,6 +343,7 @@
       </table>
    
 </div>
+
 {%if existe %}
 <div class="contenedorListaCompararar">
   <h2 style="color: black;margin-left: 400px;">Predicción {{local}} vs {{visitante}}</h2><br>
@@ -438,6 +439,7 @@
    
 </div>
 {%endif%}
+{% endif %}
 <div class="bocom">
   <p class="futplayful-2">
   FutPlayful Predictions no es una web para fomentar el uso de apuestas, sino más bien consienciar acerca uso
