@@ -665,3 +665,37 @@
   border-radius: 5px;
   padding: 10px 0; 
 }
+.pgina-de-inicio .bocpo {
+  width: 1500px;
+  height: 157px;
+  margin-top: calc(100% - 200px);
+  left: 0;
+  right: 0;
+  position: relative;
+  background-color: var(--azul);
+}
+.pgina-de-inicio .cpo {
+  position: absolute;
+  top: 270px;
+  left: 625px;
+  font-family: "Sora-Regular", Helvetica;
+  font-weight: 400;
+  color: #000000;
+  font-size: 39px;
+  text-align: center;
+  letter-spacing: -0.78px;
+  line-height: 46.8px;
+  white-space: nowrap;
+}
+
+.pgina-de-inicio .contenedorFormularioCrearQuiniela{
+
+  background-color: #1935c6;
+  width: 100%;
+  margin: 10px auto;
+  border-radius: 5px;
+  padding: 1px 0px;
+
+
+
+}

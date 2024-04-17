@@ -32,6 +32,8 @@ urlpatterns = [
    path("mostrarPredicciones/", mostrar_predicciones, name = "Partidos_Predichos"),
    path("filtrarPredicciones/", filtrado_predicciones, name = "Filtrar_Predicciones"),
    path("compararEquipos/", comparar_equipos, name = "Comparar_Equipos"),
+   path("crearPorra/", crear_quiniela, name = "Crear_Quiniela"),
+   path("mostrarQuiniela/", mostrar_quiniela, name = "Mostrar_Quiniela")
 
    
 ]

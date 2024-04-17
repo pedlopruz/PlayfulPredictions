@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .populateDB import populateDatabaseEntrenamiento, populateDatabaseSinPredecir
-from .models import PartidosEntrenamiento, PartidoSinPredecir, PartidosPredichos
+from .models import PartidosEntrenamiento, PartidoSinPredecir, PartidosPredichos, Quiniela
+from Autenticacion.models import CustomUser
 from django.http import HttpResponse
 import csv
 import codecs
@@ -19,10 +20,11 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.http import Http404
-from .forms import formulario_prediccion
+from .forms import formulario_prediccion, formulario_porra
 from django.urls import reverse
 from django.db.models import Q
 from django.db.models import Max, Min
+from django.core.mail import EmailMessage
 
 # Create your views here.
 def cargar_Datos_Entrenamiento(request):
@@ -1208,6 +1210,60 @@ def comparar_equipos(request):
                                                                  "goles_en_contra_ultimos_3_partidos_local_siendo_local":min_goles_en_contra_ultimos_3_partidos_local_siendo_local,
                                                                  "goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante":min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante,
                                                                  })
+
+def crear_quiniela(request):
+    if  request.user.is_authenticated and request.user.is_staff:
+        mensaje = None
+        if request.method == 'POST':
+            formulario = formulario_porra(request.POST)
+
+            if formulario.is_valid():
+                partido1 = formulario.cleaned_data['partido1']
+                partido2 = formulario.cleaned_data['partido2']
+                partido3 = formulario.cleaned_data['partido3']
+                partido4 = formulario.cleaned_data['partido4']
+                partido5 = formulario.cleaned_data['partido5']
+                partido6 = formulario.cleaned_data['partido6']
+                partido7 = formulario.cleaned_data['partido7']
+                partido8 = formulario.cleaned_data['partido8']
+                partido9 = formulario.cleaned_data['partido9']
+                partido10 = formulario.cleaned_data['partido10']
+
+                num_porra_abierta = Quiniela.objects.filter(abierta =True).count()
+                if num_porra_abierta ==1:
+                    formulario = formulario_porra()
+                    mensaje = "Hay un porra abierta, cierrala antes de crear una nueva"
+                elif partido1 == partido2 or partido1 == partido3 or partido1 == partido4 or partido1 == partido5 or partido2 == partido3 or partido2 == partido4 or partido2 == partido5 or partido3 == partido4 or partido3 == partido5 or partido4 == partido5:
+                    formulario = formulario_porra()
+                    mensaje = "Hay algun partido repetido"
+                elif partido6 == partido7 or partido6 == partido8 or partido6 == partido9 or partido6 == partido10 or partido7 == partido8 or partido7 == partido9 or partido7 == partido10 or partido8 == partido9 or partido8 == partido10 or partido9 == partido10:
+                    formulario = formulario_porra()
+                    mensaje = "Hay algun partido repetido"
+                else:
+                    Quiniela.objects.create(primer_partido = partido1, segundo_partido = partido2, tercer_partido = partido3, cuarto_partido = partido4, quinto_partido= partido5, sexto_partido = partido6, septimo_partido = partido7, octavo_partido=partido8, noveno_partido = partido9, decimo_partido = partido10)
+                    usuarios = CustomUser.objects.all()
+                    for usuario in usuarios:
+                        email = usuario.email
+                        print(email)
+                        envio_email = EmailMessage("Nueva Porra Disponible", "Se ha abierto una nueva porra con nuevos partidos para participar, no te olvides de conseguir tus puntos y escalar en el Ranking. Mucha suerte!","",[email], reply_to=["playfullpredictions@gmail.com"])
+                        try:
+                            envio_email.send()
+                        except:
+                            return redirect(reverse('Crear_Porra') + f'?novalido')
+                    return redirect('Home')
+        else:
+           formulario = formulario_porra()
+
+        return render(request, 'predicciones/crearQuiniela.html', {'formulario': formulario, "mensaje": mensaje})
+    else:
+        return redirect('Home')
+
+def mostrar_quiniela(request):
+    if request.user.is_authenticated:
+        quiniela = Quiniela.objects.filter(abierta = True)
+        return render(request, 'predicciones/mostrarQuiniela.html', {"entity": quiniela})
+    else:
+        return render(request, 'predicciones/pedirInicio.html')
 
 
 

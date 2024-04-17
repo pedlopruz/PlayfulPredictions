@@ -1,0 +1,47 @@
+{% extends "inicio/base.html" %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block content %}
+<p class="cpo">Crear Quiniela</p>
+  <div class="overlap-group2">
+  <div class="contenedorFormularioCrearQuiniela">
+    <form method="post" action="" style="color: rgb(9, 10, 11); text-align: center; margin-top: 30px;">
+      {% csrf_token %}
+      <div style="margin-top: 50px; color: white; font-size: 30px; display: flex; flex-direction: column; align-items: center;">
+          {% if mensaje %}
+          <div style="color: red; margin-bottom: 20px;">{{ mensaje }}</div>
+          {% endif %}
+          <div style="display: flex; justify-content: space-around;">
+              <div style="width: 45%;">
+                  {{ formulario.partido1|as_crispy_field }}
+                  {{ formulario.partido2|as_crispy_field }}
+                  {{ formulario.partido3|as_crispy_field }}
+                  {{ formulario.partido4|as_crispy_field }}
+                  {{ formulario.partido5|as_crispy_field }}
+              </div>
+              <div style="width: 45%;">
+                  {{ formulario.partido6|as_crispy_field }}
+                  {{ formulario.partido7|as_crispy_field }}
+                  {{ formulario.partido8|as_crispy_field }}
+                  {{ formulario.partido9|as_crispy_field }}
+                  {{ formulario.partido10|as_crispy_field }}
+              </div>
+          </div>
+      </div>
+      <button type="submit" class="btn btn-success" style="margin-top: 50px; margin-bottom: 20px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; font-size: 20px; padding: 10px 15px;">Crear Quiniela</button
+  </form>
+  </div>
+  </div>
+  <div class="bocpo">
+    <p class="futplayful-2">
+    FutPlayful Predictions no es una web para fomentar el uso de apuestas, sino más bien consienciar acerca uso
+    de los juegos de azar y ejemplificando que el fútbol como deporte no es una ciencia exacta, en la que todo
+    es posible. <br />
+    <br />Si al utilizar nuestos datos decide aplicarlos en alguna apuesta o juego de azar recuerde jugar simpre
+    con responsabilidad&nbsp;&nbsp;<br />y solo si eres mayor de edad
+    </p>
+    <img class="element" src="{% static 'Playful/img/18.png' %}" />
+</div>
+{% endblock %}  
