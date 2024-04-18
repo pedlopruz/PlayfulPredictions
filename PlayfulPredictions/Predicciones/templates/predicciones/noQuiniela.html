@@ -1,0 +1,25 @@
+{% extends "inicio/base.html" %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block content %}
+  <div class="overlap-groupRegister">
+  <div class="contenedorFormularioE">
+    <h1 style="color: aliceblue; margin-left:70px; margin-right:auto;">Ahora mismo no hay porras disponibles, vuelva más tarde. <br>Revise su correo para estar al tanto de las Quinielas </h1>
+    {% if user.is_staff %}
+      <button type="submit" class="btn btn-success" style="margin-top: 20px; margin-bottom: 20px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:160px;padding: 10px 15px;"><a href="{% url 'Crear_Quiniela' %}" style="color: aliceblue;">Crear Quiniela</a></button>
+      {% endif %}
+  </div>
+  </div>
+  <div class="boE">
+    <p class="futplayful-2">
+    FutPlayful Predictions no es una web para fomentar el uso de apuestas, sino más bien consienciar acerca uso
+    de los juegos de azar y ejemplificando que el fútbol como deporte no es una ciencia exacta, en la que todo
+    es posible. <br />
+    <br />Si al utilizar nuestos datos decide aplicarlos en alguna apuesta o juego de azar recuerde jugar simpre
+    con responsabilidad&nbsp;&nbsp;<br />y solo si eres mayor de edad
+    </p>
+    <img class="element" src="{% static 'Playful/img/18.png' %}" />
+</div>
+{% endblock %}  

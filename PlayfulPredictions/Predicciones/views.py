@@ -1244,7 +1244,6 @@ def crear_quiniela(request):
                     usuarios = CustomUser.objects.all()
                     for usuario in usuarios:
                         email = usuario.email
-                        print(email)
                         envio_email = EmailMessage("Nueva Porra Disponible", "Se ha abierto una nueva porra con nuevos partidos para participar, no te olvides de conseguir tus puntos y escalar en el Ranking. Mucha suerte!","",[email], reply_to=["playfullpredictions@gmail.com"])
                         try:
                             envio_email.send()
@@ -1260,8 +1259,13 @@ def crear_quiniela(request):
 
 def mostrar_quiniela(request):
     if request.user.is_authenticated:
-        quiniela = Quiniela.objects.filter(abierta = True)
-        return render(request, 'predicciones/mostrarQuiniela.html', {"entity": quiniela})
+        num_quiniela = Quiniela.objects.filter(abierta = True).count()
+        if num_quiniela == 0:
+            return render(request, 'predicciones/noQuiniela.html')
+        
+        else:
+            quiniela = Quiniela.objects.filter(abierta = True)
+            return render(request, 'predicciones/mostrarQuiniela.html', {"entity": quiniela})
     else:
         return render(request, 'predicciones/pedirInicio.html')
 
