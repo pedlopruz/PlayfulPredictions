@@ -4,8 +4,8 @@
 {% load static %}
 
 {% block content %}
-<p class="pred">Quiniela</p>
-<div class="contenedorListaPrediccionesFiltradas">
+<p class="pred">Quiniela Activa</p>
+<div class="contenedorListaQuiniela">
     <table class ="table">
         <thead>
           <tr>
@@ -29,7 +29,6 @@
           </tr>
         </thead>
         <tbody>
-          {% for quiniela in entity %}
             <tr>
               <td class="td">{{ quiniela.primer_partido.liga }}</td>
               <td class="td">{{ quiniela.primer_partido.jornada }}</td>
@@ -220,12 +219,21 @@
               <td class="td">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
               <td class="td">{{quiniela.decimo_partido.winner}}</td>
             </tr>
-          {% endfor %}
         </tbody>
       </table>
       {% if user.is_staff %}
-      <button type="submit" class="btn btn-success" style="margin-top: 20px; margin-bottom: 20px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:160px;padding: 10px 15px;"><a href="{% url 'Crear_Quiniela' %}" style="color: aliceblue;">Crear Quiniela</a></button>
-      {% endif %}
+      <button type="submit" class="btn btn-success" style="margin-top: 20px; margin-bottom: 20px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:380px;padding: 10px 15px;"><a href="{% url 'Crear_Quiniela' %}" style="color: aliceblue;">Crear Quiniela</a></button><button type="submit" class="btn btn-success" style="margin-bottom: 53px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:53px;padding: 10px 15px;"><a href="{% url 'Mostrar_Quinielas_Creadas' %}" style="color: aliceblue;">Mostrar Quinielas </a></button>
+      {%endif%}
+      {% if not user.is_staff and user.is_authenticated and num_esta_porra_hechas == 1 and num_porras_usuario >= 1%}
+      <button type="submit" class="btn btn-success" style="margin-top: 20px; margin-bottom: 20px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:450px;padding: 10px 15px;"><a href="{% url 'Mostrar_Porras_Pasadas' %}" style="color: aliceblue;">Porras Realizadas</a>
+      {%endif%}
+      {% if not user.is_staff and user.is_authenticated and num_esta_porra_hechas == 0 and num_porras_usuario != 0%}
+      <button type="submit" class="btn btn-success" style="margin-top: 20px; margin-bottom: 20px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:400px;padding: 10px 15px;"><a href="{% url 'Realizar_Porra' %}" style="color: aliceblue;">Realizar Porra</a></button><button type="submit" class="btn btn-success" style="margin-bottom: 20px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:25px;padding: 10px 15px;"><a href="{% url 'Mostrar_Porras_Pasadas' %}" style="color: aliceblue;">Porras Pasadas</a></button>
+      {%endif%}
+      {% if not user.is_staff and user.is_authenticated and num_esta_porra_hechas == 0 and num_porras_usuario == 0%}
+      <button type="submit" class="btn btn-success" style="margin-top: 20px; margin-bottom: 20px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:400px;padding: 10px 15px;"><a href="{% url 'Realizar_Porra' %}" style="color: aliceblue;">Realizar Porra</a></button>
+      {%endif%}
+
 </div>
 <div class="boPre">
   <p class="futplayful-2">

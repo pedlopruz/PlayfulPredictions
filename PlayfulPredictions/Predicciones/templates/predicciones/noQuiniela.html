@@ -10,6 +10,12 @@
     {% if user.is_staff %}
       <button type="submit" class="btn btn-success" style="margin-top: 20px; margin-bottom: 20px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:160px;padding: 10px 15px;"><a href="{% url 'Crear_Quiniela' %}" style="color: aliceblue;">Crear Quiniela</a></button>
       {% endif %}
+    {% if user.is_staff and numero > 0%}
+    <button type="submit" class="btn btn-success" style="margin-bottom: 20px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:53px;padding: 10px 15px;"><a href="{% url 'Mostrar_Quinielas_Creadas' %}" style="color: aliceblue;">Quinielas Pasadas</a></button>
+    {% endif %}
+    {% if not user.is_staff and user.is_authenticated %}
+      <button type="submit" class="btn btn-success" style="margin-top: 20px; margin-bottom: 20px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:250px;padding: 10px 15px;"><a href="{% url 'Mostrar_Porras_Pasadas' %}" style="color: aliceblue;">Porras Pasadas</a></button>
+    {%endif%}
   </div>
   </div>
   <div class="boE">

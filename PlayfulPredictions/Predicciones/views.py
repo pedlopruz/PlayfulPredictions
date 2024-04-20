@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .populateDB import populateDatabaseEntrenamiento, populateDatabaseSinPredecir
-from .models import PartidosEntrenamiento, PartidoSinPredecir, PartidosPredichos, Quiniela
+from .models import *
 from Autenticacion.models import CustomUser
 from django.http import HttpResponse
 import csv
@@ -20,7 +20,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.http import Http404
-from .forms import formulario_prediccion, formulario_porra
+from .forms import *
 from django.urls import reverse
 from django.db.models import Q
 from django.db.models import Max, Min
@@ -1094,7 +1094,7 @@ def comparar_equipos(request):
             local = formulario.cleaned_data["local"]
             visitante = formulario.cleaned_data["visitante"]
             if local == visitante:
-                formulario = formulario_prediccion()
+                formulario = formulario_equipos()
             else:
                 partidos_local_visitante=PartidosEntrenamiento.objects.filter(equipo_local = local, equipo_visitante = visitante).order_by("-id")[:5]
                 partidos_cruzados = PartidosEntrenamiento.objects.filter(Q(equipo_local=local, equipo_visitante=visitante) | Q(equipo_local=visitante, equipo_visitante=local)).order_by("-id")[:5]
@@ -1172,7 +1172,7 @@ def comparar_equipos(request):
 
             
     else:
-        formulario = formulario_prediccion()
+        formulario = formulario_equipos()
     return render(request, 'predicciones/compararEquipos.html', {"formulario":formulario, 
                                                                  "entity": partidos_local_visitante, 
                                                                  "entity2": partidos_cruzados,
@@ -1215,7 +1215,7 @@ def crear_quiniela(request):
     if  request.user.is_authenticated and request.user.is_staff:
         mensaje = None
         if request.method == 'POST':
-            formulario = formulario_porra(request.POST)
+            formulario = formulario_quiniela(request.POST)
 
             if formulario.is_valid():
                 partido1 = formulario.cleaned_data['partido1']
@@ -1231,13 +1231,13 @@ def crear_quiniela(request):
 
                 num_porra_abierta = Quiniela.objects.filter(abierta =True).count()
                 if num_porra_abierta ==1:
-                    formulario = formulario_porra()
+                    formulario = formulario_quiniela()
                     mensaje = "Hay un porra abierta, cierrala antes de crear una nueva"
                 elif partido1 == partido2 or partido1 == partido3 or partido1 == partido4 or partido1 == partido5 or partido2 == partido3 or partido2 == partido4 or partido2 == partido5 or partido3 == partido4 or partido3 == partido5 or partido4 == partido5:
-                    formulario = formulario_porra()
+                    formulario = formulario_quiniela()
                     mensaje = "Hay algun partido repetido"
                 elif partido6 == partido7 or partido6 == partido8 or partido6 == partido9 or partido6 == partido10 or partido7 == partido8 or partido7 == partido9 or partido7 == partido10 or partido8 == partido9 or partido8 == partido10 or partido9 == partido10:
-                    formulario = formulario_porra()
+                    formulario = formulario_quiniela()
                     mensaje = "Hay algun partido repetido"
                 else:
                     Quiniela.objects.create(primer_partido = partido1, segundo_partido = partido2, tercer_partido = partido3, cuarto_partido = partido4, quinto_partido= partido5, sexto_partido = partido6, septimo_partido = partido7, octavo_partido=partido8, noveno_partido = partido9, decimo_partido = partido10)
@@ -1248,10 +1248,10 @@ def crear_quiniela(request):
                         try:
                             envio_email.send()
                         except:
-                            return redirect(reverse('Crear_Porra') + f'?novalido')
+                            return redirect(reverse('Crear_Quiniela') + f'?novalido')
                     return redirect('Home')
         else:
-           formulario = formulario_porra()
+           formulario = formulario_quiniela()
 
         return render(request, 'predicciones/crearQuiniela.html', {'formulario': formulario, "mensaje": mensaje})
     else:
@@ -1260,14 +1260,201 @@ def crear_quiniela(request):
 def mostrar_quiniela(request):
     if request.user.is_authenticated:
         num_quiniela = Quiniela.objects.filter(abierta = True).count()
+        num_quinielas_total = Quiniela.objects.all().count()
         if num_quiniela == 0:
-            return render(request, 'predicciones/noQuiniela.html')
+            return render(request, 'predicciones/noQuiniela.html', {"numero":num_quinielas_total})
         
         else:
-            quiniela = Quiniela.objects.filter(abierta = True)
-            return render(request, 'predicciones/mostrarQuiniela.html', {"entity": quiniela})
+            quiniela = Quiniela.objects.filter(abierta = True).first()
+            num_porras_usuario_total = Porra.objects.filter(usuario = request.user).count()
+            num_esta_porra_hechas = Porra.objects.filter(quiniela=quiniela, usuario = request.user).count()
+            print(num_porras_usuario_total)
+            print(num_esta_porra_hechas)
+            return render(request, 'predicciones/mostrarQuiniela.html', {"quiniela": quiniela, "num_esta_porra_hechas":num_esta_porra_hechas, "num_porras_usuario":num_porras_usuario_total})
     else:
         return render(request, 'predicciones/pedirInicio.html')
+    
+def realizar_porra(request):
+    if  request.user.is_authenticated and not request.user.is_staff:
+        quiniela = Quiniela.objects.filter(abierta = True)
+        for q in quiniela:
+            num_porras = Porra.objects.filter(quiniela=q, usuario = request.user).count()
+        if num_porras >= 1:
+            return render(request, 'predicciones/quinielaHecha.html')
+        if request.method == 'POST':
+            formulario = formulario_porra(request.POST)
+
+            if formulario.is_valid():
+                partido1 = formulario.cleaned_data['partido1']
+                partido2 = formulario.cleaned_data['partido2']
+                partido3 = formulario.cleaned_data['partido3']
+                partido4 = formulario.cleaned_data['partido4']
+                partido5 = formulario.cleaned_data['partido5']
+                partido6 = formulario.cleaned_data['partido6']
+                partido7 = formulario.cleaned_data['partido7']
+                partido8 = formulario.cleaned_data['partido8']
+                partido9 = formulario.cleaned_data['partido9']
+                partido10 = formulario.cleaned_data['partido10']
+
+                quiniela = Quiniela.objects.filter(abierta = True).first()
+                Porra.objects.create(primer_partido = partido1, segundo_partido = partido2, tercer_partido = partido3, cuarto_partido = partido4, quinto_partido= partido5, sexto_partido = partido6, septimo_partido = partido7, octavo_partido=partido8, noveno_partido = partido9, decimo_partido = partido10, quiniela = quiniela, usuario = request.user)
+                email = request.user.email
+                primer_partido = quiniela.primer_partido
+                segundo_partido = quiniela.segundo_partido
+                tercer_partido = quiniela.tercer_partido
+                cuarto_partido = quiniela.cuarto_partido
+                quinto_partido = quiniela.quinto_partido
+                sexto_partido = quiniela.sexto_partido
+                septimo_partido = quiniela.septimo_partido
+                octavo_partido = quiniela.octavo_partido
+                noveno_partido = quiniela.noveno_partido
+                decimo_partido = quiniela.decimo_partido
+                
+                envio_email = EmailMessage("Porra Realizada Correctamente", "Tu porra se ha relizado correctamete, aquí tienes tus prediciones:\n {}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n Gracias por participar y mucha suerte".format(primer_partido,partido1,segundo_partido,partido2,tercer_partido,partido3,cuarto_partido,partido4,quinto_partido,partido5,sexto_partido,partido6,septimo_partido,partido7,octavo_partido,partido8,noveno_partido,partido9,decimo_partido,partido10),"",[email], reply_to=["playfullpredictions@gmail.com"])
+                try:
+                    envio_email.send()
+                except:
+                    return redirect(reverse('Realizar_Porra') + f'?novalido')
+                return redirect('Home')
+                
+
+        else:
+           formulario = formulario_porra()
+
+        return render(request, 'predicciones/realizarPorra.html', {'formulario': formulario, "entity":quiniela})
+    else:
+        return redirect('Home')
+    
+def mostrar_quinielas_creadas(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        quiniela = Quiniela.objects.all()
+        page = request.GET.get('page', 1)  
+        
+        try:
+            paginator = Paginator(quiniela, 6) 
+            quinielas = paginator.page(page)
+        except PageNotAnInteger:
+            raise Http404
+        
+        return render(request, 'predicciones/mostrarQuinielasCreadas.html', {"entity": quinielas, "paginator":paginator})
+    else:
+        return redirect('Home')
+    
+
+def mostrar_usuarios_participes_quinielas(request, quiniela_id):
+    if request.user.is_authenticated and request.user.is_staff:
+        quiniela = Quiniela.objects.filter(id = quiniela_id).first()
+        abierta = quiniela.abierta
+        porra = Porra.objects.filter(quiniela__id = quiniela_id)
+        num_usuarios = porra.count()
+        page = request.GET.get('page', 1)  
+        
+        try:
+            paginator = Paginator(porra, 6) 
+            porras = paginator.page(page)
+        except PageNotAnInteger:
+            raise Http404
+        
+        return render(request, 'predicciones/mostrarUsuariosQuinielas.html', {"entity":porras, "paginator":paginator, "abierta":abierta, "num_usuarios":num_usuarios})
+    else:
+        return redirect('Home')
+    
+def mostrar_porras_pasadas(request):
+    if request.user.is_authenticated and not request.user.is_staff:
+        porra = Porra.objects.filter(usuario = request.user)
+        page = request.GET.get('page', 1)  
+        
+        try:
+            paginator = Paginator(porra, 6) 
+            porras = paginator.page(page)
+        except PageNotAnInteger:
+            raise Http404
+        
+        return render(request, 'predicciones/mostrarPorrasPasadas.html', {"entity":porras, "paginator":paginator})
+    else:
+        return redirect('Home')
+    
+def cerrar_quiniela_calcular_puntos(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        quiniela = Quiniela.objects.filter(abierta = True).first()
+        porras = Porra.objects.filter(quiniela=quiniela, sin_puntuar = True)
+        num_porra = porras.count()
+        if num_porra >=2:
+            puntos = 0
+            for porra in porras:
+                puntos = 0
+                partido1 = porra.primer_partido
+                local = quiniela.primer_partido.equipo_local
+                visitante = quiniela.primer_partido.equipo_visitante
+                real = PartidoReal.objects.filter(equipo_local = local, equipo_visitante = visitante).first()
+                if partido1 == real.winner:
+                    puntos = puntos +1
+                partido2 = porra.segundo_partido
+                local = quiniela.segundo_partido.equipo_local
+                visitante = quiniela.segundo_partido.equipo_visitante
+                real = PartidoReal.objects.filter(equipo_local = local, equipo_visitante = visitante).first()
+                if partido2 == real.winner:
+                    puntos = puntos +1
+                partido3 = porra.tercer_partido
+                local = quiniela.tercer_partido.equipo_local
+                visitante = quiniela.tercer_partido.equipo_visitante
+                real = PartidoReal.objects.filter(equipo_local = local, equipo_visitante = visitante).first()
+                if partido3 == real.winner:
+                    puntos = puntos +1
+                partido4 = porra.cuarto_partido
+                local = quiniela.cuarto_partido.equipo_local
+                visitante = quiniela.cuarto_partido.equipo_visitante
+                real = PartidoReal.objects.filter(equipo_local = local, equipo_visitante = visitante).first()
+                if partido4 == real.winner:
+                    puntos = puntos +1
+                partido5 = porra.quinto_partido
+                local = quiniela.quinto_partido.equipo_local
+                visitante = quiniela.quinto_partido.equipo_visitante
+                real = PartidoReal.objects.filter(equipo_local = local, equipo_visitante = visitante).first()
+                if partido5 == real.winner:
+                    puntos = puntos +1
+                partido6 = porra.sexto_partido
+                local = quiniela.sexto_partido.equipo_local
+                visitante = quiniela.sexto_partido.equipo_visitante
+                real = PartidoReal.objects.filter(equipo_local = local, equipo_visitante = visitante).first()
+                if partido6 == real.winner:
+                    puntos = puntos +1
+                partido7 = porra.septimo_partido
+                local = quiniela.septimo_partido.equipo_local
+                visitante = quiniela.septimo_partido.equipo_visitante
+                real = PartidoReal.objects.filter(equipo_local = local, equipo_visitante = visitante).first()
+                if partido7 == real.winner:
+                    puntos = puntos +1
+                partido8 = porra.octavo_partido
+                local = quiniela.octavo_partido.equipo_local
+                visitante = quiniela.octavo_partido.equipo_visitante
+                real = PartidoReal.objects.filter(equipo_local = local, equipo_visitante = visitante).first()
+                if partido8 == real.winner:
+                    puntos = puntos +1
+                partido9 = porra.noveno_partido
+                local = quiniela.noveno_partido.equipo_local
+                visitante = quiniela.noveno_partido.equipo_visitante
+                real = PartidoReal.objects.filter(equipo_local = local, equipo_visitante = visitante).first()
+                if partido9 == real.winner:
+                    puntos = puntos +1
+                partido10 = porra.decimo_partido
+                local = quiniela.decimo_partido.equipo_local
+                visitante = quiniela.decimo_partido.equipo_visitante
+                real = PartidoReal.objects.filter(equipo_local = local, equipo_visitante = visitante).first()
+                if partido10 == real.winner:
+                    puntos = puntos +1
+                porra.sin_puntuar = False
+                porra.puntos = puntos
+                porra.save()
+            quiniela.abierta = False
+            quiniela.save()
+            return redirect('Mostrar_Quiniela')
+        else:
+            return redirect('Mostrar_Quiniela')
+    else:
+        return redirect('Home')
+
+        
 
 
 

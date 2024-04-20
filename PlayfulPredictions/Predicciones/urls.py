@@ -32,8 +32,13 @@ urlpatterns = [
    path("mostrarPredicciones/", mostrar_predicciones, name = "Partidos_Predichos"),
    path("filtrarPredicciones/", filtrado_predicciones, name = "Filtrar_Predicciones"),
    path("compararEquipos/", comparar_equipos, name = "Comparar_Equipos"),
-   path("crearPorra/", crear_quiniela, name = "Crear_Quiniela"),
-   path("mostrarQuiniela/", mostrar_quiniela, name = "Mostrar_Quiniela")
+   path("crearQuiniela/", crear_quiniela, name = "Crear_Quiniela"),
+   path("mostrarQuiniela/", mostrar_quiniela, name = "Mostrar_Quiniela"),
+   path("realizarPorra/", realizar_porra, name = "Realizar_Porra"),
+   path("mostrarQuinielasCreadas/", mostrar_quinielas_creadas, name = "Mostrar_Quinielas_Creadas"),
+   path("mostrarUsuariosQuinielas/<int:quiniela_id>/", mostrar_usuarios_participes_quinielas, name = "Mostrar_Usuarios_Participes"),
+   path("mostrarPorrasPasadas/", mostrar_porras_pasadas, name = "Mostrar_Porras_Pasadas"),
+   path("cerrarPorra/", cerrar_quiniela_calcular_puntos, name = "Cerrar_Porra")
 
    
 ]

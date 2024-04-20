@@ -1,0 +1,63 @@
+{% extends "inicio/base.html" %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block content %}
+<p class="quicre">Porras Realizadas</p>
+<div class="contenedorListaPorrasPasadas">
+    <table class ="table">
+        <thead>
+          <tr>
+            <th class="th">Estado Porra</th>
+            <th class="th">Predicción Partido 1</th>
+            <th class="th">Predicción Partido 2</th>
+            <th class="th">Predicción Partido 3</th>
+            <th class="th">Predicción Partido 4</th>
+            <th class="th">Predicción Partido 5</th>
+            <th class="th">Predicción Partido 6</th>
+            <th class="th">Predicción Partido 7</th>
+            <th class="th">Predicción Partido 8</th>
+            <th class="th">Predicción Partido 9</th>
+            <th class="th">Predicción Partido 10</th>
+            <th class="th">Puntuación</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for porra in entity %}
+            <tr>
+              {% if porra.sin_puntuar == True %}
+              <td class="td">No Revisada</td>
+              {%else%}
+              <td class="td">Puntos Calculados</td>
+              {%endif%}
+              <td class="tdd">{{porra.quiniela.primer_partido}} <br><br> Predicción: <br> {{porra.primer_partido }}</td>
+              <td class="tdd">{{porra.quiniela.segundo_partido}} <br><br> Predicción: <br>{{porra.segundo_partido }}</td>
+              <td class="tdd">{{porra.quiniela.tercer_partido}} <br><br> Predicción: <br>{{porra.tercer_partido }}</td>
+              <td class="tdd">{{porra.quiniela.cuarto_partido}} <br><br> Predicción: <br>{{porra.cuarto_partido }}</td>
+              <td class="tdd">{{porra.quiniela.quinto_partido}} <br><br> Predicción: <br>{{porra.quinto_partido }}</td>
+              <td class="tdd">{{porra.quiniela.sexto_partido}} <br><br> Predicción: <br>{{porra.sexto_partido }}</td>
+              <td class="tdd">{{porra.quiniela.septimo_partido}} <br><br> Predicción: <br>{{porra.septimo_partido }}</td>
+              <td class="tdd">{{porra.quiniela.octavo_partido}} <br><br> Predicción: <br>{{porra.octavo_partido }}</td>
+              <td class="tdd">{{porra.quiniela.noveno_partido}} <br><br> Predicción: <br>{{porra.noveno_partido }}</td>
+              <td class="tdd">{{porra.quiniela.decimo_partido}} <br><br> Predicción: <br>{{porra.decimo_partido }}</td>
+              <td class="td">{{porra.puntos}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+     
+{% include 'predicciones/paginator.html' %}
+      
+</div>
+<div class="boPU">
+  <p class="futplayful-2">
+  FutPlayful Predictions no es una web para fomentar el uso de apuestas, sino más bien consienciar acerca uso
+  de los juegos de azar y ejemplificando que el fútbol como deporte no es una ciencia exacta, en la que todo
+  es posible. <br />
+  <br />Si al utilizar nuestos datos decide aplicarlos en alguna apuesta o juego de azar recuerde jugar simpre
+  con responsabilidad&nbsp;&nbsp;<br />y solo si eres mayor de edad
+  </p>
+  <img class="element" src="{% static 'Playful/img/18.png' %}" />
+</div>
+{% endblock %}  

@@ -364,6 +364,15 @@
   position: relative;
   background-color: var(--azul);
 }
+.pgina-de-inicio .boReg {
+  width: 1500px;
+  height: 157px;
+  margin-top: calc(100% - 300px);
+  left: 0;
+  right: 0;
+  position: relative;
+  background-color: var(--azul);
+}
 .pgina-de-inicio .overlap-groupRegister {
   position: absolute;
   width: 1205px;
@@ -473,12 +482,7 @@
   padding: 2px;
   text-align: center;
 }
-.pgina-de-inicio .td2 {
-  border: 1px solid white;
-  padding: 2px;
-  text-align: center;
-  color: #000;
-}
+
 
 .pgina-de-inicio .th {
   background-color: var(--azul);
@@ -656,15 +660,6 @@
   padding: 10px 0; 
 }
 
-.pgina-de-inicio .contenedorListaCompararar {
-  background-color: rgb(255, 255, 255);
-  width: 50%;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  margin-left: 220px;
-  border-radius: 5px;
-  padding: 10px 0; 
-}
 .pgina-de-inicio .bocpo {
   width: 1500px;
   height: 157px;
@@ -698,4 +693,95 @@
 
 
 
+}
+.pgina-de-inicio .contenedorListaQuiniela {
+  background-color: rgb(255, 255, 255);
+  width: 50%;
+  margin-top: 350px;
+  margin-bottom: 0px;
+  margin-left: 180px;
+  border-radius: 5px;
+  padding: 10px 0; 
+}
+.pgina-de-inicio .contenedorListaRealizarPorra {
+  background-color: rgb(255, 255, 255);
+  width: 50%;
+  margin-top: 350px;
+  margin-bottom: 0px;
+  margin-left: 140px;
+  border-radius: 5px;
+  padding: 10px 0; 
+}
+.pgina-de-inicio .tdd {
+  border: 1px solid white;
+  padding: 20px;
+  text-align: center;
+  color: #000;
+}
+.pgina-de-inicio .tddd {
+  border: 1px solid white;
+  padding: 30px;
+  text-align: center;
+  color: #000;
+}
+.pgina-de-inicio .contenedorListaQuinielasCreadas {
+  background-color: rgb(255, 255, 255);
+  width: 50%;
+  margin-top: 350px;
+  margin-bottom: 0px;
+  margin-left: 15px;
+  border-radius: 5px;
+  padding: 10px 0; 
+}
+
+.pgina-de-inicio .boQui {
+  width: 1500px;
+  height: 157px;
+  margin-top: calc(100% - 1200px);
+  left: 0;
+  right: 0;
+  position: relative;
+  background-color: var(--azul);
+
+}
+.pgina-de-inicio .quicre {
+  position: absolute;
+  top: 240px;
+  left: 580px;
+  font-family: "Sora-Regular", Helvetica;
+  font-weight: 400;
+  color: #000000;
+  font-size: 39px;
+  text-align: center;
+  letter-spacing: -0.78px;
+  line-height: 46.8px;
+  white-space: nowrap;
+}
+.pgina-de-inicio .contenedorListaQuinielasUsuarios {
+  background-color: rgb(255, 255, 255);
+  width: 50%;
+  margin-top: 350px;
+  margin-bottom: 0px;
+  margin-left: 255px;
+  border-radius: 5px;
+  padding: 10px 0; 
+}
+.pgina-de-inicio .boPU {
+  width: 1500px;
+  height: 157px;
+  margin-top: calc(100% - 1100px);
+  left: 0;
+  right: 0;
+  position: relative;
+  background-color: var(--azul);
+
+}
+.pgina-de-inicio .contenedorListaPorrasPasadas {
+  background-color: rgb(255, 255, 255);
+  width: 50%;
+  margin-top: 350px;
+  margin-bottom: 0px;
+  margin-left: 50px;
+  border-radius: 5px;
+  padding: 10px 0; 
 }

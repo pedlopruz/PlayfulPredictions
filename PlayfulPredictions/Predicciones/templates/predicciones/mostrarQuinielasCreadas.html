@@ -1,0 +1,67 @@
+{% extends "inicio/base.html" %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block content %}
+<p class="quicre">Quinielas Creadas</p>
+<div class="contenedorListaQuinielasCreadas">
+    <table class ="table">
+        <thead>
+          <tr>
+            <th class="th">Estado de la Quiniela</th>
+            <th class="th">Partido 1</th>
+            <th class="th">Partido 2</th>
+            <th class="th">Partido 3</th>
+            <th class="th">Partido 4</th>
+            <th class="th">Partido 5</th>
+            <th class="th">Partido 6</th>
+            <th class="th">Partido 7</th>
+            <th class="th">Partido 8</th>
+            <th class="th">Partido 9</th>
+            <th class="th">Partido 10</th>
+            <th class="th">Usuarios Participes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for quiniela in entity %}
+            <tr>
+              {% if quiniela.abierta == True %}
+              <td class="td">Abierta</td>
+              {%else%}
+              <td class="td">Cerrada</td>
+              {%endif%}
+              <td class="tddd">{{ quiniela.primer_partido }}</td>
+              <td class="tddd">{{ quiniela.segundo_partido }}</td>
+              <td class="tddd">{{ quiniela.tercer_partido }}</td>
+              <td class="tddd">{{ quiniela.cuarto_partido }}</td>
+              <td class="tddd">{{ quiniela.quinto_partido}} </td>
+              <td class="tdd">{{ quiniela.sexto_partido}}</td>
+              <td class="tdd">{{ quiniela.septimo_partido}}</td>
+              <td class="tdd">{{ quiniela.octavo_partido}}</td>
+              <td class="tdd">{{ quiniela.noveno_partido}}</td>
+              <td class="tdd">{{ quiniela.decimo_partido}}</td>
+              <td class="tdd">
+                {% if user.is_authenticated and user.is_staff %}
+                <button type="submit" class="btn2 btn-success" style="margin-top: 20px; background-color: rgba(26, 53, 199, 1); border-radius: 10px; color: white;"><a href="{% url 'Mostrar_Usuarios_Participes' quiniela.id %}" style="color: aliceblue;">Mostrar Usuarios</a></button>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+     
+{% include 'predicciones/paginator.html' %}
+      
+</div>
+<div class="boQui">
+  <p class="futplayful-2">
+  FutPlayful Predictions no es una web para fomentar el uso de apuestas, sino más bien consienciar acerca uso
+  de los juegos de azar y ejemplificando que el fútbol como deporte no es una ciencia exacta, en la que todo
+  es posible. <br />
+  <br />Si al utilizar nuestos datos decide aplicarlos en alguna apuesta o juego de azar recuerde jugar simpre
+  con responsabilidad&nbsp;&nbsp;<br />y solo si eres mayor de edad
+  </p>
+  <img class="element" src="{% static 'Playful/img/18.png' %}" />
+</div>
+{% endblock %}  
