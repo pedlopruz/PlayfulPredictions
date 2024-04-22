@@ -38,7 +38,9 @@ urlpatterns = [
    path("mostrarQuinielasCreadas/", mostrar_quinielas_creadas, name = "Mostrar_Quinielas_Creadas"),
    path("mostrarUsuariosQuinielas/<int:quiniela_id>/", mostrar_usuarios_participes_quinielas, name = "Mostrar_Usuarios_Participes"),
    path("mostrarPorrasPasadas/", mostrar_porras_pasadas, name = "Mostrar_Porras_Pasadas"),
-   path("cerrarPorra/", cerrar_quiniela_calcular_puntos, name = "Cerrar_Porra")
+   path("cerrarPorra/", cerrar_quiniela_calcular_puntos, name = "Cerrar_Porra"),
+   path("ranking/", ranking, name = "Ranking"),
+   path('ranking/buscar/', buscar),
 
    
 ]

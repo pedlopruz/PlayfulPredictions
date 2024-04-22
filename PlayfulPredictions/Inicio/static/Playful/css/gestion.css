@@ -785,3 +785,25 @@
   border-radius: 5px;
   padding: 10px 0; 
 }
+.pgina-de-inicio .ran {
+  position: absolute;
+  top: 270px;
+  left: 650px;
+  font-family: "Sora-Regular", Helvetica;
+  font-weight: 400;
+  color: #000000;
+  font-size: 39px;
+  text-align: center;
+  letter-spacing: -0.78px;
+  line-height: 46.8px;
+  white-space: nowrap;
+}
+.pgina-de-inicio .contenedorFormularioRanking {
+  background-color: rgb(255, 255, 255);
+  width: 50%;
+  margin-top: 30px;
+  margin-bottom: 0px;
+  margin-left: 300px;
+  border-radius: 5px;
+  padding: 10px 0; 
+}

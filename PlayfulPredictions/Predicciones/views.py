@@ -1134,6 +1134,34 @@ def comparar_equipos(request):
                     min_goles_en_contra_ultimos_3_partidos_equipo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante=visitante).aggregate(min_goles_en_contra_ultimos_3_partidos_equipo_visitante=Min('goles_en_contra_ultimos_3_partidos_equipo_visitante'))['min_goles_en_contra_ultimos_3_partidos_equipo_visitante']
                     min_goles_en_contra_ultimos_3_partidos_local_siendo_local = PartidosEntrenamiento.objects.filter(equipo_local=local).aggregate(min_goles_en_contra_ultimos_3_partidos_local_siendo_local=Min('goles_en_contra_ultimos_3_partidos_local_siendo_local'))['min_goles_en_contra_ultimos_3_partidos_local_siendo_local']
                     min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante=visitante).aggregate(min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante=Min('goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante'))['min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante']
+                    print(max_goles_ultimos_5_partidos_equipo_visitante)
+                    if max_goles_ultimos_5_partidos_equipo_local is None or max_goles_ultimos_3_partidos_equipo_visitante is None:
+                        max_goles_ultimos_5_partidos_equipo_local = PartidoSinPredecir.objects.filter(equipo_local=local).aggregate(max_goles_ultimos_5_partidos_equipo_local=Max('goles_ultimos_5_partidos_equipo_local'))['max_goles_ultimos_5_partidos_equipo_local']
+                        max_goles_ultimos_5_partidos_equipo_visitante = PartidoSinPredecir.objects.filter(equipo_visitante=visitante).aggregate(max_goles_ultimos_5_partidos_equipo_visitante=Max('goles_ultimos_5_partidos_equipo_visitante'))['max_goles_ultimos_5_partidos_equipo_visitante']
+                        max_puntos_ultimos_5_partidos_equipo_local = PartidoSinPredecir.objects.filter(equipo_local=local).aggregate(max_puntos_ultimos_5_partidos_equipo_local=Max('puntos_ultimos_5_partidos_equipo_local'))['max_puntos_ultimos_5_partidos_equipo_local']
+                        max_puntos_ultimos_5_partidos_equipo_visitante = PartidoSinPredecir.objects.filter(equipo_visitante=visitante).aggregate(max_puntos_ultimos_5_partidos_equipo_visitante=Max('puntos_ultimos_5_partidos_equipo_visitante'))['max_puntos_ultimos_5_partidos_equipo_visitante']
+                        max_goles_ultimos_5_partidos_local_siendo_local = PartidoSinPredecir.objects.filter(equipo_local=local).aggregate(max_goles_ultimos_5_partidos_local_siendo_local=Max('goles_ultimos_5_partidos_local_siendo_local'))['max_goles_ultimos_5_partidos_local_siendo_local']
+                        max_goles_ultimos_5_partidos_visitante_siendo_visitante = PartidoSinPredecir.objects.filter(equipo_visitante=visitante).aggregate(max_goles_ultimos_5_partidos_visitante_siendo_visitante=Max('goles_ultimos_5_partidos_visitante_siendo_visitante'))['max_goles_ultimos_5_partidos_visitante_siendo_visitante']
+                        max_puntos_ultimos_5_partidos_local_siendo_local = PartidoSinPredecir.objects.filter(equipo_local=local).aggregate(max_puntos_ultimos_5_partidos_local_siendo_local=Max('puntos_ultimos_5_partidos_local_siendo_local'))['max_puntos_ultimos_5_partidos_local_siendo_local']
+                        max_puntos_ultimos_5_partidos_visitante_siendo_visitante = PartidoSinPredecir.objects.filter(equipo_visitante=visitante).aggregate(max_puntos_ultimos_5_partidos_visitante_siendo_visitante=Max('puntos_ultimos_5_partidos_visitante_siendo_visitante'))['max_puntos_ultimos_5_partidos_visitante_siendo_visitante']
+                        min_goles_en_contra_ultimos_5_partidos_equipo_local = PartidoSinPredecir.objects.filter(equipo_local=local).aggregate(min_goles_en_contra_ultimos_5_partidos_equipo_local=Min('goles_en_contra_ultimos_5_partidos_equipo_local'))['min_goles_en_contra_ultimos_5_partidos_equipo_local']
+                        min_goles_en_contra_ultimos_5_partidos_equipo_visitante = PartidoSinPredecir.objects.filter(equipo_visitante=visitante).aggregate(min_goles_en_contra_ultimos_5_partidos_equipo_visitante=Min('goles_en_contra_ultimos_5_partidos_equipo_visitante'))['min_goles_en_contra_ultimos_5_partidos_equipo_visitante']
+                        min_goles_en_contra_ultimos_5_partidos_local_siendo_local = PartidoSinPredecir.objects.filter(equipo_local=local).aggregate(min_goles_en_contra_ultimos_5_partidos_local_siendo_local=Min('goles_en_contra_ultimos_5_partidos_local_siendo_local'))['min_goles_en_contra_ultimos_5_partidos_local_siendo_local']
+                        min_goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = PartidoSinPredecir.objects.filter(equipo_visitante=visitante).aggregate(min_goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante=Min('goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante'))['min_goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante']
+                        
+                        max_goles_ultimos_3_partidos_equipo_local = PartidoSinPredecir.objects.filter(equipo_local=local).aggregate(max_goles_ultimos_3_partidos_equipo_local=Max('goles_ultimos_3_partidos_equipo_local'))['max_goles_ultimos_3_partidos_equipo_local']
+                        max_goles_ultimos_3_partidos_equipo_visitante = PartidoSinPredecir.objects.filter(equipo_visitante=visitante).aggregate(max_goles_ultimos_3_partidos_equipo_visitante=Max('goles_ultimos_3_partidos_equipo_visitante'))['max_goles_ultimos_3_partidos_equipo_visitante']
+                        max_puntos_ultimos_3_partidos_equipo_local = PartidoSinPredecir.objects.filter(equipo_local=local).aggregate(max_puntos_ultimos_3_partidos_equipo_local=Max('puntos_ultimos_3_partidos_equipo_local'))['max_puntos_ultimos_3_partidos_equipo_local']
+                        max_puntos_ultimos_3_partidos_equipo_visitante = PartidoSinPredecir.objects.filter(equipo_visitante=visitante).aggregate(max_puntos_ultimos_3_partidos_equipo_visitante=Max('puntos_ultimos_3_partidos_equipo_visitante'))['max_puntos_ultimos_3_partidos_equipo_visitante']
+                        max_goles_ultimos_3_partidos_local_siendo_local = PartidoSinPredecir.objects.filter(equipo_local=local).aggregate(max_goles_ultimos_3_partidos_local_siendo_local=Max('goles_ultimos_3_partidos_local_siendo_local'))['max_goles_ultimos_3_partidos_local_siendo_local']
+                        max_goles_ultimos_3_partidos_visitante_siendo_visitante = PartidoSinPredecir.objects.filter(equipo_visitante=visitante).aggregate(max_goles_ultimos_3_partidos_visitante_siendo_visitante=Max('goles_ultimos_3_partidos_visitante_siendo_visitante'))['max_goles_ultimos_3_partidos_visitante_siendo_visitante']
+                        max_puntos_ultimos_3_partidos_local_siendo_local = PartidoSinPredecir.objects.filter(equipo_local=local).aggregate(max_puntos_ultimos_3_partidos_local_siendo_local=Max('puntos_ultimos_3_partidos_local_siendo_local'))['max_puntos_ultimos_3_partidos_local_siendo_local']
+                        max_puntos_ultimos_3_partidos_visitante_siendo_visitante = PartidoSinPredecir.objects.filter(equipo_visitante=visitante).aggregate(max_puntos_ultimos_3_partidos_visitante_siendo_visitante=Max('puntos_ultimos_3_partidos_visitante_siendo_visitante'))['max_puntos_ultimos_3_partidos_visitante_siendo_visitante']
+                        min_goles_en_contra_ultimos_3_partidos_equipo_local = PartidoSinPredecir.objects.filter(equipo_local=local).aggregate(min_goles_en_contra_ultimos_3_partidos_equipo_local=Min('goles_en_contra_ultimos_3_partidos_equipo_local'))['min_goles_en_contra_ultimos_3_partidos_equipo_local']
+                        min_goles_en_contra_ultimos_3_partidos_equipo_visitante = PartidoSinPredecir.objects.filter(equipo_visitante=visitante).aggregate(min_goles_en_contra_ultimos_3_partidos_equipo_visitante=Min('goles_en_contra_ultimos_3_partidos_equipo_visitante'))['min_goles_en_contra_ultimos_3_partidos_equipo_visitante']
+                        min_goles_en_contra_ultimos_3_partidos_local_siendo_local = PartidoSinPredecir.objects.filter(equipo_local=local).aggregate(min_goles_en_contra_ultimos_3_partidos_local_siendo_local=Min('goles_en_contra_ultimos_3_partidos_local_siendo_local'))['min_goles_en_contra_ultimos_3_partidos_local_siendo_local']
+                        min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = PartidoSinPredecir.objects.filter(equipo_visitante=visitante).aggregate(min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante=Min('goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante'))['min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante']
+
                     
                     XP = np.column_stack((
                                         max_goles_ultimos_5_partidos_equipo_local,
@@ -1453,6 +1481,34 @@ def cerrar_quiniela_calcular_puntos(request):
             return redirect('Mostrar_Quiniela')
     else:
         return redirect('Home')
+    
+
+def ranking(request):
+    usuarios = CustomUser.objects.filter(is_staff = False)
+    for usuario in usuarios:
+        puntos = 0
+        porras = Porra.objects.filter(usuario = usuario)
+        for porra in porras:
+            puntos += porra.puntos
+        usuario.puntos = puntos
+        usuario.save()
+    usuarios = CustomUser.objects.filter(is_staff = False).order_by('-puntos')
+    page = request.GET.get('page', 1) 
+    try:
+        paginator = Paginator(usuarios, 10)
+        usuarios = paginator.page(page)
+    except PageNotAnInteger:
+        raise Http404
+    return render(request, "predicciones/ranking.html", {"entity":usuarios, "paginator":paginator })
+
+def buscar(request):
+    if request.GET["usern"]:
+        user = request.GET["usern"]
+        if len(user)>20:
+            return render('Home')
+        else:
+            usuario = CustomUser.objects.filter(username__icontains=user)
+            return render(request, "predicciones/busquedaUsuario.html", {"usuario":usuario})
 
         
 

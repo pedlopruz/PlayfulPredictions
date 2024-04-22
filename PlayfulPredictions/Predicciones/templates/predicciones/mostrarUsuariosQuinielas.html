@@ -4,12 +4,11 @@
 {% load static %}
 
 {% block content %}
-<p class="quicre">Quinielas Creadas</p>
+<p class="quicre">Usuarios Participes</p>
 <div class="contenedorListaQuinielasUsuarios">
     <table class ="table">
         <thead>
           <tr>
-            {% for porra in entity %}
             <th class="th">Username</th>
             <th class="th">Predicción Partido 1</th>
             <th class="th">Predicción Partido 2</th>
@@ -21,13 +20,12 @@
             <th class="th">Predicción Partido 8</th>
             <th class="th">Predicción Partido 9</th>
             <th class="th">Predicción Partido 10</th>
-            {% if porra.quiniela.abierta is False%}
             <th class="th">Puntos</th>
-            {%endif%}
           </tr>
         </thead>
         <tbody>
             <tr>
+              {% for porra in entity %}
               <td class="tdd">{{ porra.usuario.username}}</td>
               <td class="tdd">{{porra.primer_partido }}</td>
               <td class="tdd">{{porra.segundo_partido }}</td>
@@ -39,9 +37,7 @@
               <td class="tdd">{{porra.octavo_partido }}</td>
               <td class="tdd">{{porra.noveno_partido }}</td>
               <td class="tdd">{{porra.decimo_partido }}</td>
-              {% if porra.quiniela.abierta is False%}
-              <td class="tdd">{{porra.puntos }}</td>
-              {%endif%}
+              <td class="tdd">{{porra.puntos}}</td>
             </tr>
           {% endfor %}
         </tbody>

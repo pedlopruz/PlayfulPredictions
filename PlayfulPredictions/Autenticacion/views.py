@@ -114,17 +114,12 @@ def listar_Usuarios_Admin(request):
         return redirect('Home')
     
 def eliminar_Usuarios_Admin(request, user_id):
-    if request.user.is_authenticated and request.user.is_staff:
-        user = get_object_or_404(CustomUser, id=user_id)
-        
+    user = get_object_or_404(CustomUser, id=user_id)
+    if request.method == 'POST':
+        user.delete()
+        return redirect('user_admin') 
 
-        if request.method == 'POST':
-            user.delete()
-            return redirect('user_admin') 
-
-        return render(request, 'autenticacion/eliminarUsuarios.html', {'usuarios': user})
-    else:
-        return redirect('Home')
+    return render(request, 'autenticacion/eliminarUsuarios.html', {'usuarios': user})
     
 
 
