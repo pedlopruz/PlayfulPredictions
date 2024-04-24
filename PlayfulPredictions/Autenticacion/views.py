@@ -12,6 +12,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.core.mail import EmailMessage
 from django.http import request
+import random
 # Create your views here.
 
 def registro(request):
@@ -113,7 +114,11 @@ def recuperar_contraseña(request):
             email = user_form.cleaned_data['email']
             usuario = CustomUser.objects.filter(email = email).first()
             if usuario is not None:
-                url = reverse('Cambiar_Contraseña', args=[usuario.id])
+                num = random.randint(1, 100000)
+                numero = calcular_numero(num)
+                usuario.num = numero
+                usuario.save()
+                url = reverse('Cambiar_Contraseña', args=[usuario.num])
                 url = request.build_absolute_uri(url)
                 envio_email = EmailMessage("Cambio de contraseña", "Hola, {} \n Para cambiar de contraseña acceda al siguiente enlace\n {}".format(usuario.username, url),"",[email], reply_to=["playfullpredictions@gmail.com"])
                 try:
@@ -128,15 +133,25 @@ def recuperar_contraseña(request):
         user_form = EmailForm()
 
     return render(request, 'autenticacion/recuperarPassword.html', {'user_form': user_form})
+
+def calcular_numero(num):
+    usuario = CustomUser.objects.filter(num = num).first()
+    if usuario is None:
+        numero = num
+        return numero
+    else:
+        num = random.randint(1, 100000)
+        return calcular_numero(num)
+
     
-def cambiar_Contraseña(request, user_id):
+def cambiar_Contraseña(request, num):
     if request.method == 'POST':
         user_form = UserPasswordForm(request.POST)
 
         if user_form.is_valid():
             password1 = user_form.cleaned_data['password']
             password2 = user_form.cleaned_data['password2']
-            usuario = CustomUser.objects.filter(id = user_id).first()
+            usuario = CustomUser.objects.filter(num = num).first()
             if usuario is None:
                 return redirect('Home')
             if password1 == password2:

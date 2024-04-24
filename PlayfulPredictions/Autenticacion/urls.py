@@ -12,6 +12,6 @@ urlpatterns = [
     path('gestionUsuarios/buscar/', buscar),
     path('mostrarTerminos/', mostrar_terminos, name='mostrar_terminos'),
     path('recuperarContraseña/', recuperar_contraseña, name="Recuperar_Contraseña"),
-    path('cambiarContraseña/<int:user_id>/', cambiar_Contraseña, name="Cambiar_Contraseña"),
+    path('cambiarContraseña/<int:num>/', cambiar_Contraseña, name="Cambiar_Contraseña"),
     
 ]
