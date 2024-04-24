@@ -10,7 +10,7 @@
   <form method="post" action="" style="color: aliceblue;">
     {% csrf_token %}
     <div style="width:75%; margin:auto;">
-      <h2 style="color: aliceblue;margin-left: 250px;">Filtrar Partidos</h2><br>
+      <h2 style="color: aliceblue;margin-left: 300px;">Filtrar Partidos</h2><br>
       <div style="display: flex; flex-wrap: wrap;">
         <div style="margin-right: 20px;">
           <label for="id_liga" style="color: aliceblue;">Liga:</label>
@@ -89,6 +89,40 @@
 {% include 'Autenticacion/paginator.html' %}
       
 </div>
+<p class="acc">Tasa de Aciertos</p>
+  <div class="contenedorAcc">
+      <table class="table">
+          <thead>
+              <tr>
+                  <th class="th"></th>
+                  <th class="th"> 1 </th>
+                  <th class="th"> X </th>
+                  <th class="th"> 2 </th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td class="th"> 1 </td>
+                  <td class="td">{{ es1siendo1 }}</td>
+                  <td class="td">{{ es1siendoX }}</td>
+                  <td class="td">{{ es1siendo2 }}</td>
+              </tr>
+              <tr>
+                  <td class="th"> X </td>
+                  <td class="td">{{ esXsiendo1 }}</td>
+                  <td class="td">{{ esXsiendoX }}</td>
+                  <td class="td">{{ esXsiendo2 }}</td>
+              </tr>
+              <tr>
+                  <td class="th"> 2 </td>
+                  <td class="td">{{ es2siendo1 }}</td>
+                  <td class="td">{{ es2siendoX }}</td>
+                  <td class="td">{{ es2siendo2 }}</td>
+              </tr>
+          </tbody>
+      </table>
+
+  </div>
 <div class="boPre">
   <p class="futplayful-2">
   FutPlayful Predictions no es una web para fomentar el uso de apuestas, sino más bien consienciar acerca uso

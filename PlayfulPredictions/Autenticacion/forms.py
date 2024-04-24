@@ -2,11 +2,13 @@ from django import forms
 from .models import CustomUser
 
 class UserForm(forms.ModelForm):
-    username = forms.CharField(label="Username")
+    username = forms.CharField(label="Nombre Usuario")
     email = forms.EmailField(label='Email', required=True, widget=forms.EmailInput(attrs={'autofocus': True}))
+    terminos = forms.BooleanField(label="Acepta los Términos y Condiciones")
+
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name','username', 'email', 'password']
+        fields = ['first_name', 'last_name','username', 'email', 'password', 'terminos']
 
 class UserFormWithoutPassword(forms.ModelForm):
     username = forms.CharField(label="Username")
@@ -27,3 +29,6 @@ class LoginForm(forms.ModelForm):
 
 class UsernameForm(forms.Form):
     username = forms.CharField()
+
+class EmailForm(forms.Form):
+    email = forms.EmailField(label='Email', required=True, widget=forms.EmailInput(attrs={'autofocus': True}))

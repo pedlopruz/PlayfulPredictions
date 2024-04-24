@@ -888,7 +888,45 @@ def prediccion_partidos_sin_predecir(request):
 
     return HttpResponse("Partidos de Predichos Cargados")
 
+def mostrar_tasa_de_acierto():
+    partidos_predichos = PartidosPredichos.objects.all()
+    es1siendo1 = 0
+    es1siendoX = 0
+    es1siendo2 = 0
+    esXsiendo1 = 0
+    esXsiendoX = 0
+    esXsiendo2 = 0
+    es2siendo1 = 0
+    es2siendoX = 0
+    es2siendo2 = 0
 
+    for p in partidos_predichos:
+        local = p.equipo_local
+        visitante = p.equipo_visitante
+        winner_predichos = p.winner
+
+        partido_real = PartidoReal.objects.filter(equipo_local = local, equipo_visitante = visitante).first()
+        winner_real = partido_real.winner
+
+        if winner_predichos == '1' and winner_real == '1':
+            es1siendo1 += 1
+        elif winner_predichos == '1' and winner_real == 'X':
+            es1siendoX += 1
+        elif winner_predichos == '1' and winner_real == '2':
+            es1siendo2 += 1
+        elif winner_predichos == 'X' and winner_real == '1':
+            esXsiendo1 += 1
+        elif winner_predichos == 'X' and winner_real == 'X':
+            esXsiendoX += 1
+        elif winner_predichos == 'X' and winner_real == '2':
+            esXsiendo2 += 1
+        elif winner_predichos == '2' and winner_real == '1':
+            es2siendo1 += 1
+        elif winner_predichos == '2' and winner_real == 'X':
+            es2siendoX += 1
+        elif winner_predichos == '2' and winner_real == '2':
+            es2siendo2 += 1
+    return es1siendo1,es1siendoX,es1siendo2,esXsiendo1,esXsiendoX,esXsiendo2,es2siendo1,es2siendoX,es2siendo2
 
 def mostrar_predicciones(request):
     partidos = None
@@ -932,10 +970,14 @@ def mostrar_predicciones(request):
         try:
             paginator = Paginator(partidos, 10)  # 6 predicciones por página
             partidos = paginator.page(page)
+            es1siendo1, es1siendoX, es1siendo2, esXsiendo1, esXsiendoX, esXsiendo2, es2siendo1, es2siendoX, es2siendo2 = mostrar_tasa_de_acierto() 
         except PageNotAnInteger:
-                raise Http404
+            raise Http404
 
-        return render(request, 'predicciones/mostrarPredicciones.html', {"formulario":formulario, "entity": partidos, "paginator":paginator})
+        return render(request, 'predicciones/mostrarPredicciones.html', {"formulario": formulario, "entity": partidos, "paginator": paginator, "es1siendo1": es1siendo1,
+                                                                        "es1siendoX": es1siendoX, "es1siendo2": es1siendo2, "esXsiendo1": esXsiendo1,
+                                                                        "esXsiendoX": esXsiendoX, "esXsiendo2": esXsiendo2, "es2siendo1": es2siendo1,
+                                                                        "es2siendoX": es2siendoX, "es2siendo2": es2siendo2})
 
 
 def filtrado_predicciones(request):
@@ -1272,7 +1314,7 @@ def crear_quiniela(request):
                     usuarios = CustomUser.objects.all()
                     for usuario in usuarios:
                         email = usuario.email
-                        envio_email = EmailMessage("Nueva Porra Disponible", "Se ha abierto una nueva porra con nuevos partidos para participar, no te olvides de conseguir tus puntos y escalar en el Ranking. Mucha suerte!","",[email], reply_to=["playfullpredictions@gmail.com"])
+                        envio_email = EmailMessage("Nueva Porra Disponible", "Se ha abierto una nueva porra con nuevos partidos para participar, no se olvides de conseguir sus puntos y escalar en el Ranking. Mucha suerte!","",[email], reply_to=["playfullpredictions@gmail.com"])
                         try:
                             envio_email.send()
                         except:
@@ -1298,7 +1340,7 @@ def mostrar_quiniela(request):
             num_esta_porra_hechas = Porra.objects.filter(quiniela=quiniela, usuario = request.user).count()
             print(num_porras_usuario_total)
             print(num_esta_porra_hechas)
-            return render(request, 'predicciones/mostrarQuiniela.html', {"quiniela": quiniela, "num_esta_porra_hechas":num_esta_porra_hechas, "num_porras_usuario":num_porras_usuario_total})
+            return render(request, 'predicciones/mostrarQuiniela.html', {"quiniela": quiniela, "num_quiniela": num_quinielas_total,"num_esta_porra_hechas":num_esta_porra_hechas, "num_porras_usuario":num_porras_usuario_total})
     else:
         return render(request, 'predicciones/pedirInicio.html')
     
@@ -1406,6 +1448,7 @@ def cerrar_quiniela_calcular_puntos(request):
     if request.user.is_authenticated and request.user.is_staff:
         quiniela = Quiniela.objects.filter(abierta = True).first()
         porras = Porra.objects.filter(quiniela=quiniela, sin_puntuar = True)
+        usuarios = [porra.usuario for porra in porras]
         num_porra = porras.count()
         if num_porra >=2:
             puntos = 0
@@ -1474,8 +1517,16 @@ def cerrar_quiniela_calcular_puntos(request):
                 porra.sin_puntuar = False
                 porra.puntos = puntos
                 porra.save()
+            
             quiniela.abierta = False
             quiniela.save()
+            for usuario in usuarios:
+                email = usuario.email
+                envio_email = EmailMessage("Puntos Repartidos", "Ya están dispoonibles los puntos conseguidos en las porras realizadas en la última quiniela. Accede a la web para ver tu posición en el Ranking","",[email], reply_to=["playfullpredictions@gmail.com"])
+                try:
+                    envio_email.send()
+                except:
+                    return redirect(reverse('Mostrar_Quiniela') + f'?novalido')
             return redirect('Mostrar_Quiniela')
         else:
             return redirect('Mostrar_Quiniela')
@@ -1509,6 +1560,51 @@ def buscar(request):
         else:
             usuario = CustomUser.objects.filter(username__icontains=user)
             return render(request, "predicciones/busquedaUsuario.html", {"usuario":usuario})
+        
+
+def mostrar_tasa_de_acierto():
+    partidos_predichos = PartidosPredichos.objects.all()
+    es1siendo1 = 0
+    es1siendoX = 0
+    es1siendo2 = 0
+    esXsiendo1 = 0
+    esXsiendoX = 0
+    esXsiendo2 = 0
+    es2siendo1 = 0
+    es2siendoX = 0
+    es2siendo2 = 0
+
+    for p in partidos_predichos:
+        local = p.equipo_local
+        visitante = p.equipo_visitante
+        winner_predichos = p.winner
+
+        partido_real = PartidoReal.objects.filter(equipo_local = local, equipo_visitante = visitante).first()
+        winner_real = partido_real.winner
+
+        if winner_predichos == '1' and winner_real == '1':
+            es1siendo1 += 1
+        elif winner_predichos == '1' and winner_real == 'X':
+            es1siendoX += 1
+        elif winner_predichos == '1' and winner_real == '2':
+            es1siendo2 += 1
+        elif winner_predichos == 'X' and winner_real == '1':
+            esXsiendo1 += 1
+        elif winner_predichos == 'X' and winner_real == 'X':
+            esXsiendoX += 1
+        elif winner_predichos == 'X' and winner_real == '2':
+            esXsiendo2 += 1
+        elif winner_predichos == '2' and winner_real == '1':
+            es2siendo1 += 1
+        elif winner_predichos == '2' and winner_real == 'X':
+            es2siendoX += 1
+        elif winner_predichos == '2' and winner_real == '2':
+            es2siendo2 += 1
+    return es1siendo1,es1siendoX,es1siendo2,esXsiendo1,esXsiendoX,esXsiendo2,es2siendo1,es2siendoX,es2siendo2
+
+        
+
+
 
         
 

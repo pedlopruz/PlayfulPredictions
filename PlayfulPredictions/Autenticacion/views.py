@@ -1,18 +1,26 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserForm, UserFormWithoutPassword, UserPasswordForm
+from .forms import *
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from .models import CustomUser
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.http import Http404
+import os
+from django.http import HttpResponse
+from django.conf import settings
+from django.urls import reverse
+from django.core.mail import EmailMessage
+from django.http import request
 # Create your views here.
 
 def registro(request):
+    mensaje = None
     if request.method == 'POST':
         user_form = UserForm(request.POST)
 
         if user_form.is_valid():
+
             user = user_form.save(commit=False)
             user.set_password(user_form.cleaned_data['password'])
             user.save()
@@ -24,7 +32,7 @@ def registro(request):
     else:
         user_form = UserForm()
 
-    return render(request, 'autenticacion/registro.html', {'user_form': user_form})
+    return render(request, 'autenticacion/registro.html', {'user_form': user_form, 'mensaje' : mensaje})
 
 def iniciar_Sesion(request):
     formulario = AuthenticationForm()
@@ -98,6 +106,53 @@ def actualizar_Contraseña(request):
     else:
         return redirect('Home')
     
+def recuperar_contraseña(request):
+    if request.method == 'POST':
+        user_form = EmailForm(request.POST)
+        if user_form.is_valid():
+            email = user_form.cleaned_data['email']
+            usuario = CustomUser.objects.filter(email = email).first()
+            if usuario is not None:
+                url = reverse('Cambiar_Contraseña', args=[usuario.id])
+                url = request.build_absolute_uri(url)
+                envio_email = EmailMessage("Cambio de contraseña", "Hola, {} \n Para cambiar de contraseña acceda al siguiente enlace\n {}".format(usuario.username, url),"",[email], reply_to=["playfullpredictions@gmail.com"])
+                try:
+                    envio_email.send()
+                except:
+                    return redirect(reverse('Mostrar_Quiniela') + f'?novalido')
+                    
+                return redirect('Home')
+            else:
+                return render(request, 'autenticacion/recuperarPassword.html', {'mensaje':"Email no encontrado",'user_form': user_form})
+    else:
+        user_form = EmailForm()
+
+    return render(request, 'autenticacion/recuperarPassword.html', {'user_form': user_form})
+    
+def cambiar_Contraseña(request, user_id):
+    if request.method == 'POST':
+        user_form = UserPasswordForm(request.POST)
+
+        if user_form.is_valid():
+            password1 = user_form.cleaned_data['password']
+            password2 = user_form.cleaned_data['password2']
+            usuario = CustomUser.objects.filter(id = user_id).first()
+            if usuario is None:
+                return redirect('Home')
+            if password1 == password2:
+                # Cambiar la contraseña del usuario
+                usuario.set_password(password2)
+                usuario.save() 
+                return redirect('Home')
+            else:
+                return render(request, 'autenticacion/cambiarPassword.html', {'mensaje':"Contraseñas no coinciden",'user_form': user_form})
+
+    else:
+        user_form = UserPasswordForm()
+
+    return render(request, 'autenticacion/cambiarPassword.html', {'user_form': user_form})
+    
+    
 def listar_Usuarios_Admin(request):
     if request.user.is_authenticated and request.user.is_staff:
         usuarios = CustomUser.objects.all()
@@ -122,9 +177,6 @@ def eliminar_Usuarios_Admin(request, user_id):
     return render(request, 'autenticacion/eliminarUsuarios.html', {'usuarios': user})
     
 
-
-
-
 def buscar(request):
     if request.user.is_authenticated and request.user.is_staff:
         if request.GET["usern"]:
@@ -138,3 +190,13 @@ def buscar(request):
             return redirect('user_admin')
     else:
         return render('Home')
+    
+def mostrar_terminos(request):
+    ruta_pdf = os.path.join(settings.BASE_DIR, 'data', 'Términos_y_condiciones_de_Uso.pdf')
+    if os.path.exists(ruta_pdf):
+        with open(ruta_pdf, 'rb') as pdf_file:
+            response = HttpResponse(pdf_file.read(), content_type='application/pdf')
+            response['Content-Disposition'] = 'inline; filename="documento.pdf"'
+            return response
+    else:
+        return HttpResponse("El archivo PDF no se encontró.", status=404)

@@ -41,6 +41,7 @@ urlpatterns = [
    path("cerrarPorra/", cerrar_quiniela_calcular_puntos, name = "Cerrar_Porra"),
    path("ranking/", ranking, name = "Ranking"),
    path('ranking/buscar/', buscar),
+   path('estadisticas/', mostrar_tasa_de_acierto),
 
    
 ]
