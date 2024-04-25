@@ -70,7 +70,7 @@ def actualizar_Perfil(request):
                 user.save()
                 user = authenticate(username=user_form.cleaned_data['username'], password=request.user.password)
                 login(request, user)
-                return redirect('Home')
+                return redirect('perfil')
 
         else:
             user_form = UserFormWithoutPassword(instance=request.user)
@@ -153,12 +153,14 @@ def cambiar_Contraseña(request, num):
             password2 = user_form.cleaned_data['password2']
             usuario = CustomUser.objects.filter(num = num).first()
             if usuario is None:
-                return redirect('Home')
+                return render(request, 'autenticacion/cambiarPassword.html', {'mensaje':"Cambio ya realizado",'user_form': user_form})
             if password1 == password2:
                 # Cambiar la contraseña del usuario
                 usuario.set_password(password2)
+                numero = calcular_numero(num)
+                usuario.num = numero
                 usuario.save() 
-                return redirect('Home')
+                return redirect('login')
             else:
                 return render(request, 'autenticacion/cambiarPassword.html', {'mensaje':"Contraseñas no coinciden",'user_form': user_form})
 
