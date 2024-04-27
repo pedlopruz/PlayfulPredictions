@@ -29,5 +29,8 @@
   </div>
   <div class="cart-button-2"><div class="text-wrapper-6"><a href="{% url 'Ranking' %}" style="color: aliceblue;">Ranking</a></div>
   </div>
+  {%if user.is_authenticated and not user.is_staff%}
+  <div class="cart-button-6"><div class="text-wrapper-6">{{user.puntos}} pts</a></div>
+  {%endif%}
   </div>
   </body>

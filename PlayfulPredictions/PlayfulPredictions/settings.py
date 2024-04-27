@@ -146,3 +146,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = "playfullpredictions@gmail.com"
 
 EMAIL_HOST_PASSWORD = "aypsclbpszpqslym"
+
+#Media
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -31,16 +31,16 @@
               {%else%}
               <td class="td">Cerrada</td>
               {%endif%}
-              <td class="tddd">{{ quiniela.primer_partido }}</td>
-              <td class="tddd">{{ quiniela.segundo_partido }}</td>
-              <td class="tddd">{{ quiniela.tercer_partido }}</td>
-              <td class="tddd">{{ quiniela.cuarto_partido }}</td>
-              <td class="tddd">{{ quiniela.quinto_partido}} </td>
-              <td class="tdd">{{ quiniela.sexto_partido}}</td>
-              <td class="tdd">{{ quiniela.septimo_partido}}</td>
-              <td class="tdd">{{ quiniela.octavo_partido}}</td>
-              <td class="tdd">{{ quiniela.noveno_partido}}</td>
-              <td class="tdd">{{ quiniela.decimo_partido}}</td>
+              <td class="tddd"><img src="{{quiniela.primer_partido.logo_liga.url}}" width="50"><img src="{{quiniela.primer_partido.escudo_local.url}}" width="50">{{ quiniela.primer_partido.equipo_local }} vs <img src="{{quiniela.primer_partido.escudo_visitante.url}}" width="50">{{ quiniela.segundo_partido.equipo_visitante }}<br>Jornada:{{ quiniela.primer_partido.jornada }}</td>
+              <td class="tddd"><img src="{{quiniela.segundo_partido.logo_liga.url}}" width="50"><img src="{{quiniela.segundo_partido.escudo_local.url}}" width="50">{{ quiniela.segundo_partido.equipo_local }} vs <img src="{{quiniela.segundo_partido.escudo_visitante.url}}" width="50">{{ quiniela.segundo_partido.equipo_visitante }}<br>Jornada:{{ quiniela.segundo_partido.jornada }}</td>
+              <td class="tddd"><img src="{{quiniela.tercer_partido.logo_liga.url}}" width="50"><img src="{{quiniela.tercer_partido.escudo_local.url}}" width="50">{{ quiniela.tercer_partido.equipo_local }} vs <img src="{{quiniela.tercer_partido.escudo_visitante.url}}" width="50">{{ quiniela.tercer_partido.equipo_visitante }}<br>Jornada:{{ quiniela.tercer_partido.jornada }}</td>
+              <td class="tddd"><img src="{{quiniela.cuarto_partido.logo_liga.url}}" width="50"><img src="{{quiniela.cuarto_partido.escudo_local.url}}" width="50">{{ quiniela.cuarto_partido.equipo_local }} vs <img src="{{quiniela.cuarto_partido.escudo_visitante.url}}" width="50">{{ quiniela.cuarto_partido.equipo_visitante }}<br>Jornada:{{ quiniela.cuarto_partido.jornada }}</td>
+              <td class="tddd"><img src="{{quiniela.quinto_partido.logo_liga.url}}" width="50"><img src="{{quiniela.quinto_partido.escudo_local.url}}" width="50">{{ quiniela.quinto_partido.equipo_local }} vs <img src="{{quiniela.quinto_partido.escudo_visitante.url}}" width="50">{{ quiniela.quinto_partido.equipo_visitante }}<br>Jornada:{{ quiniela.quinto_partido.jornada }} </td>
+              <td class="tdd"><img src="{{quiniela.sexto_partido.logo_liga.url}}" width="50"><img src="{{quiniela.sexto_partido.escudo_local.url}}" width="50">{{ quiniela.sexto_partido.equipo_local }} vs <img src="{{quiniela.sexto_partido.escudo_visitante.url}}" width="50">{{ quiniela.sexto_partido.equipo_visitante }}<br>Jornada:{{ quiniela.sexto_partido.jornada }}</td>
+              <td class="tdd"><img src="{{quiniela.septimo_partido.logo_liga.url}}" width="50"><img src="{{quiniela.septimo_partido.escudo_local.url}}" width="50">{{ quiniela.septimo_partido.equipo_local }} vs <img src="{{quiniela.septimo_partido.escudo_visitante.url}}" width="50">{{ quiniela.septimo_partido.equipo_visitante }}<br>Jornada:{{ quiniela.septimo_partido.jornada }}</td>
+              <td class="tdd"><img src="{{quiniela.octavo_partido.logo_liga.url}}" width="50"><img src="{{quiniela.octavo_partido.escudo_local.url}}" width="50">{{ quiniela.octavo_partido.equipo_local }} vs <img src="{{quiniela.octavo_partido.escudo_visitante.url}}" width="50">{{ quiniela.octavo_partido.equipo_visitante }}<br>Jornada:{{ quiniela.octavo_partido.jornada }}</td>
+              <td class="tdd"><img src="{{quiniela.noveno_partido.logo_liga.url}}" width="50"><img src="{{quiniela.noveno_partido.escudo_local.url}}" width="50">{{ quiniela.noveno_partido.equipo_local }} vs <img src="{{quiniela.noveno_partido.escudo_visitante.url}}" width="50">{{ quiniela.noveno_partido.equipo_visitante }}<br>Jornada:{{ quiniela.noveno_partido.jornada }}</td>
+              <td class="tdd"><img src="{{quiniela.decimo_partido.logo_liga.url}}" width="50"><img src="{{quiniela.decimo_partido.escudo_local.url}}" width="50">{{ quiniela.decimo_partido.equipo_local }} vs <img src="{{quiniela.decimo_partido.escudo_visitante.url}}" width="50">{{ quiniela.decimo_partido.equipo_visitante }}<br>Jornada:{{ quiniela.decimo_partido.jornada }}</td>
               <td class="tdd">
                 {% if user.is_authenticated and user.is_staff %}
                 <button type="submit" class="btn2 btn-success" style="margin-top: 20px; background-color: rgba(26, 53, 199, 1); border-radius: 10px; color: white;"><a href="{% url 'Mostrar_Usuarios_Participes' quiniela.id %}" style="color: aliceblue;">Mostrar Usuarios</a></button>

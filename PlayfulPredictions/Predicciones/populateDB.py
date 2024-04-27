@@ -4,7 +4,6 @@ from .models import PartidosEntrenamiento, PartidoReal, PartidoSinPredecir
 import csv
 path = "data/Entrenamiento.csv"
 path2 = "data/Temporada19-23.csv"
-path3 = "data/Partido_Entrenamiento.csv"
 
 
 def populateDatabaseEntrenamiento():
@@ -15,7 +14,8 @@ def populateDatabaseEntrenamiento():
     r19_23 = cargarPartidoEntrenamientoTemporada19_23()
     ad = cargarDatosEntrenamientoAdicionales_Ultimos_5_Partidos()
     ad2 = cargarDatosEntrenamientoAdicionales_Ultimos_3_Partidos()
-    return (r,r18_19,r218_19,r19_23,ad,ad2)
+    im = cargar_Imagenes_Equipos_Entrenamiento()
+    return (r,r18_19,r218_19,r19_23,ad,ad2, im)
 
 
 def populateDatabaseSinPredecir():
@@ -26,7 +26,8 @@ def populateDatabaseSinPredecir():
     pr = cargarPartidoSinPredecir_Ultimos_5_Partidos()
     pr2 = cargarPartidoSinPredecir_Ultimos_3_Partidos()
     el = PartidoSinPredecir.objects.last().delete()
-    return (le,esp2,pr,pr2, el)
+    im = cargar_Imagenes_Equipos_Sin_Predicir()
+    return (le,esp2,pr,pr2, el, im)
 
 def cargarPartidoEntrenamiento():
     pe = None
@@ -1580,6 +1581,544 @@ def cargarPartidoSinPredecir_Ultimos_3_Partidos():
             partido_actualizar.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante
             partido_actualizar.goles_en_contra_ultimos_3_partidos_equipo_visitante = goles_en_contra_ultimos_3_partidos_equipo_visitante
             partido_actualizar.save()
+
+def cargar_Imagenes_Equipos_Sin_Predicir():
+    partidos = PartidoSinPredecir.objects.all()
+    for partido in partidos:
+        local = partido.equipo_local
+        visitante = partido.equipo_visitante
+        if local == "Almería" or visitante == "Almería":
+            if local == "Almería":
+                partido.escudo_local = f"equipos/Almeria.png"
+            else:
+                partido.escudo_visitante = f"equipos/Almeria.png"
+        
+        if local == "Rayo" or visitante == "Rayo":
+            if local == "Rayo":
+                partido.escudo_local = f"equipos/Rayo.png"
+            else:
+                partido.escudo_visitante = f"equipos/Rayo.png"
+            
+        if local == "Sevilla" or visitante == "Sevilla":
+            if local == "Sevilla":
+                partido.escudo_local = f"equipos/Sevilla.png"
+            else:
+                partido.escudo_visitante = f"equipos/Sevilla.png"
+
+        if local == "Valencia" or visitante == "Valencia":
+            if local == "Valencia":
+                partido.escudo_local = f"equipos/Valencia.png"
+            else:
+                partido.escudo_visitante = f"equipos/Valencia.png"
+        
+        if local == "R. Sociedad" or visitante == "R. Sociedad":
+            if local == "R. Sociedad":
+                partido.escudo_local = f"equipos/R. Sociedad.png"
+            else:
+                partido.escudo_visitante = f"equipos/R. Sociedad.png"
+
+        if local == "Girona" or visitante == "Girona":
+            if local == "Girona":
+                partido.escudo_local = f"equipos/Girona.png"
+            else:
+                partido.escudo_visitante = f"equipos/Girona.png"
+        
+        if local == "Las Palmas" or visitante == "Las Palmas":
+            if local == "Las Palmas":
+                partido.escudo_local = f"equipos/Las Palmas.png"
+            else:
+                partido.escudo_visitante = f"equipos/Las Palmas.png"
+        
+        if local == "Mallorca" or visitante == "Mallorca":
+            if local == "Mallorca":
+                partido.escudo_local = f"equipos/Mallorca.png"
+            else:
+                partido.escudo_visitante = f"equipos/Mallorca.png"
+
+        if local == "Athletic" or visitante == "Athletic":
+            if local == "Athletic":
+                partido.escudo_local = f"equipos/Athletic.png"
+            else:
+                partido.escudo_visitante = f"equipos/Athletic.png"
+            
+        if local == "Real Madrid" or visitante == "Real Madrid":
+            if local == "Real Madrid":
+                partido.escudo_local = f"equipos/Real Madrid.png"
+            else:
+                partido.escudo_visitante = f"equipos/Real Madrid.png"
+
+        if local == "Celta" or visitante == "Celta":
+            if local == "Celta":
+                partido.escudo_local = f"equipos/Celta.png"
+            else:
+                partido.escudo_visitante = f"equipos/Celta.png"
+
+        if local == "Osasuna" or visitante == "Osasuna":
+            if local == "Osasuna":
+                partido.escudo_local = f"equipos/Osasuna.png"
+            else:
+                partido.escudo_visitante = f"equipos/Osasuna.png"
+
+        if local == "Villarreal" or visitante == "Villarreal":
+            if local == "Villarreal":
+                partido.escudo_local = f"equipos/Villarreal.png"
+            else:
+                partido.escudo_visitante = f"equipos/Villarreal.png"
+
+        if local == "Betis" or visitante == "Betis":
+            if local == "Betis":
+                partido.escudo_local = f"equipos/Betis.png"
+            else:
+                partido.escudo_visitante = f"equipos/Betis.png"
+
+        if local == "Getafe" or visitante == "Getafe":
+            if local == "Getafe":
+                partido.escudo_local = f"equipos/Getafe.png"
+            else:
+                partido.escudo_visitante = f"equipos/Getafe.png"
+
+        if local == "Barcelona" or visitante == "Barcelona":
+            if local == "Barcelona":
+                partido.escudo_local = f"equipos/Barcelona.png"
+            else:
+                partido.escudo_visitante = f"equipos/Barcelona.png"
+
+        if local == "Cádiz" or visitante == "Cádiz":
+            if local == "Cádiz":
+                partido.escudo_local = f"equipos/Cádiz.png"
+            else:
+                partido.escudo_visitante = f"equipos/Cádiz.png"
+
+        if local == "Alavés" or visitante == "Alavés":
+            if local == "Alavés":
+                partido.escudo_local = f"equipos/Alavés.png"
+            else:
+                partido.escudo_visitante = f"equipos/Alavés.png"
+
+        if local == "Atlético" or visitante == "Atlético":
+            if local == "Atlético":
+                partido.escudo_local = f"equipos/Atlético.png"
+            else:
+                partido.escudo_visitante = f"equipos/Atlético.png"
+
+        if local == "Granada" or visitante == "Granada":
+            if local == "Granada":
+                partido.escudo_local = f"equipos/Granada.png"
+            else:
+                partido.escudo_visitante = f"equipos/Granada.png"
+
+        if local == "Amorebieta" or visitante == "Amorebieta":
+            if local == "Amorebieta":
+                partido.escudo_local = f"equipos/Amorebieta.png"
+            else:
+                partido.escudo_visitante = f"equipos/Amorebieta.png"
+
+        if local == "Levante" or visitante == "Levante":
+            if local == "Levante":
+                partido.escudo_local = f"equipos/Levante.png"
+            else:
+                partido.escudo_visitante = f"equipos/Levante.png"
+
+        if local == "Valladolid" or visitante == "Valladolid":
+            if local == "Valladolid":
+                partido.escudo_local = f"equipos/Valladolid.png"
+            else:
+                partido.escudo_visitante = f"equipos/Valladolid.png"
+
+        if local == "Sporting" or visitante == "Sporting":
+            if local == "Sporting":
+                partido.escudo_local = f"equipos/Sporting.png"
+            else:
+                partido.escudo_visitante = f"equipos/Sporting.png"
+
+        if local == "Racing" or visitante == "Racing":
+            if local == "Racing":
+                partido.escudo_local = f"equipos/Racing.png"
+            else:
+                partido.escudo_visitante = f"equipos/Racing.png"
+
+        if local == "Eibar" or visitante == "Eibar":
+            if local == "Eibar":
+                partido.escudo_local = f"equipos/Eibar.png"
+            else:
+                partido.escudo_visitante = f"equipos/Eibar.png"
+
+        if local == "Zaragoza" or visitante == "Zaragoza":
+            if local == "Zaragoza":
+                partido.escudo_local = f"equipos/Zaragoza.png"
+            else:
+                partido.escudo_visitante = f"equipos/Zaragoza.png"
+
+        if local == "Villarreal B" or visitante == "Villarreal B":
+            if local == "Villarreal B":
+                partido.escudo_local = f"equipos/Villarreal B.png"
+            else:
+                partido.escudo_visitante = f"equipos/Villarreal B.png"
+
+        if local == "Elche" or visitante == "Elche":
+            if local == "Elche":
+                partido.escudo_local = f"equipos/Elche.png"
+            else:
+                partido.escudo_visitante = f"equipos/Elche.png"
+
+        if local == "Racing Ferrol" or visitante == "Racing Ferrol":
+            if local == "Racing Ferrol":
+                partido.escudo_local = f"equipos/Racing Ferrol.png"
+            else:
+                partido.escudo_visitante = f"equipos/Racing Ferrol.png"
+
+        if local == "Burgos" or visitante == "Burgos":
+            if local == "Burgos":
+                partido.escudo_local = f"equipos/Burgos.png"
+            else:
+                partido.escudo_visitante = f"equipos/Burgos.png"
+
+        if local == "Huesca" or visitante == "Huesca":
+            if local == "Huesca":
+                partido.escudo_local = f"equipos/Huesca.png"
+            else:
+                partido.escudo_visitante = f"equipos/Huesca.png"
+
+        if local == "Albacete" or visitante == "Albacete":
+            if local == "Albacete":
+                partido.escudo_local = f"equipos/Albacete.png"
+            else:
+                partido.escudo_visitante = f"equipos/Granada.png"
+
+        if local == "Espanyol" or visitante == "Espanyol":
+            if local == "Espanyol":
+                partido.escudo_local = f"equipos/Espanyol.png"
+            else:
+                partido.escudo_visitante = f"equipos/Espanyol.png"
+
+        if local == "FC Cartagena" or visitante == "FC Cartagena":
+            if local == "FC Cartagena":
+                partido.escudo_local = f"equipos/FC Cartagena.png"
+            else:
+                partido.escudo_visitante = f"equipos/FC Cartagena.png"
+
+        if local == "Eldense" or visitante == "Eldense":
+            if local == "Eldense":
+                partido.escudo_local = f"equipos/Eldense.png"
+            else:
+                partido.escudo_visitante = f"equipos/Granada.png"
+
+        if local == "Leganés" or visitante == "Leganés":
+            if local == "Leganés":
+                partido.escudo_local = f"equipos/Leganés.png"
+            else:
+                partido.escudo_visitante = f"equipos/Leganés.png"
+
+        if local == "FC Andorra" or visitante == "FC Andorra":
+            if local == "FC Andorra":
+                partido.escudo_local = f"equipos/FC Andorra.png"
+            else:
+                partido.escudo_visitante = f"equipos/FC Andorra.png"
+
+        if local == "Mirandés" or visitante == "Mirandés":
+            if local == "Mirandés":
+                partido.escudo_local = f"equipos/Mirandés.png"
+            else:
+                partido.escudo_visitante = f"equipos/Mirandés.png"
+
+        if local == "Alcorcón" or visitante == "Alcorcón":
+            if local == "Alcorcón":
+                partido.escudo_local = f"equipos/Alcorcón.png"
+            else:
+                partido.escudo_visitante = f"equipos/Alcorcón.png"
+
+        if local == "Tenerife" or visitante == "Tenerife":
+            if local == "Tenerife":
+                partido.escudo_local = f"equipos/Tenerife.png"
+            else:
+                partido.escudo_visitante = f"equipos/Tenerife.png"
+
+        if local == "Oviedo" or visitante == "Oviedo":
+            if local == "Oviedo":
+                partido.escudo_local = f"equipos/Oviedo.png"
+            else:
+                partido.escudo_visitante = f"equipos/Oviedo.png"
+        
+        if partido.liga == "LaLiga EA Sports":
+            partido.logo_liga = f"liga/Liga1.png"
+        else:
+            partido.logo_liga = f"liga/Liga2.png"
+
+        partido.save()
+    
+    return "Todo Ok"
+
+def cargar_Imagenes_Equipos_Entrenamiento():
+    partidos = PartidosEntrenamiento.objects.all()
+    for partido in partidos:
+        local = partido.equipo_local
+        visitante = partido.equipo_visitante
+        if local == "Almería" or visitante == "Almería":
+            if local == "Almería":
+                partido.escudo_local = f"equipos/Almeria.png"
+            else:
+                partido.escudo_visitante = f"equipos/Almeria.png"
+        
+        if local == "Rayo" or visitante == "Rayo":
+            if local == "Rayo":
+                partido.escudo_local = f"equipos/Rayo.png"
+            else:
+                partido.escudo_visitante = f"equipos/Rayo.png"
+            
+        if local == "Sevilla" or visitante == "Sevilla":
+            if local == "Sevilla":
+                partido.escudo_local = f"equipos/Sevilla.png"
+            else:
+                partido.escudo_visitante = f"equipos/Sevilla.png"
+
+        if local == "Valencia" or visitante == "Valencia":
+            if local == "Valencia":
+                partido.escudo_local = f"equipos/Valencia.png"
+            else:
+                partido.escudo_visitante = f"equipos/Valencia.png"
+        
+        if local == "R. Sociedad" or visitante == "R. Sociedad":
+            if local == "R. Sociedad":
+                partido.escudo_local = f"equipos/R. Sociedad.png"
+            else:
+                partido.escudo_visitante = f"equipos/R. Sociedad.png"
+
+        if local == "Girona" or visitante == "Girona":
+            if local == "Girona":
+                partido.escudo_local = f"equipos/Girona.png"
+            else:
+                partido.escudo_visitante = f"equipos/Girona.png"
+        
+        if local == "Las Palmas" or visitante == "Las Palmas":
+            if local == "Las Palmas":
+                partido.escudo_local = f"equipos/Las Palmas.png"
+            else:
+                partido.escudo_visitante = f"equipos/Las Palmas.png"
+        
+        if local == "Mallorca" or visitante == "Mallorca":
+            if local == "Mallorca":
+                partido.escudo_local = f"equipos/Mallorca.png"
+            else:
+                partido.escudo_visitante = f"equipos/Mallorca.png"
+
+        if local == "Athletic" or visitante == "Athletic":
+            if local == "Athletic":
+                partido.escudo_local = f"equipos/Athletic.png"
+            else:
+                partido.escudo_visitante = f"equipos/Athletic.png"
+            
+        if local == "Real Madrid" or visitante == "Real Madrid":
+            if local == "Real Madrid":
+                partido.escudo_local = f"equipos/Real Madrid.png"
+            else:
+                partido.escudo_visitante = f"equipos/Real Madrid.png"
+
+        if local == "Celta" or visitante == "Celta":
+            if local == "Celta":
+                partido.escudo_local = f"equipos/Celta.png"
+            else:
+                partido.escudo_visitante = f"equipos/Celta.png"
+
+        if local == "Osasuna" or visitante == "Osasuna":
+            if local == "Osasuna":
+                partido.escudo_local = f"equipos/Osasuna.png"
+            else:
+                partido.escudo_visitante = f"equipos/Osasuna.png"
+
+        if local == "Villarreal" or visitante == "Villarreal":
+            if local == "Villarreal":
+                partido.escudo_local = f"equipos/Villarreal.png"
+            else:
+                partido.escudo_visitante = f"equipos/Villarreal.png"
+
+        if local == "Betis" or visitante == "Betis":
+            if local == "Betis":
+                partido.escudo_local = f"equipos/Betis.png"
+            else:
+                partido.escudo_visitante = f"equipos/Betis.png"
+
+        if local == "Getafe" or visitante == "Getafe":
+            if local == "Getafe":
+                partido.escudo_local = f"equipos/Getafe.png"
+            else:
+                partido.escudo_visitante = f"equipos/Getafe.png"
+
+        if local == "Barcelona" or visitante == "Barcelona":
+            if local == "Barcelona":
+                partido.escudo_local = f"equipos/Barcelona.png"
+            else:
+                partido.escudo_visitante = f"equipos/Barcelona.png"
+
+        if local == "Cádiz" or visitante == "Cádiz":
+            if local == "Cádiz":
+                partido.escudo_local = f"equipos/Cádiz.png"
+            else:
+                partido.escudo_visitante = f"equipos/Cádiz.png"
+
+        if local == "Alavés" or visitante == "Alavés":
+            if local == "Alavés":
+                partido.escudo_local = f"equipos/Alavés.png"
+            else:
+                partido.escudo_visitante = f"equipos/Alavés.png"
+
+        if local == "Atlético" or visitante == "Atlético":
+            if local == "Atlético":
+                partido.escudo_local = f"equipos/Atlético.png"
+            else:
+                partido.escudo_visitante = f"equipos/Atlético.png"
+
+        if local == "Granada" or visitante == "Granada":
+            if local == "Granada":
+                partido.escudo_local = f"equipos/Granada.png"
+            else:
+                partido.escudo_visitante = f"equipos/Granada.png"
+
+        if local == "Amorebieta" or visitante == "Amorebieta":
+            if local == "Amorebieta":
+                partido.escudo_local = f"equipos/Amorebieta.png"
+            else:
+                partido.escudo_visitante = f"equipos/Amorebieta.png"
+
+        if local == "Levante" or visitante == "Levante":
+            if local == "Levante":
+                partido.escudo_local = f"equipos/Levante.png"
+            else:
+                partido.escudo_visitante = f"equipos/Levante.png"
+
+        if local == "Valladolid" or visitante == "Valladolid":
+            if local == "Valladolid":
+                partido.escudo_local = f"equipos/Valladolid.png"
+            else:
+                partido.escudo_visitante = f"equipos/Valladolid.png"
+
+        if local == "Sporting" or visitante == "Sporting":
+            if local == "Sporting":
+                partido.escudo_local = f"equipos/Sporting.png"
+            else:
+                partido.escudo_visitante = f"equipos/Sporting.png"
+
+        if local == "Racing" or visitante == "Racing":
+            if local == "Racing":
+                partido.escudo_local = f"equipos/Racing.png"
+            else:
+                partido.escudo_visitante = f"equipos/Racing.png"
+
+        if local == "Eibar" or visitante == "Eibar":
+            if local == "Eibar":
+                partido.escudo_local = f"equipos/Eibar.png"
+            else:
+                partido.escudo_visitante = f"equipos/Eibar.png"
+
+        if local == "Zaragoza" or visitante == "Zaragoza":
+            if local == "Zaragoza":
+                partido.escudo_local = f"equipos/Zaragoza.png"
+            else:
+                partido.escudo_visitante = f"equipos/Zaragoza.png"
+
+        if local == "Villarreal B" or visitante == "Villarreal B":
+            if local == "Villarreal B":
+                partido.escudo_local = f"equipos/Villarreal B.png"
+            else:
+                partido.escudo_visitante = f"equipos/Villarreal B.png"
+
+        if local == "Elche" or visitante == "Elche":
+            if local == "Elche":
+                partido.escudo_local = f"equipos/Elche.png"
+            else:
+                partido.escudo_visitante = f"equipos/Elche.png"
+
+        if local == "Racing Ferrol" or visitante == "Racing Ferrol":
+            if local == "Racing Ferrol":
+                partido.escudo_local = f"equipos/Racing Ferrol.png"
+            else:
+                partido.escudo_visitante = f"equipos/Racing Ferrol.png"
+
+        if local == "Burgos" or visitante == "Burgos":
+            if local == "Burgos":
+                partido.escudo_local = f"equipos/Burgos.png"
+            else:
+                partido.escudo_visitante = f"equipos/Burgos.png"
+
+        if local == "Huesca" or visitante == "Huesca":
+            if local == "Huesca":
+                partido.escudo_local = f"equipos/Huesca.png"
+            else:
+                partido.escudo_visitante = f"equipos/Huesca.png"
+
+        if local == "Albacete" or visitante == "Albacete":
+            if local == "Albacete":
+                partido.escudo_local = f"equipos/Albacete.png"
+            else:
+                partido.escudo_visitante = f"equipos/Granada.png"
+
+        if local == "Espanyol" or visitante == "Espanyol":
+            if local == "Espanyol":
+                partido.escudo_local = f"equipos/Espanyol.png"
+            else:
+                partido.escudo_visitante = f"equipos/Espanyol.png"
+
+        if local == "FC Cartagena" or visitante == "FC Cartagena":
+            if local == "FC Cartagena":
+                partido.escudo_local = f"equipos/FC Cartagena.png"
+            else:
+                partido.escudo_visitante = f"equipos/FC Cartagena.png"
+
+        if local == "Eldense" or visitante == "Eldense":
+            if local == "Eldense":
+                partido.escudo_local = f"equipos/Eldense.png"
+            else:
+                partido.escudo_visitante = f"equipos/Granada.png"
+
+        if local == "Leganés" or visitante == "Leganés":
+            if local == "Leganés":
+                partido.escudo_local = f"equipos/Leganés.png"
+            else:
+                partido.escudo_visitante = f"equipos/Leganés.png"
+
+        if local == "FC Andorra" or visitante == "FC Andorra":
+            if local == "FC Andorra":
+                partido.escudo_local = f"equipos/FC Andorra.png"
+            else:
+                partido.escudo_visitante = f"equipos/FC Andorra.png"
+
+        if local == "Mirandés" or visitante == "Mirandés":
+            if local == "Mirandés":
+                partido.escudo_local = f"equipos/Mirandés.png"
+            else:
+                partido.escudo_visitante = f"equipos/Mirandés.png"
+
+        if local == "Alcorcón" or visitante == "Alcorcón":
+            if local == "Alcorcón":
+                partido.escudo_local = f"equipos/Alcorcón.png"
+            else:
+                partido.escudo_visitante = f"equipos/Alcorcón.png"
+
+        if local == "Tenerife" or visitante == "Tenerife":
+            if local == "Tenerife":
+                partido.escudo_local = f"equipos/Tenerife.png"
+            else:
+                partido.escudo_visitante = f"equipos/Tenerife.png"
+
+        if local == "Oviedo" or visitante == "Oviedo":
+            if local == "Oviedo":
+                partido.escudo_local = f"equipos/Oviedo.png"
+            else:
+                partido.escudo_visitante = f"equipos/Oviedo.png"
+        
+        if partido.liga == "LaLiga EA Sports":
+            partido.logo_liga = f"liga/Liga1.png"
+        else:
+            partido.logo_liga = f"liga/Liga2.png"
+
+        partido.save()
+    
+    return "Todo Ok"
+
+
+        
+
+
+
                 
 
 

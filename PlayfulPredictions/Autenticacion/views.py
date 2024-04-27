@@ -126,7 +126,7 @@ def recuperar_contraseña(request):
                 except:
                     return redirect(reverse('Mostrar_Quiniela') + f'?novalido')
                     
-                return redirect('Home')
+                return redirect('logout')
             else:
                 return render(request, 'autenticacion/recuperarPassword.html', {'mensaje':"Email no encontrado",'user_form': user_form})
     else:

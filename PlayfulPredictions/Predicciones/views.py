@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .populateDB import populateDatabaseEntrenamiento, populateDatabaseSinPredecir
+from .populateDB import populateDatabaseEntrenamiento, populateDatabaseSinPredecir, cargar_Imagenes_Equipos_Entrenamiento
 from .models import *
 from Autenticacion.models import CustomUser
 from django.http import HttpResponse
@@ -63,6 +63,90 @@ def eliminarPartidoSinPredecir(request):
         partido.delete()
     
     return HttpResponse("Partidos Sin Predecir Incorrectos Eliminados")
+
+def cargar_Partido_Entrenamiento_V2(request):
+    PartidosEntrenamiento.objects.all().delete()
+    path3 = "data/Partido_Entrenamiento.csv"
+    with open(path3, newline='', encoding='utf-8-sig') as csvfile:
+        lector_csv = csv.DictReader(csvfile, delimiter=';')
+        for numero_fila, fila in enumerate(lector_csv, start=1):
+            try:
+                id = fila['id']
+                league = fila['League']
+                season = fila['Season']
+                jornada = fila['Jornada']
+                home_team = fila['Home Team']
+                away_team = fila['Away Team']
+                home_goals = fila['Home Goals']
+                away_goals = fila['Away Goals']
+                home_points = fila['Home Points']
+                away_points = fila['Away Points']
+                goles_ultimos_5_partidos_equipo_local = fila['goles_ultimos_5_partidos_equipo_local']
+                goles_ultimos_5_partidos_equipo_visitante = fila['goles_ultimos_5_partidos_equipo_visitante']
+                puntos_ultimos_5_partidos_equipo_local = fila['puntos_ultimos_5_partidos_equipo_local']
+                puntos_ultimos_5_partidos_equipo_visitante = fila['puntos_ultimos_5_partidos_equipo_visitante']
+                goles_ultimos_5_partidos_local_siendo_local = fila['goles_ultimos_5_partidos_local_siendo_local']
+                goles_ultimos_5_partidos_visitante_siendo_visitante = fila['goles_ultimos_5_partidos_visitante_siendo_visitante']
+                puntos_ultimos_5_partidos_local_siendo_local = fila['puntos_ultimos_5_partidos_local_siendo_local']
+                puntos_ultimos_5_partidos_visitante_siendo_visitante = fila['puntos_ultimos_5_partidos_visitante_siendo_visitante']
+                goles_en_contra_ultimos_5_partidos_equipo_local = fila['goles_en_contra_ultimos_5_partidos_equipo_local']
+                goles_en_contra_ultimos_5_partidos_equipo_visitante = fila['goles_en_contra_ultimos_5_partidos_equipo_visitante']
+                goles_en_contra_ultimos_5_partidos_local_siendo_local = fila['goles_en_contra_ultimos_5_partidos_local_siendo_local']
+                goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = fila['goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante']
+
+                goles_ultimos_3_partidos_equipo_local = fila['goles_ultimos_3_partidos_equipo_local']
+                goles_ultimos_3_partidos_equipo_visitante = fila['goles_ultimos_3_partidos_equipo_visitante']
+                puntos_ultimos_3_partidos_equipo_local = fila['puntos_ultimos_3_partidos_equipo_local']
+                puntos_ultimos_3_partidos_equipo_visitante = fila['puntos_ultimos_3_partidos_equipo_visitante']
+                goles_ultimos_3_partidos_local_siendo_local = fila['goles_ultimos_3_partidos_local_siendo_local']
+                goles_ultimos_3_partidos_visitante_siendo_visitante = fila['goles_ultimos_3_partidos_visitante_siendo_visitante']
+                puntos_ultimos_3_partidos_local_siendo_local = fila['puntos_ultimos_3_partidos_local_siendo_local']
+                puntos_ultimos_3_partidos_visitante_siendo_visitante = fila['puntos_ultimos_3_partidos_visitante_siendo_visitante']
+                goles_en_contra_ultimos_3_partidos_equipo_local = fila['goles_en_contra_ultimos_3_partidos_equipo_local']
+                goles_en_contra_ultimos_3_partidos_equipo_visitante = fila['goles_en_contra_ultimos_3_partidos_equipo_visitante']
+                goles_en_contra_ultimos_3_partidos_local_siendo_local = fila['goles_en_contra_ultimos_3_partidos_local_siendo_local']
+                goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = fila['goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante']
+                falta = fila['falta']
+                winner = fila['Winner']
+                PartidosEntrenamiento.objects.create(id = id, liga=league, temporada=season, jornada=jornada,
+                                                          equipo_local=home_team, equipo_visitante=away_team, goles_local=home_goals, 
+                                                          goles_visitante=away_goals, puntos_local=home_points, puntos_visitante=away_points,
+                                                          goles_ultimos_5_partidos_equipo_local = goles_ultimos_5_partidos_equipo_local,
+                                                          goles_ultimos_5_partidos_equipo_visitante = goles_ultimos_5_partidos_equipo_visitante,
+                                                          puntos_ultimos_5_partidos_equipo_local = puntos_ultimos_5_partidos_equipo_local,
+                                                          puntos_ultimos_5_partidos_equipo_visitante = puntos_ultimos_5_partidos_equipo_visitante,
+                                                            goles_ultimos_5_partidos_local_siendo_local = goles_ultimos_5_partidos_local_siendo_local,
+                                                            goles_ultimos_5_partidos_visitante_siendo_visitante = goles_ultimos_5_partidos_visitante_siendo_visitante,
+                                                            puntos_ultimos_5_partidos_local_siendo_local = puntos_ultimos_5_partidos_local_siendo_local,
+                                                            puntos_ultimos_5_partidos_visitante_siendo_visitante = puntos_ultimos_5_partidos_visitante_siendo_visitante,
+                                                            goles_en_contra_ultimos_5_partidos_equipo_local = goles_en_contra_ultimos_5_partidos_equipo_local,
+                                                            goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra_ultimos_5_partidos_equipo_visitante,
+                                                            goles_en_contra_ultimos_5_partidos_local_siendo_local = goles_en_contra_ultimos_5_partidos_local_siendo_local,
+                                                            goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante,
+
+                                                            goles_ultimos_3_partidos_equipo_local = goles_ultimos_3_partidos_equipo_local,
+                                                            goles_ultimos_3_partidos_equipo_visitante = goles_ultimos_3_partidos_equipo_visitante,
+                                                            puntos_ultimos_3_partidos_equipo_local = puntos_ultimos_3_partidos_equipo_local,
+                                                            puntos_ultimos_3_partidos_equipo_visitante = puntos_ultimos_3_partidos_equipo_visitante,
+                                                            goles_ultimos_3_partidos_local_siendo_local = goles_ultimos_3_partidos_local_siendo_local,
+                                                            goles_ultimos_3_partidos_visitante_siendo_visitante = goles_ultimos_3_partidos_visitante_siendo_visitante,
+                                                            puntos_ultimos_3_partidos_local_siendo_local = puntos_ultimos_3_partidos_local_siendo_local,
+                                                            puntos_ultimos_3_partidos_visitante_siendo_visitante = puntos_ultimos_3_partidos_visitante_siendo_visitante,
+                                                            goles_en_contra_ultimos_3_partidos_equipo_local = goles_en_contra_ultimos_3_partidos_equipo_local,
+                                                            goles_en_contra_ultimos_3_partidos_equipo_visitante = goles_en_contra_ultimos_3_partidos_equipo_visitante,
+                                                            goles_en_contra_ultimos_3_partidos_local_siendo_local = goles_en_contra_ultimos_3_partidos_local_siendo_local,
+                                                            goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante,
+                                                            falta = falta,
+
+                                                          winner=winner)
+                
+                
+            except Exception as e:
+                print(f"Error en la fila {numero_fila}: {e}")
+                # Opcional: Puedes añadir más información de la fila si es necesario
+                print(f"Contenido de la fila {numero_fila}: {fila}")
+        cargar_Imagenes_Equipos_Entrenamiento()
+    return HttpResponse("Todo Ok")
 
 
 def PartidoEntrenamientoExportToCsv(request):
@@ -820,10 +904,13 @@ def prediccion_partidos_sin_predecir(request):
     i = 0
     for partido in partidos:
         liga = partido.liga
+        logo_liga = partido. logo_liga
         jornada = partido.jornada
         temporada = partido.temporada
         equipo_local = partido.equipo_local
         equipo_visitante = partido.equipo_visitante
+        escudo_local = partido.escudo_local
+        escudo_visitante = partido.escudo_visitante
         goles_ultimos_5_partidos_equipo_local = partido.goles_ultimos_5_partidos_equipo_local
         goles_ultimos_5_partidos_equipo_visitante = partido.goles_ultimos_5_partidos_equipo_visitante
         puntos_ultimos_5_partidos_equipo_local = partido.puntos_ultimos_5_partidos_equipo_local
@@ -854,9 +941,12 @@ def prediccion_partidos_sin_predecir(request):
                                     id=i,
                                     liga=liga,
                                     jornada=jornada,
-                                    temporada=temporada, 
+                                    temporada=temporada,
+                                    logo_liga = logo_liga, 
                                     equipo_local = equipo_local, 
                                     equipo_visitante=equipo_visitante,
+                                    escudo_local = escudo_local,
+                                    escudo_visitante  = escudo_visitante, 
                                     goles_ultimos_5_partidos_equipo_local =  goles_ultimos_5_partidos_equipo_local,
                                     goles_ultimos_5_partidos_equipo_visitante = goles_ultimos_5_partidos_equipo_visitante, 
                                     puntos_ultimos_5_partidos_equipo_local = puntos_ultimos_5_partidos_equipo_local, 
@@ -1104,6 +1194,8 @@ def comparar_equipos(request):
     ultimos_partidos_visitante = None
     local = None
     visitante = None
+    escudo_local = None
+    escudo_visitante = None
     prediccion = None
     max_goles_ultimos_5_partidos_equipo_local = None
     max_goles_ultimos_5_partidos_equipo_visitante = None
@@ -1145,8 +1237,13 @@ def comparar_equipos(request):
                 partidos_visitante_siendo_visitante = PartidosEntrenamiento.objects.filter(Q(equipo_visitante=visitante) | Q(equipo_local=visitante)).order_by("-id")[:5]
                 ultimos_partidos_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante = visitante).order_by("-id")[:5]
 
-                prediccion = PartidosPredichos.objects.filter(equipo_local = local, equipo_visitante = visitante)
-                if prediccion.exists():
+                p_local = PartidosPredichos.objects.filter(equipo_local = local).first()
+                escudo_local = p_local.escudo_local
+                p_local = PartidosPredichos.objects.filter(equipo_visitante = visitante).first()
+                escudo_visitante = p_local.escudo_visitante
+
+                prediccion = PartidosPredichos.objects.filter(equipo_local = local, equipo_visitante = visitante).first()
+                if prediccion is not None:
                     prediccion = prediccion
                     existe = True
                 else:
@@ -1176,7 +1273,6 @@ def comparar_equipos(request):
                     min_goles_en_contra_ultimos_3_partidos_equipo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante=visitante).aggregate(min_goles_en_contra_ultimos_3_partidos_equipo_visitante=Min('goles_en_contra_ultimos_3_partidos_equipo_visitante'))['min_goles_en_contra_ultimos_3_partidos_equipo_visitante']
                     min_goles_en_contra_ultimos_3_partidos_local_siendo_local = PartidosEntrenamiento.objects.filter(equipo_local=local).aggregate(min_goles_en_contra_ultimos_3_partidos_local_siendo_local=Min('goles_en_contra_ultimos_3_partidos_local_siendo_local'))['min_goles_en_contra_ultimos_3_partidos_local_siendo_local']
                     min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante=visitante).aggregate(min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante=Min('goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante'))['min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante']
-                    print(max_goles_ultimos_5_partidos_equipo_visitante)
                     if max_goles_ultimos_5_partidos_equipo_local is None or max_goles_ultimos_3_partidos_equipo_visitante is None:
                         max_goles_ultimos_5_partidos_equipo_local = PartidoSinPredecir.objects.filter(equipo_local=local).aggregate(max_goles_ultimos_5_partidos_equipo_local=Max('goles_ultimos_5_partidos_equipo_local'))['max_goles_ultimos_5_partidos_equipo_local']
                         max_goles_ultimos_5_partidos_equipo_visitante = PartidoSinPredecir.objects.filter(equipo_visitante=visitante).aggregate(max_goles_ultimos_5_partidos_equipo_visitante=Max('goles_ultimos_5_partidos_equipo_visitante'))['max_goles_ultimos_5_partidos_equipo_visitante']
@@ -1249,11 +1345,14 @@ def comparar_equipos(request):
                                                                  "entity3": ultimos_partidos_partidos_local,
                                                                  "entity4": partidos_local_siendo_local,
                                                                  "entity5":partidos_visitante_siendo_visitante,
-                                                                 "entity6": ultimos_partidos_visitante, "local":local, 
+                                                                 "entity6": ultimos_partidos_visitante, 
+                                                                 "local":local, 
                                                                  "visitante":visitante, 
                                                                  "prediccion":prediccion,
                                                                  "winner":winner,
                                                                  "existe":existe,
+                                                                 "escudo_local":escudo_local,
+                                                                 "escudo_visitante":escudo_visitante,
                                                                  "goles_ultimos_5_partidos_equipo_local":max_goles_ultimos_5_partidos_equipo_local,
                                                                  "goles_ultimos_5_partidos_equipo_visitante":max_goles_ultimos_5_partidos_equipo_visitante,
                                                                  "puntos_ultimos_5_partidos_equipo_local":max_puntos_ultimos_5_partidos_equipo_local,
@@ -1385,7 +1484,7 @@ def realizar_porra(request):
                     envio_email.send()
                 except:
                     return redirect(reverse('Realizar_Porra') + f'?novalido')
-                return redirect('Home')
+                return redirect('Mostrar_Quiniela')
                 
 
         else:

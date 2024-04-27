@@ -1,7 +1,11 @@
-from django.urls import path, include
+from django.urls import path
 from .views import *
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
    path("entrenamiento/", cargar_Datos_Entrenamiento, name="Cargar_Datos_Entrenamiento"),
+   path("entrenamiento2/", cargar_Partido_Entrenamiento_V2, name="Cargar_Datos_Entrenamiento_V2"),
    path("sin_predecir/", cargar_Datos_Sin_Predecir, name="Cargar_Datos_Sin_Predecir"),
    path("eliminar/", eliminarPartidodeEntrenamiento, name="Eliminar"),
    path("eliminar_sin_predecir/", eliminarPartidoSinPredecir, name="Eliminar Sin Predecir"),
@@ -45,3 +49,6 @@ urlpatterns = [
 
    
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

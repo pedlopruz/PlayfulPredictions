@@ -33,8 +33,8 @@
             <tr>
               <td class="td">{{ partido.liga }}</td>
               <td class="td">{{ partido.jornada }}</td>
-              <td class="td">{{ partido.equipo_local }}</td>
-              <td class="td">{{ partido.equipo_visitante }}</td>
+              <td class="td"><img src="{{partido.escudo_local.url}}" width="50">{{ partido.equipo_local }}</td>
+              <td class="td"><img src="{{partido.escudo_visitante.url}}" width="50">{{ partido.equipo_visitante }}</td>
               <td class="td">{{ partido.goles_ultimos_3_partidos_equipo_local }} | {{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
               <td class="td">{{ partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
               <td class="td">{{ partido.puntos_ultimos_3_partidos_equipo_local }} | {{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
