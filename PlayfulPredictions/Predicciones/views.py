@@ -896,9 +896,10 @@ def prediccion_partidos_sin_predecir(request):
     X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Y_5_Ultimos_Partidos()
     XP = obtencion_valores_para_predecir_partido_sin_predecir()
     X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
-    model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
-    model_gbc.fit(X_train, winner_train),
-    predicciones = model_gbc.predict(XP)
+    model = LogisticRegression(penalty='l1', C=0.1,solver='liblinear', class_weight='balanced', max_iter=10000, random_state=42)
+    #model = GradientBoostingClassifier(random_state=42)
+    model.fit(X_train, winner_train),
+    predicciones = model.predict(XP)
     predicciones_modificadas = ['X' if pred == '0' else pred for pred in predicciones]
     partidos = PartidoSinPredecir.objects.all()
     i = 0
