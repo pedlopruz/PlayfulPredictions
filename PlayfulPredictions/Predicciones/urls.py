@@ -47,6 +47,9 @@ urlpatterns = [
    path('ranking/buscar/', buscar),
    path('estadisticas/', mostrar_tasa_de_acierto),
 
+   path('masDatosEmpates', cargar_nuevos_datos_empates),
+   path('masDatosVisitantes', cargar_nuevos_datos_visitantes),
+
    
 ]
 

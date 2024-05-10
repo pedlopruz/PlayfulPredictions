@@ -26,6 +26,7 @@ from django.db.models import Q
 from django.db.models import Max, Min
 from django.core.mail import EmailMessage
 
+
 # Create your views here.
 def cargar_Datos_Entrenamiento(request):
     if populateDatabaseEntrenamiento():
@@ -148,6 +149,167 @@ def cargar_Partido_Entrenamiento_V2(request):
         cargar_Imagenes_Equipos_Entrenamiento()
     return HttpResponse("Todo Ok")
 
+def cargar_nuevos_datos_empates(request):
+    empates = PartidosEntrenamiento.objects.filter(winner='0')[:9123]
+    empate = PartidosEntrenamiento.objects.filter(winner='0')
+    primer_empate = empate.first()
+    print(empates.count())
+    id = 41359
+    for p in empates:
+        
+        id = id
+        league = p.liga
+        season = p.temporada
+        jornada = 0
+        home_team = "inventado_local"
+        away_team = "inventado_vistante"
+        home_goals = 0
+        away_goals = 0
+        home_points = 0
+        away_points = 0
+        goles_ultimos_5_partidos_equipo_local = int(round((p.goles_ultimos_5_partidos_equipo_local + primer_empate.goles_ultimos_5_partidos_equipo_local)/2))
+        goles_ultimos_5_partidos_equipo_visitante = int(round((p.goles_ultimos_5_partidos_equipo_visitante + primer_empate.goles_ultimos_5_partidos_equipo_visitante)/2))
+        puntos_ultimos_5_partidos_equipo_local = int(round((p.puntos_ultimos_5_partidos_equipo_local + primer_empate.puntos_ultimos_5_partidos_equipo_local)/2))
+        puntos_ultimos_5_partidos_equipo_visitante = int(round((p.puntos_ultimos_5_partidos_equipo_visitante + primer_empate.puntos_ultimos_5_partidos_equipo_visitante)/2))
+        goles_ultimos_5_partidos_local_siendo_local = int(round((p.goles_ultimos_5_partidos_local_siendo_local + primer_empate.goles_ultimos_5_partidos_local_siendo_local)/2))
+        goles_ultimos_5_partidos_visitante_siendo_visitante = int(round((p.goles_ultimos_5_partidos_visitante_siendo_visitante + primer_empate.goles_ultimos_5_partidos_visitante_siendo_visitante)/2))
+        puntos_ultimos_5_partidos_local_siendo_local = int(round((p.puntos_ultimos_5_partidos_local_siendo_local + primer_empate.puntos_ultimos_5_partidos_local_siendo_local)/2))
+        puntos_ultimos_5_partidos_visitante_siendo_visitante = int(round((p.puntos_ultimos_5_partidos_visitante_siendo_visitante + primer_empate.puntos_ultimos_5_partidos_visitante_siendo_visitante)/2))
+        goles_en_contra_ultimos_5_partidos_equipo_local = int(round((p.goles_en_contra_ultimos_5_partidos_equipo_local + primer_empate.goles_en_contra_ultimos_5_partidos_equipo_local)/2))
+        goles_en_contra_ultimos_5_partidos_equipo_visitante = int(round((p.goles_en_contra_ultimos_5_partidos_equipo_visitante + primer_empate.goles_en_contra_ultimos_5_partidos_equipo_visitante)/2))
+        goles_en_contra_ultimos_5_partidos_local_siendo_local = int(round((p.goles_en_contra_ultimos_5_partidos_local_siendo_local + primer_empate.goles_en_contra_ultimos_5_partidos_local_siendo_local)/2))
+        goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = int(round((p.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante + primer_empate.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante)/2))
+
+        goles_ultimos_3_partidos_equipo_local = int(round((p.goles_ultimos_3_partidos_equipo_local + primer_empate.goles_ultimos_3_partidos_equipo_local)/2))
+        goles_ultimos_3_partidos_equipo_visitante = int(round((p.goles_ultimos_3_partidos_equipo_visitante + primer_empate.goles_ultimos_3_partidos_equipo_visitante)/2))
+        puntos_ultimos_3_partidos_equipo_local = int(round((p.puntos_ultimos_3_partidos_equipo_local + primer_empate.puntos_ultimos_3_partidos_equipo_local)/2))
+        puntos_ultimos_3_partidos_equipo_visitante = int(round((p.puntos_ultimos_3_partidos_equipo_visitante + primer_empate.puntos_ultimos_3_partidos_equipo_visitante)/2))
+        goles_ultimos_3_partidos_local_siendo_local = int(round((p.goles_ultimos_3_partidos_local_siendo_local + primer_empate.goles_ultimos_3_partidos_local_siendo_local)/2))
+        goles_ultimos_3_partidos_visitante_siendo_visitante = int(round((p.goles_ultimos_3_partidos_visitante_siendo_visitante + primer_empate.goles_ultimos_3_partidos_visitante_siendo_visitante)/2))
+        puntos_ultimos_3_partidos_local_siendo_local = int(round((p.puntos_ultimos_3_partidos_local_siendo_local + primer_empate.puntos_ultimos_3_partidos_local_siendo_local)/2))
+        puntos_ultimos_3_partidos_visitante_siendo_visitante = int(round((p.puntos_ultimos_3_partidos_visitante_siendo_visitante + primer_empate.puntos_ultimos_3_partidos_visitante_siendo_visitante)/2))
+        goles_en_contra_ultimos_3_partidos_equipo_local = int(round((p.goles_en_contra_ultimos_3_partidos_equipo_local + primer_empate.goles_en_contra_ultimos_3_partidos_equipo_local)/2))
+        goles_en_contra_ultimos_3_partidos_equipo_visitante = int(round((p.goles_en_contra_ultimos_3_partidos_equipo_visitante + primer_empate.goles_en_contra_ultimos_3_partidos_equipo_visitante)/2))
+        goles_en_contra_ultimos_3_partidos_local_siendo_local = int(round((p.goles_en_contra_ultimos_3_partidos_local_siendo_local + primer_empate.goles_en_contra_ultimos_3_partidos_local_siendo_local)/2))
+        goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = int(round((p.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante + primer_empate.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante)/2))
+        falta = False
+        winner = 0
+        PartidosEntrenamiento.objects.create(id = id, liga=league, temporada=season, jornada=jornada,
+                                                          equipo_local=home_team, equipo_visitante=away_team, goles_local=home_goals, 
+                                                          goles_visitante=away_goals, puntos_local=home_points, puntos_visitante=away_points,
+                                                          goles_ultimos_5_partidos_equipo_local = goles_ultimos_5_partidos_equipo_local,
+                                                          goles_ultimos_5_partidos_equipo_visitante = goles_ultimos_5_partidos_equipo_visitante,
+                                                          puntos_ultimos_5_partidos_equipo_local = puntos_ultimos_5_partidos_equipo_local,
+                                                          puntos_ultimos_5_partidos_equipo_visitante = puntos_ultimos_5_partidos_equipo_visitante,
+                                                            goles_ultimos_5_partidos_local_siendo_local = goles_ultimos_5_partidos_local_siendo_local,
+                                                            goles_ultimos_5_partidos_visitante_siendo_visitante = goles_ultimos_5_partidos_visitante_siendo_visitante,
+                                                            puntos_ultimos_5_partidos_local_siendo_local = puntos_ultimos_5_partidos_local_siendo_local,
+                                                            puntos_ultimos_5_partidos_visitante_siendo_visitante = puntos_ultimos_5_partidos_visitante_siendo_visitante,
+                                                            goles_en_contra_ultimos_5_partidos_equipo_local = goles_en_contra_ultimos_5_partidos_equipo_local,
+                                                            goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra_ultimos_5_partidos_equipo_visitante,
+                                                            goles_en_contra_ultimos_5_partidos_local_siendo_local = goles_en_contra_ultimos_5_partidos_local_siendo_local,
+                                                            goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante,
+
+                                                            goles_ultimos_3_partidos_equipo_local = goles_ultimos_3_partidos_equipo_local,
+                                                            goles_ultimos_3_partidos_equipo_visitante = goles_ultimos_3_partidos_equipo_visitante,
+                                                            puntos_ultimos_3_partidos_equipo_local = puntos_ultimos_3_partidos_equipo_local,
+                                                            puntos_ultimos_3_partidos_equipo_visitante = puntos_ultimos_3_partidos_equipo_visitante,
+                                                            goles_ultimos_3_partidos_local_siendo_local = goles_ultimos_3_partidos_local_siendo_local,
+                                                            goles_ultimos_3_partidos_visitante_siendo_visitante = goles_ultimos_3_partidos_visitante_siendo_visitante,
+                                                            puntos_ultimos_3_partidos_local_siendo_local = puntos_ultimos_3_partidos_local_siendo_local,
+                                                            puntos_ultimos_3_partidos_visitante_siendo_visitante = puntos_ultimos_3_partidos_visitante_siendo_visitante,
+                                                            goles_en_contra_ultimos_3_partidos_equipo_local = goles_en_contra_ultimos_3_partidos_equipo_local,
+                                                            goles_en_contra_ultimos_3_partidos_equipo_visitante = goles_en_contra_ultimos_3_partidos_equipo_visitante,
+                                                            goles_en_contra_ultimos_3_partidos_local_siendo_local = goles_en_contra_ultimos_3_partidos_local_siendo_local,
+                                                            goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante,
+                                                            falta = falta,
+
+                                                          winner=winner)
+        id = id+1
+    total = PartidosEntrenamiento.objects.filter(winner='0').count()
+    print(total)    
+    return HttpResponse("Todo Ok")
+
+def cargar_nuevos_datos_visitantes(request):
+    visitantes = PartidosEntrenamiento.objects.filter(winner='2')
+    visitante = PartidosEntrenamiento.objects.filter(winner='2')
+    primer_visitante = visitante.first()
+    print(visitantes.count())
+    id = 50482
+    for p in visitantes:
+        
+        id = id
+        league = p.liga
+        season = p.temporada
+        jornada = 0
+        home_team = "inventado_local"
+        away_team = "inventado_vistante"
+        home_goals = 2
+        away_goals = 3
+        home_points = 3
+        away_points = 3
+        goles_ultimos_5_partidos_equipo_local = int(round((p.goles_ultimos_5_partidos_equipo_local + primer_visitante.goles_ultimos_5_partidos_equipo_local)/2))
+        goles_ultimos_5_partidos_equipo_visitante = int(round((p.goles_ultimos_5_partidos_equipo_visitante + primer_visitante.goles_ultimos_5_partidos_equipo_visitante)/2))
+        puntos_ultimos_5_partidos_equipo_local = int(round((p.puntos_ultimos_5_partidos_equipo_local + primer_visitante.puntos_ultimos_5_partidos_equipo_local)/2))
+        puntos_ultimos_5_partidos_equipo_visitante = int(round((p.puntos_ultimos_5_partidos_equipo_visitante + primer_visitante.puntos_ultimos_5_partidos_equipo_visitante)/2))
+        goles_ultimos_5_partidos_local_siendo_local = int(round((p.goles_ultimos_5_partidos_local_siendo_local + primer_visitante.goles_ultimos_5_partidos_local_siendo_local)/2))
+        goles_ultimos_5_partidos_visitante_siendo_visitante = int(round((p.goles_ultimos_5_partidos_visitante_siendo_visitante + primer_visitante.goles_ultimos_5_partidos_visitante_siendo_visitante)/2))
+        puntos_ultimos_5_partidos_local_siendo_local = int(round((p.puntos_ultimos_5_partidos_local_siendo_local + primer_visitante.puntos_ultimos_5_partidos_local_siendo_local)/2))
+        puntos_ultimos_5_partidos_visitante_siendo_visitante = int(round((p.puntos_ultimos_5_partidos_visitante_siendo_visitante + primer_visitante.puntos_ultimos_5_partidos_visitante_siendo_visitante)/2))
+        goles_en_contra_ultimos_5_partidos_equipo_local = int(round((p.goles_en_contra_ultimos_5_partidos_equipo_local + primer_visitante.goles_en_contra_ultimos_5_partidos_equipo_local)/2))
+        goles_en_contra_ultimos_5_partidos_equipo_visitante = int(round((p.goles_en_contra_ultimos_5_partidos_equipo_visitante + primer_visitante.goles_en_contra_ultimos_5_partidos_equipo_visitante)/2))
+        goles_en_contra_ultimos_5_partidos_local_siendo_local = int(round((p.goles_en_contra_ultimos_5_partidos_local_siendo_local + primer_visitante.goles_en_contra_ultimos_5_partidos_local_siendo_local)/2))
+        goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = int(round((p.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante + primer_visitante.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante)/2))
+
+        goles_ultimos_3_partidos_equipo_local = int(round((p.goles_ultimos_3_partidos_equipo_local + primer_visitante.goles_ultimos_3_partidos_equipo_local)/2))
+        goles_ultimos_3_partidos_equipo_visitante = int(round((p.goles_ultimos_3_partidos_equipo_visitante + primer_visitante.goles_ultimos_3_partidos_equipo_visitante)/2))
+        puntos_ultimos_3_partidos_equipo_local = int(round((p.puntos_ultimos_3_partidos_equipo_local + primer_visitante.puntos_ultimos_3_partidos_equipo_local)/2))
+        puntos_ultimos_3_partidos_equipo_visitante = int(round((p.puntos_ultimos_3_partidos_equipo_visitante + primer_visitante.puntos_ultimos_3_partidos_equipo_visitante)/2))
+        goles_ultimos_3_partidos_local_siendo_local = int(round((p.goles_ultimos_3_partidos_local_siendo_local + primer_visitante.goles_ultimos_3_partidos_local_siendo_local)/2))
+        goles_ultimos_3_partidos_visitante_siendo_visitante = int(round((p.goles_ultimos_3_partidos_visitante_siendo_visitante + primer_visitante.goles_ultimos_3_partidos_visitante_siendo_visitante)/2))
+        puntos_ultimos_3_partidos_local_siendo_local = int(round((p.puntos_ultimos_3_partidos_local_siendo_local + primer_visitante.puntos_ultimos_3_partidos_local_siendo_local)/2))
+        puntos_ultimos_3_partidos_visitante_siendo_visitante = int(round((p.puntos_ultimos_3_partidos_visitante_siendo_visitante + primer_visitante.puntos_ultimos_3_partidos_visitante_siendo_visitante)/2))
+        goles_en_contra_ultimos_3_partidos_equipo_local = int(round((p.goles_en_contra_ultimos_3_partidos_equipo_local + primer_visitante.goles_en_contra_ultimos_3_partidos_equipo_local)/2))
+        goles_en_contra_ultimos_3_partidos_equipo_visitante = int(round((p.goles_en_contra_ultimos_3_partidos_equipo_visitante + primer_visitante.goles_en_contra_ultimos_3_partidos_equipo_visitante)/2))
+        goles_en_contra_ultimos_3_partidos_local_siendo_local = int(round((p.goles_en_contra_ultimos_3_partidos_local_siendo_local + primer_visitante.goles_en_contra_ultimos_3_partidos_local_siendo_local)/2))
+        goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = int(round((p.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante + primer_visitante.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante)/2))
+        falta = False
+        winner = 2
+        PartidosEntrenamiento.objects.create(id = id, liga=league, temporada=season, jornada=jornada,
+                                                          equipo_local=home_team, equipo_visitante=away_team, goles_local=home_goals, 
+                                                          goles_visitante=away_goals, puntos_local=home_points, puntos_visitante=away_points,
+                                                          goles_ultimos_5_partidos_equipo_local = goles_ultimos_5_partidos_equipo_local,
+                                                          goles_ultimos_5_partidos_equipo_visitante = goles_ultimos_5_partidos_equipo_visitante,
+                                                          puntos_ultimos_5_partidos_equipo_local = puntos_ultimos_5_partidos_equipo_local,
+                                                          puntos_ultimos_5_partidos_equipo_visitante = puntos_ultimos_5_partidos_equipo_visitante,
+                                                            goles_ultimos_5_partidos_local_siendo_local = goles_ultimos_5_partidos_local_siendo_local,
+                                                            goles_ultimos_5_partidos_visitante_siendo_visitante = goles_ultimos_5_partidos_visitante_siendo_visitante,
+                                                            puntos_ultimos_5_partidos_local_siendo_local = puntos_ultimos_5_partidos_local_siendo_local,
+                                                            puntos_ultimos_5_partidos_visitante_siendo_visitante = puntos_ultimos_5_partidos_visitante_siendo_visitante,
+                                                            goles_en_contra_ultimos_5_partidos_equipo_local = goles_en_contra_ultimos_5_partidos_equipo_local,
+                                                            goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra_ultimos_5_partidos_equipo_visitante,
+                                                            goles_en_contra_ultimos_5_partidos_local_siendo_local = goles_en_contra_ultimos_5_partidos_local_siendo_local,
+                                                            goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante,
+
+                                                            goles_ultimos_3_partidos_equipo_local = goles_ultimos_3_partidos_equipo_local,
+                                                            goles_ultimos_3_partidos_equipo_visitante = goles_ultimos_3_partidos_equipo_visitante,
+                                                            puntos_ultimos_3_partidos_equipo_local = puntos_ultimos_3_partidos_equipo_local,
+                                                            puntos_ultimos_3_partidos_equipo_visitante = puntos_ultimos_3_partidos_equipo_visitante,
+                                                            goles_ultimos_3_partidos_local_siendo_local = goles_ultimos_3_partidos_local_siendo_local,
+                                                            goles_ultimos_3_partidos_visitante_siendo_visitante = goles_ultimos_3_partidos_visitante_siendo_visitante,
+                                                            puntos_ultimos_3_partidos_local_siendo_local = puntos_ultimos_3_partidos_local_siendo_local,
+                                                            puntos_ultimos_3_partidos_visitante_siendo_visitante = puntos_ultimos_3_partidos_visitante_siendo_visitante,
+                                                            goles_en_contra_ultimos_3_partidos_equipo_local = goles_en_contra_ultimos_3_partidos_equipo_local,
+                                                            goles_en_contra_ultimos_3_partidos_equipo_visitante = goles_en_contra_ultimos_3_partidos_equipo_visitante,
+                                                            goles_en_contra_ultimos_3_partidos_local_siendo_local = goles_en_contra_ultimos_3_partidos_local_siendo_local,
+                                                            goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante,
+                                                            falta = falta,
+
+                                                          winner=winner)
+        id = id+1
+    total = PartidosEntrenamiento.objects.filter(winner='2').count()
+    print(total)    
+    return HttpResponse("Todo Ok")
 
 def PartidoEntrenamientoExportToCsv(request):
     response = HttpResponse(content_type="text/csv")
@@ -296,12 +458,12 @@ def entrenamiento_Modelo_Bayes_Para_Datos_5_Ultimos_Partidos(request):
     labels = ['1', "0", "2"]
     conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
     conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-    accuracy = accuracy_score(winner_test, winner_pred)
+    report = classification_report(winner_test, winner_pred)
     
     print(conf_matrix_table)
-    print(accuracy)
+    print(report)
 
-    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+    return HttpResponse("Todo Ok")
 
 def entrenamiento_Modelo_Bayes_Con_Validacion_Cruzada_Para_Datos_5_Ultimos_Partidos(request):
 
@@ -331,75 +493,45 @@ def entrenamiento_Modelo_KNN_Para_Datos_5_Ultimos_Partidos(request):
     labels = ['1', "0", "2"]
     conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
     conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-    accuracy = accuracy_score(winner_test, winner_pred)
-    from django.db.models import Q
+    report = classification_report(winner_test, winner_pred)
     
     print(conf_matrix_table)
-    print(accuracy)
+    print(report)
 
-    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+    return HttpResponse("Todo Ok")
 
-
-'''def entrenamientoModeloRandomForest(request):
-    
-    X,Y = calculoValoresIndpYDepen()
-    X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
-    rf = RandomForestClassifier()
-
-# Define la distribución de los hiperparámetros que deseas explorar
-    param_dist = {
-    'n_estimators': randint(100, 1000),  # Número de estimadores entre 100 y 1000
-    'max_depth': [None] + list(randint(3, 30).rvs(10)),  # Profundidad máxima entre 3 y 30
-    'min_samples_split': randint(2, 20),  # Número mínimo de muestras para dividir un nodo
-    'min_samples_leaf': randint(1, 20),  # Número mínimo de muestras en cada hoja
-    'max_features': ['auto', 'sqrt']
-    }
-
-# Inicializa RandomizedSearchCV con el clasificador, la distribución de parámetros y el número de iteraciones
-    random_search = RandomizedSearchCV(rf, param_distributions=param_dist, n_iter=100, cv=5, random_state=42, n_jobs=-1)
-
-# Ajusta RandomizedSearchCV en tus datos de entrenamiento
-    random_search.fit(X_train, winner_train)
-
-# Muestra los mejores parámetros encontrados
-    print("Mejores parámetros encontrados:", random_search.best_params_)
-
-# Muestra el mejor puntaje obtenido durante la búsqueda
-    print("Mejor precisión encontrada:", random_search.best_score_)
-
-    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": random_search.best_score_}) '''
 
 def entrenamiento_Modelo_Random_Forest_Para_Datos_5_Ultimos_Partidos(request):
     X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_5_Ultimos_Partidos()
     X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
-    model_rf = RandomForestClassifier(n_estimators=1000, max_depth=50, max_features='sqrt', min_samples_leaf=50, min_samples_split=20)
+    model_rf = RandomForestClassifier(n_estimators=203, max_depth=20, max_features='sqrt', class_weight='balanced', random_state=42)
     model_rf.fit(X_train, winner_train), 
     winner_pred = model_rf.predict(X_test)
     labels = ['1', "0", "2"]
     conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
     conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-    accuracy = accuracy_score(winner_test, winner_pred)
+    report = classification_report(winner_test, winner_pred)
     
     print(conf_matrix_table)
-    print(accuracy)
+    print(report)
 
-    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+    return HttpResponse("Todo Ok")
 
 def entrenamiento_Modelo_SVM_Para_Datos_5_Ultimos_Partidos(request):
     X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_5_Ultimos_Partidos()
     X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
-    model_svm = SVC(kernel='poly', C=1, random_state=42)
+    model_svm = SVC(kernel='poly', C=1, class_weight='balanced', random_state=42)
     model_svm.fit(X_train, winner_train), 
     winner_pred = model_svm.predict(X_test)
     labels = ['1', "0", "2"]
     conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
     conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-    accuracy = accuracy_score(winner_test, winner_pred)
+    report = classification_report(winner_test, winner_pred)
     
     print(conf_matrix_table)
-    print(accuracy)
+    print(report)
 
-    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+    return HttpResponse("Todo Ok")
 
 def entrenamiento_Modelo_LR_Para_Datos_5_Ultimos_Partidos(request):
     X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_5_Ultimos_Partidos()
@@ -410,12 +542,12 @@ def entrenamiento_Modelo_LR_Para_Datos_5_Ultimos_Partidos(request):
     labels = ['1', "0", "2"]
     conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
     conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-    accuracy = accuracy_score(winner_test, winner_pred)
+    report = classification_report(winner_test, winner_pred)
     
     print(conf_matrix_table)
-    print(accuracy)
+    print(report)
 
-    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+    return HttpResponse("Todo Ok")
 
 def entrenamiento_Modelo_Gradient_Boosting_Classifier_Para_Datos_5_Ultimos_Partidos(request):
     X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_5_Ultimos_Partidos()
@@ -426,12 +558,12 @@ def entrenamiento_Modelo_Gradient_Boosting_Classifier_Para_Datos_5_Ultimos_Parti
     labels = ['1', "0", "2"]
     conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
     conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-    accuracy = accuracy_score(winner_test, winner_pred)
+    report = classification_report(winner_test, winner_pred)
     
     print(conf_matrix_table)
-    print(accuracy)
+    print(report)
 
-    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+    return HttpResponse("Todo Ok")
 
 
 
@@ -480,13 +612,12 @@ def entrenamiento_Modelo_Bayes_Para_Datos_3_Ultimos_Partidos(request):
     labels = ['1', "0", "2"]
     conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
     conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-    accuracy = accuracy_score(winner_test, winner_pred)
+    report = classification_report(winner_test, winner_pred)
     
     print(conf_matrix_table)
-    print(accuracy)
+    print(report)
 
-    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
-
+    return HttpResponse("Todo Ok")
 
 def entrenamiento_Modelo_KNN_Para_Datos_3_Ultimos_Partidos(request):
     
@@ -503,45 +634,44 @@ def entrenamiento_Modelo_KNN_Para_Datos_3_Ultimos_Partidos(request):
     labels = ['1', "0", "2"]
     conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
     conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-    accuracy = accuracy_score(winner_test, winner_pred)
+    report = classification_report(winner_test, winner_pred)
     
     print(conf_matrix_table)
-    print(accuracy)
+    print(report)
 
-    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+    return HttpResponse("Todo Ok")
 
 
 def entrenamiento_Modelo_Random_Forest_Para_Datos_3_Ultimos_Partidos(request):
     X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Ultimos_Partidos()
     X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
-    model_rf = RandomForestClassifier(n_estimators=203, max_depth=50, max_features='sqrt', min_samples_leaf=50, min_samples_split=20)
+    model_rf = RandomForestClassifier(n_estimators=203, max_depth=20, max_features='sqrt', class_weight='balanced', random_state=42)
     model_rf.fit(X_train, winner_train), 
     winner_pred = model_rf.predict(X_test)
     labels = ['1', "0", "2"]
     conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
     conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-    accuracy = accuracy_score(winner_test, winner_pred)
+    report = classification_report(winner_test, winner_pred)
     
     print(conf_matrix_table)
-    print(accuracy)
+    print(report)
 
-    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
-
+    return HttpResponse("Todo Ok")
 def entrenamiento_Modelo_SVM_Para_Datos_3_Ultimos_Partidos(request):
     X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Ultimos_Partidos()
     X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
-    model_svm = SVC(kernel='linear', C=1, random_state=42)
+    model_svm = SVC(kernel='poly', C=1, class_weight="balanced", random_state=42)
     model_svm.fit(X_train, winner_train), 
     winner_pred = model_svm.predict(X_test)
     labels = ['1', "0", "2"]
     conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
     conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-    accuracy = accuracy_score(winner_test, winner_pred)
+    report = classification_report(winner_test, winner_pred)
     
     print(conf_matrix_table)
-    print(accuracy)
+    print(report)
 
-    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+    return HttpResponse("Todo Ok")
 
 def entrenamiento_Modelo_LR_Para_Datos_3_Ultimos_Partidos(request):
     X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Ultimos_Partidos()
@@ -680,12 +810,12 @@ def entrenamiento_Modelo_Bayes_Para_Datos_3_Y_5_Ultimos_Partidos(request):
     labels = ['1', "0", "2"]
     conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
     conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-    accuracy = accuracy_score(winner_test, winner_pred)
+    report = classification_report(winner_test, winner_pred)
     
     print(conf_matrix_table)
-    print(accuracy)
+    print(report)
 
-    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+    return HttpResponse("Todo Ok")
 
 
 def entrenamiento_Modelo_KNN_Para_Datos_3_Y_5_Ultimos_Partidos(request):
@@ -703,30 +833,29 @@ def entrenamiento_Modelo_KNN_Para_Datos_3_Y_5_Ultimos_Partidos(request):
     labels = ['1', "0", "2"]
     conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
     conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-    accuracy = accuracy_score(winner_test, winner_pred)
+    report = classification_report(winner_test, winner_pred)
     
     print(conf_matrix_table)
-    print(accuracy)
+    print(report)
 
-    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+    return HttpResponse("Todo Ok")
 
 
 def entrenamiento_Modelo_Random_Forest_Para_Datos_3_Y_5_Ultimos_Partidos(request):
     X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Y_5_Ultimos_Partidos()
     X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
-    model_rf = RandomForestClassifier(n_estimators=203, max_depth=20, max_features='sqrt', class_weight="balanced",min_samples_leaf=3, min_samples_split=10)
+    model_rf = RandomForestClassifier(n_estimators=203, max_depth=20, max_features='sqrt', class_weight='balanced', random_state=42)
     model_rf.fit(X_train, winner_train), 
     winner_pred = model_rf.predict(X_test)
     labels = ['1', "0", "2"]
     conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
     conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-    accuracy = accuracy_score(winner_test, winner_pred)
     report = classification_report(winner_test, winner_pred)
+    
     print(conf_matrix_table)
-    print(accuracy)
     print(report)
 
-    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+    return HttpResponse("Todo Ok")
 
 def entrenamiento_Modelo_SVM_Para_Datos_3_Y_5_Ultimos_Partidos(request):
     X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Y_5_Ultimos_Partidos()
@@ -737,14 +866,12 @@ def entrenamiento_Modelo_SVM_Para_Datos_3_Y_5_Ultimos_Partidos(request):
     labels = ['1', "0", "2"]
     conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
     conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-    accuracy = accuracy_score(winner_test, winner_pred)
     report = classification_report(winner_test, winner_pred)
     
     print(conf_matrix_table)
-    print(accuracy)
     print(report)
 
-    return render(request, 'predicciones/conjuntoEntrenamiento.html', {"mensaje": accuracy})
+    return HttpResponse("Todo Ok")
 
 def entrenamiento_Modelo_LR_Para_Datos_3_Y_5_Ultimos_Partidos(request):
     X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Y_5_Ultimos_Partidos()
@@ -764,17 +891,12 @@ def entrenamiento_Modelo_LR_Para_Datos_3_Y_5_Ultimos_Partidos(request):
         model_lr.fit(X_train, winner_train)
         winner_pred = model_lr.predict(X_test)
         labels = ['1', "0", "2"]
-        conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
-        conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-        accuracy = accuracy_score(winner_test, winner_pred)
 
         conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
         conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-        accuracy = accuracy_score(winner_test, winner_pred)
         report = classification_report(winner_test, winner_pred)
     
         print(conf_matrix_table)
-        print(accuracy)
         print(report)
 
     return HttpResponse("Todo Ok")
@@ -823,11 +945,9 @@ def entrenamiento_Modelo_Gradient_Boosting_Classifier_Para_Datos_3_Y_5_Ultimos_P
         labels = ['1', "0", "2"]
         conf_mat_nv = confusion_matrix(winner_test, winner_pred, labels=labels)
         conf_matrix_table = tabulate(conf_mat_nv, headers=labels, showindex=labels, tablefmt='fancy_grid')
-        accuracy = accuracy_score(winner_test, winner_pred)
         report = classification_report(winner_test, winner_pred)
     
         print(conf_matrix_table)
-        print(accuracy)
         print(report)
 
     return HttpResponse("Todo Ok")
@@ -898,6 +1018,8 @@ def prediccion_partidos_sin_predecir(request):
     X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
     model = LogisticRegression(penalty='l1', C=0.1,solver='liblinear', class_weight='balanced', max_iter=10000, random_state=42)
     #model = GradientBoostingClassifier(random_state=42)
+    #model= SVC(kernel='poly', C=1, class_weight="balanced", random_state=42)
+    #model = RandomForestClassifier(n_estimators=203, max_depth=20, max_features='sqrt', class_weight='balanced', random_state=42)
     model.fit(X_train, winner_train),
     predicciones = model.predict(XP)
     predicciones_modificadas = ['X' if pred == '0' else pred for pred in predicciones]
@@ -1330,10 +1452,17 @@ def comparar_equipos(request):
                                         min_goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante))
                     X,Y = calculo_Valores_Indp_Y_Depen_Para_Datos_3_Y_5_Ultimos_Partidos()
                     X_train, X_test, winner_train, winner_test = train_test_split(X, Y, test_size=0.2, random_state=42)
-                    model_gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
-                    model_gbc.fit(X_train, winner_train),
-                    predicciones = model_gbc.predict(XP)
-                    winner = ['X' if pred == '0' else pred for pred in predicciones]
+                    model = LogisticRegression(penalty='l1', C=0.1,solver='liblinear', class_weight='balanced', max_iter=10000, random_state=42)
+                    #model = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
+                    model.fit(X_train, winner_train),
+                    predicciones = model.predict(XP)
+                    for pred in predicciones:
+                        if pred == '0':
+                            winner = 'X'
+                        elif pred == '1':
+                            winner = '1'
+                        else:
+                            winner = '2'
 
 
 
@@ -1431,15 +1560,13 @@ def mostrar_quiniela(request):
     if request.user.is_authenticated:
         num_quiniela = Quiniela.objects.filter(abierta = True).count()
         num_quinielas_total = Quiniela.objects.all().count()
+        num_porras_usuario_total = Porra.objects.filter(usuario = request.user).count()
         if num_quiniela == 0:
-            return render(request, 'predicciones/noQuiniela.html', {"numero":num_quinielas_total})
+            return render(request, 'predicciones/noQuiniela.html', {"numero":num_quinielas_total, "porras_usuario_total": num_porras_usuario_total})
         
         else:
             quiniela = Quiniela.objects.filter(abierta = True).first()
-            num_porras_usuario_total = Porra.objects.filter(usuario = request.user).count()
             num_esta_porra_hechas = Porra.objects.filter(quiniela=quiniela, usuario = request.user).count()
-            print(num_porras_usuario_total)
-            print(num_esta_porra_hechas)
             return render(request, 'predicciones/mostrarQuiniela.html', {"quiniela": quiniela, "num_quiniela": num_quinielas_total,"num_esta_porra_hechas":num_esta_porra_hechas, "num_porras_usuario":num_porras_usuario_total})
     else:
         return render(request, 'predicciones/pedirInicio.html')

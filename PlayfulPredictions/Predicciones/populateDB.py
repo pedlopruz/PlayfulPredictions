@@ -2049,7 +2049,7 @@ def cargar_Imagenes_Equipos_Entrenamiento():
             if local == "Albacete":
                 partido.escudo_local = f"equipos/Albacete.png"
             else:
-                partido.escudo_visitante = f"equipos/Granada.png"
+                partido.escudo_visitante = f"equipos/Albacete.png"
 
         if local == "Espanyol" or visitante == "Espanyol":
             if local == "Espanyol":
@@ -2067,7 +2067,7 @@ def cargar_Imagenes_Equipos_Entrenamiento():
             if local == "Eldense":
                 partido.escudo_local = f"equipos/Eldense.png"
             else:
-                partido.escudo_visitante = f"equipos/Granada.png"
+                partido.escudo_visitante = f"equipos/Eldense.png"
 
         if local == "Leganés" or visitante == "Leganés":
             if local == "Leganés":

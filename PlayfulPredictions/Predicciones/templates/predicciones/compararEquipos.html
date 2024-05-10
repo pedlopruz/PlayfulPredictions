@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<p class="pred">Predicciones</p>
+<p class="com">Comparar Equipos</p>
 <div class="contenedorFormularioCompararFiltro">
   <form method="post" action="" style="color: aliceblue;">
     {% csrf_token %}
@@ -26,10 +26,10 @@
   </form>
 </div>
 {% if local %}
-<h2 style="color: black;margin-left: 550px;">Ultimos 5 Encuentros Disputados</h2>
+<h2 style="color: black;margin-left: 550px;">Últimos 5 Encuentros Disputados</h2>
   <h2 style="color: black; margin-left: 450px;margin-bottom: 5px;"><img src="{{escudo_local.url}}" width="50">{{local}} siendo Local   VS   <img src="{{escudo_visitante.url}}" width="50">{{visitante}} Visitante</h2>
 <div class="contenedorListaComparar">
-  <table class ="table">
+  <table class ="tableP">
         <thead>
           <tr>
             <th class="th">Temporada</th>
@@ -38,18 +38,30 @@
             <th class="th">Equipo Local</th>
             <th class="th">Equipo Visitante</th>
             <th class="th">Resultado</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante Siendo Local</th>
+            <th class="thh">G3L</th>
+            <th class="thh">G3V</th>
+            <th class="thh">G5L</th>
+            <th class="thh">G5V</th>
+            <th class="thh">G3LL</th>
+            <th class="thh">G3VV</th>
+            <th class="thh">G5LL</th>
+            <th class="thh">G5VV</th>
+            <th class="thh">P3L</th>
+            <th class="thh">P3V</th>
+            <th class="thh">P5L</th>
+            <th class="thh">P5V</th>
+            <th class="thh">P3LL</th>
+            <th class="thh">P3VV</th>
+            <th class="thh">P5LL</th>
+            <th class="thh">P5VV</th>
+            <th class="thh">GC3L</th>
+            <th class="thh">GC3V</th>
+            <th class="thh">GC5L</th>
+            <th class="thh">GC5V</th>
+            <th class="thh">GC3LL</th>
+            <th class="thh">GC3VV</th>
+            <th class="thh">GC5LL</th>
+            <th class="thh">GC5VV</th>
           </tr>
         </thead>
         <tbody>
@@ -69,18 +81,126 @@
               <td class="td">{{ partido.equipo_visitante }}</td>
               {%endif%}
               <td class="td">{{ partido.goles_local}}-{{ partido.goles_visitante}}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_equipo_local }} | {{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_equipo_local }} | {{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }} | {{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_local_siendo_local}} | {{ partido.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_local_siendo_local}} | {{ partido.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%if partido.goles_ultimos_3_partidos_equipo_local > partido.goles_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_ultimos_3_partidos_equipo_local < partido.goles_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_5_partidos_equipo_local > partido.goles_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_ultimos_5_partidos_equipo_local < partido.goles_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_3_partidos_local_siendo_local > partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_ultimos_3_partidos_local_siendo_local < partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_5_partidos_local_siendo_local > partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_ultimos_5_partidos_local_siendo_local < partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_3_partidos_equipo_local > partido.puntos_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.puntos_ultimos_3_partidos_equipo_local < partido.puntos_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_5_partidos_equipo_local > partido.puntos_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.puntos_ultimos_5_partidos_equipo_local < partido.puntos_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_3_partidos_local_siendo_local > partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.puntos_ultimos_3_partidos_local_siendo_local < partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_5_partidos_local_siendo_local > partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.puntos_ultimos_5_partidos_local_siendo_local < partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_3_partidos_equipo_local > partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_3_partidos_equipo_local < partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_5_partidos_equipo_local > partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_5_partidos_equipo_local < partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_3_partidos_local_siendo_local > partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_3_partidos_local_siendo_local < partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_5_partidos_local_siendo_local > partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_5_partidos_local_siendo_local < partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
             </tr>
           {% endfor %}
         </tbody>
@@ -89,10 +209,10 @@
 
       
 </div>
-<h2 style="color: black;margin-left: 550px;">Ultimos 5 Encuentros Disputados</h2>
+<h2 style="color: black;margin-left: 550px;">Últimos 5 Encuentros Disputados</h2>
   <h2 style="color: black; margin-left: 530px;margin-bottom: 5px;"><img src="{{escudo_local.url}}" width="50">{{local}} VS   <img src="{{escudo_visitante.url}}" width="50">{{visitante}}</h2>
 <div class="contenedorListaComparar">
-    <table class ="table">
+    <table class ="tableP">
         <thead>
           <tr>
             <th class="th">Temporada</th>
@@ -101,18 +221,30 @@
             <th class="th">Equipo Local</th>
             <th class="th">Equipo Visitante</th>
             <th class="th">Resultado</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante Siendo Local</th>
+            <th class="thh">G3L</th>
+            <th class="thh">G3V</th>
+            <th class="thh">G5L</th>
+            <th class="thh">G5V</th>
+            <th class="thh">G3LL</th>
+            <th class="thh">G3VV</th>
+            <th class="thh">G5LL</th>
+            <th class="thh">G5VV</th>
+            <th class="thh">P3L</th>
+            <th class="thh">P3V</th>
+            <th class="thh">P5L</th>
+            <th class="thh">P5V</th>
+            <th class="thh">P3LL</th>
+            <th class="thh">P3VV</th>
+            <th class="thh">P5LL</th>
+            <th class="thh">P5VV</th>
+            <th class="thh">GC3L</th>
+            <th class="thh">GC3V</th>
+            <th class="thh">GC5L</th>
+            <th class="thh">GC5V</th>
+            <th class="thh">GC3LL</th>
+            <th class="thh">GC3VV</th>
+            <th class="thh">GC5LL</th>
+            <th class="thh">GC5VV</th>
           </tr>
         </thead>
         <tbody>
@@ -132,18 +264,126 @@
               <td class="td">{{ partido.equipo_visitante }}</td>
               {%endif%}
               <td class="td">{{ partido.goles_local}}-{{ partido.goles_visitante}}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_equipo_local }} | {{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_equipo_local }} | {{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }} | {{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_local_siendo_local}} | {{ partido.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_local_siendo_local}} | {{ partido.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%if partido.goles_ultimos_3_partidos_equipo_local > partido.goles_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_ultimos_3_partidos_equipo_local < partido.goles_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_5_partidos_equipo_local > partido.goles_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_ultimos_5_partidos_equipo_local < partido.goles_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_3_partidos_local_siendo_local > partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_ultimos_3_partidos_local_siendo_local < partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_5_partidos_local_siendo_local > partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_ultimos_5_partidos_local_siendo_local < partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_3_partidos_equipo_local > partido.puntos_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.puntos_ultimos_3_partidos_equipo_local < partido.puntos_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_5_partidos_equipo_local > partido.puntos_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.puntos_ultimos_5_partidos_equipo_local < partido.puntos_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_3_partidos_local_siendo_local > partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.puntos_ultimos_3_partidos_local_siendo_local < partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_5_partidos_local_siendo_local > partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.puntos_ultimos_5_partidos_local_siendo_local < partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_3_partidos_equipo_local > partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_3_partidos_equipo_local < partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_5_partidos_equipo_local > partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_5_partidos_equipo_local < partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_3_partidos_local_siendo_local > partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_3_partidos_local_siendo_local < partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_5_partidos_local_siendo_local > partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_5_partidos_local_siendo_local < partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
             </tr>
           {% endfor %}
         </tbody>
@@ -154,8 +394,8 @@
 </div>
 
 <div class="contenedorListaComparar">
-  <h2 style="color: black;margin-left: 300px;">Ultimos 5 Encuentros <img src="{{escudo_local.url}}" width="50">{{local}}</h2><br>
-    <table class ="table">
+  <h2 style="color: black;margin-left: 300px;">Últimos 5 Encuentros <img src="{{escudo_local.url}}" width="50">{{local}}</h2><br>
+    <table class ="tableP">
         <thead>
           <tr>
             <th class="th">Temporada</th>
@@ -164,18 +404,30 @@
             <th class="th">Equipo Local</th>
             <th class="th">Equipo Visitante</th>
             <th class="th">Resultado</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante Siendo Local</th>
+            <th class="thh">G3L</th>
+            <th class="thh">G3V</th>
+            <th class="thh">G5L</th>
+            <th class="thh">G5V</th>
+            <th class="thh">G3LL</th>
+            <th class="thh">G3VV</th>
+            <th class="thh">G5LL</th>
+            <th class="thh">G5VV</th>
+            <th class="thh">P3L</th>
+            <th class="thh">P3V</th>
+            <th class="thh">P5L</th>
+            <th class="thh">P5V</th>
+            <th class="thh">P3LL</th>
+            <th class="thh">P3VV</th>
+            <th class="thh">P5LL</th>
+            <th class="thh">P5VV</th>
+            <th class="thh">GC3L</th>
+            <th class="thh">GC3V</th>
+            <th class="thh">GC5L</th>
+            <th class="thh">GC5V</th>
+            <th class="thh">GC3LL</th>
+            <th class="thh">GC3VV</th>
+            <th class="thh">GC5LL</th>
+            <th class="thh">GC5VV</th>
           </tr>
         </thead>
         <tbody>
@@ -195,27 +447,135 @@
               <td class="td">{{ partido.equipo_visitante }}</td>
               {%endif%}
               <td class="td">{{ partido.goles_local}}-{{ partido.goles_visitante}}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_equipo_local }} | {{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_equipo_local }} | {{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }} | {{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_local_siendo_local}} | {{ partido.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_local_siendo_local}} | {{ partido.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%if partido.goles_ultimos_3_partidos_equipo_local > partido.goles_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_ultimos_3_partidos_equipo_local < partido.goles_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_5_partidos_equipo_local > partido.goles_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_ultimos_5_partidos_equipo_local < partido.goles_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_3_partidos_local_siendo_local > partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_ultimos_3_partidos_local_siendo_local < partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_5_partidos_local_siendo_local > partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_ultimos_5_partidos_local_siendo_local < partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_3_partidos_equipo_local > partido.puntos_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.puntos_ultimos_3_partidos_equipo_local < partido.puntos_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_5_partidos_equipo_local > partido.puntos_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.puntos_ultimos_5_partidos_equipo_local < partido.puntos_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_3_partidos_local_siendo_local > partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.puntos_ultimos_3_partidos_local_siendo_local < partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_5_partidos_local_siendo_local > partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.puntos_ultimos_5_partidos_local_siendo_local < partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_3_partidos_equipo_local > partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_3_partidos_equipo_local < partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_5_partidos_equipo_local > partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_5_partidos_equipo_local < partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_3_partidos_local_siendo_local > partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_3_partidos_local_siendo_local < partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_5_partidos_local_siendo_local > partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_5_partidos_local_siendo_local < partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
             </tr>
           {% endfor %}
         </tbody>
       </table>
    
 </div>
-<h2 style="color: black;margin-left: 450px;">Ultimos 5 Encuentros <img src="{{escudo_local.url}}" width="50">{{local}} Siendo Local</h2><br>
+<h2 style="color: black;margin-left: 450px;">Últimos 5 Encuentros <img src="{{escudo_local.url}}" width="50">{{local}} Siendo Local</h2><br>
 <div class="contenedorListaComparar">
-    <table class ="table">
+    <table class ="tableP">
         <thead>
           <tr>
             <th class="th">Temporada</th>
@@ -224,18 +584,30 @@
             <th class="th">Equipo Local</th>
             <th class="th">Equipo Visitante</th>
             <th class="th">Resultado</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante Siendo Local</th>
+            <th class="thh">G3L</th>
+            <th class="thh">G3V</th>
+            <th class="thh">G5L</th>
+            <th class="thh">G5V</th>
+            <th class="thh">G3LL</th>
+            <th class="thh">G3VV</th>
+            <th class="thh">G5LL</th>
+            <th class="thh">G5VV</th>
+            <th class="thh">P3L</th>
+            <th class="thh">P3V</th>
+            <th class="thh">P5L</th>
+            <th class="thh">P5V</th>
+            <th class="thh">P3LL</th>
+            <th class="thh">P3VV</th>
+            <th class="thh">P5LL</th>
+            <th class="thh">P5VV</th>
+            <th class="thh">GC3L</th>
+            <th class="thh">GC3V</th>
+            <th class="thh">GC5L</th>
+            <th class="thh">GC5V</th>
+            <th class="thh">GC3LL</th>
+            <th class="thh">GC3VV</th>
+            <th class="thh">GC5LL</th>
+            <th class="thh">GC5VV</th>
           </tr>
         </thead>
         <tbody>
@@ -255,27 +627,135 @@
               <td class="td">{{ partido.equipo_visitante }}</td>
               {%endif%}
               <td class="td">{{ partido.goles_local}}-{{ partido.goles_visitante}}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_equipo_local }} | {{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_equipo_local }} | {{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }} | {{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_local_siendo_local}} | {{ partido.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_local_siendo_local}} | {{ partido.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%if partido.goles_ultimos_3_partidos_equipo_local > partido.goles_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_ultimos_3_partidos_equipo_local < partido.goles_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_5_partidos_equipo_local > partido.goles_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_ultimos_5_partidos_equipo_local < partido.goles_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_3_partidos_local_siendo_local > partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_ultimos_3_partidos_local_siendo_local < partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_5_partidos_local_siendo_local > partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_ultimos_5_partidos_local_siendo_local < partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_3_partidos_equipo_local > partido.puntos_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.puntos_ultimos_3_partidos_equipo_local < partido.puntos_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_5_partidos_equipo_local > partido.puntos_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.puntos_ultimos_5_partidos_equipo_local < partido.puntos_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_3_partidos_local_siendo_local > partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.puntos_ultimos_3_partidos_local_siendo_local < partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_5_partidos_local_siendo_local > partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.puntos_ultimos_5_partidos_local_siendo_local < partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_3_partidos_equipo_local > partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_3_partidos_equipo_local < partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_5_partidos_equipo_local > partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_5_partidos_equipo_local < partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_3_partidos_local_siendo_local > partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_3_partidos_local_siendo_local < partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_5_partidos_local_siendo_local > partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_5_partidos_local_siendo_local < partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
             </tr>
           {% endfor %}
         </tbody>
       </table>
    
 </div>
-<h2 style="color: black;margin-left: 450px;">Ultimos 5 Encuentros <img src="{{escudo_visitante.url}}" width="50">{{visitante}}</h2><br>
+<h2 style="color: black;margin-left: 450px;">Últimos 5 Encuentros <img src="{{escudo_visitante.url}}" width="50">{{visitante}}</h2><br>
 <div class="contenedorListaComparar">
-    <table class ="table">
+    <table class ="tableP">
         <thead>
           <tr>
             <th class="th">Temporada</th>
@@ -284,24 +764,35 @@
             <th class="th">Equipo Local</th>
             <th class="th">Equipo Visitante</th>
             <th class="th">Resultado</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante Siendo Local</th>
+            <th class="thh">G3L</th>
+            <th class="thh">G3V</th>
+            <th class="thh">G5L</th>
+            <th class="thh">G5V</th>
+            <th class="thh">G3LL</th>
+            <th class="thh">G3VV</th>
+            <th class="thh">G5LL</th>
+            <th class="thh">G5VV</th>
+            <th class="thh">P3L</th>
+            <th class="thh">P3V</th>
+            <th class="thh">P5L</th>
+            <th class="thh">P5V</th>
+            <th class="thh">P3LL</th>
+            <th class="thh">P3VV</th>
+            <th class="thh">P5LL</th>
+            <th class="thh">P5VV</th>
+            <th class="thh">GC3L</th>
+            <th class="thh">GC3V</th>
+            <th class="thh">GC5L</th>
+            <th class="thh">GC5V</th>
+            <th class="thh">GC3LL</th>
+            <th class="thh">GC3VV</th>
+            <th class="thh">GC5LL</th>
+            <th class="thh">GC5VV</th>
           </tr>
         </thead>
         <tbody>
           {% for partido in entity5 %}
             <tr>
-              
               <td class="td">{{ partido.temporada }}</td>
               <td class="td">{{ partido.liga }}</td>
               <td class="td">{{ partido.jornada }}</td>
@@ -316,27 +807,135 @@
               <td class="td">{{ partido.equipo_visitante }}</td>
               {%endif%}
               <td class="td">{{ partido.goles_local}}-{{ partido.goles_visitante}}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_equipo_local }} | {{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_equipo_local }} | {{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }} | {{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_local_siendo_local}} | {{ partido.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_local_siendo_local}} | {{ partido.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%if partido.goles_ultimos_3_partidos_equipo_local > partido.goles_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_ultimos_3_partidos_equipo_local < partido.goles_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_5_partidos_equipo_local > partido.goles_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_ultimos_5_partidos_equipo_local < partido.goles_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_3_partidos_local_siendo_local > partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_ultimos_3_partidos_local_siendo_local < partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_5_partidos_local_siendo_local > partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_ultimos_5_partidos_local_siendo_local < partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_3_partidos_equipo_local > partido.puntos_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.puntos_ultimos_3_partidos_equipo_local < partido.puntos_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_5_partidos_equipo_local > partido.puntos_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.puntos_ultimos_5_partidos_equipo_local < partido.puntos_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_3_partidos_local_siendo_local > partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.puntos_ultimos_3_partidos_local_siendo_local < partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_5_partidos_local_siendo_local > partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.puntos_ultimos_5_partidos_local_siendo_local < partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_3_partidos_equipo_local > partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_3_partidos_equipo_local < partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_5_partidos_equipo_local > partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_5_partidos_equipo_local < partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_3_partidos_local_siendo_local > partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_3_partidos_local_siendo_local < partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_5_partidos_local_siendo_local > partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_5_partidos_local_siendo_local < partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
             </tr>
           {% endfor %}
         </tbody>
       </table>
    
 </div>
-<h2 style="color: black;margin-left: 450px;">Ultimos 5 Encuentros <img src="{{escudo_visitante.url}}" width="50">{{visitante}} Siendo Visitante</h2><br>
+<h2 style="color: black;margin-left: 450px;">Últimos 5 Encuentros <img src="{{escudo_visitante.url}}" width="50">{{visitante}} Siendo Visitante</h2><br>
 <div class="contenedorListaComparar">
-    <table class ="table">
+    <table class ="tableP">
         <thead>
           <tr>
             <th class="th">Temporada</th>
@@ -345,18 +944,30 @@
             <th class="th">Equipo Local</th>
             <th class="th">Equipo Visitante</th>
             <th class="th">Resultado</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante Siendo Local</th>
+            <th class="thh">G3L</th>
+            <th class="thh">G3V</th>
+            <th class="thh">G5L</th>
+            <th class="thh">G5V</th>
+            <th class="thh">G3LL</th>
+            <th class="thh">G3VV</th>
+            <th class="thh">G5LL</th>
+            <th class="thh">G5VV</th>
+            <th class="thh">P3L</th>
+            <th class="thh">P3V</th>
+            <th class="thh">P5L</th>
+            <th class="thh">P5V</th>
+            <th class="thh">P3LL</th>
+            <th class="thh">P3VV</th>
+            <th class="thh">P5LL</th>
+            <th class="thh">P5VV</th>
+            <th class="thh">GC3L</th>
+            <th class="thh">GC3V</th>
+            <th class="thh">GC5L</th>
+            <th class="thh">GC5V</th>
+            <th class="thh">GC3LL</th>
+            <th class="thh">GC3VV</th>
+            <th class="thh">GC5LL</th>
+            <th class="thh">GC5VV</th>
           </tr>
         </thead>
         <tbody>
@@ -376,18 +987,126 @@
               <td class="td">{{ partido.equipo_visitante }}</td>
               {%endif%}
               <td class="td">{{ partido.goles_local}}-{{ partido.goles_visitante}}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_equipo_local }} | {{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_equipo_local }} | {{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }} | {{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_local_siendo_local}} | {{ partido.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_local_siendo_local}} | {{ partido.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%if partido.goles_ultimos_3_partidos_equipo_local > partido.goles_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_ultimos_3_partidos_equipo_local < partido.goles_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_5_partidos_equipo_local > partido.goles_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_ultimos_5_partidos_equipo_local < partido.goles_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_3_partidos_local_siendo_local > partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_ultimos_3_partidos_local_siendo_local < partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_ultimos_5_partidos_local_siendo_local > partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_ultimos_5_partidos_local_siendo_local < partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_3_partidos_equipo_local > partido.puntos_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.puntos_ultimos_3_partidos_equipo_local < partido.puntos_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_5_partidos_equipo_local > partido.puntos_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.puntos_ultimos_5_partidos_equipo_local < partido.puntos_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_3_partidos_local_siendo_local > partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.puntos_ultimos_3_partidos_local_siendo_local < partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.puntos_ultimos_5_partidos_local_siendo_local > partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.puntos_ultimos_5_partidos_local_siendo_local < partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_3_partidos_equipo_local > partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_3_partidos_equipo_local < partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_5_partidos_equipo_local > partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_5_partidos_equipo_local < partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_3_partidos_local_siendo_local > partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_3_partidos_local_siendo_local < partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if partido.goles_en_contra_ultimos_5_partidos_local_siendo_local > partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif partido.goles_en_contra_ultimos_5_partidos_local_siendo_local < partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
             </tr>
           {% endfor %}
         </tbody>
@@ -398,23 +1117,35 @@
 {%if existe %}
 <div class="contenedorListaCompararar">
   <h2 style="color: black;margin-left: 200px;">Predicción <img src="{{prediccion.escudo_local.url}}" width="50">{{local}} vs <img src="{{prediccion.escudo_visitante.url}}" width="50">{{visitante}}</h2><br>
-    <table class ="table">
+    <table class ="tableP">
         <thead>
           <tr>
             <th class="th">Equipo Local</th>
             <th class="th">Equipo Visitante</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante Siendo Local</th>
+            <th class="thh">G3L</th>
+            <th class="thh">G3V</th>
+            <th class="thh">G5L</th>
+            <th class="thh">G5V</th>
+            <th class="thh">G3LL</th>
+            <th class="thh">G3VV</th>
+            <th class="thh">G5LL</th>
+            <th class="thh">G5VV</th>
+            <th class="thh">P3L</th>
+            <th class="thh">P3V</th>
+            <th class="thh">P5L</th>
+            <th class="thh">P5V</th>
+            <th class="thh">P3LL</th>
+            <th class="thh">P3VV</th>
+            <th class="thh">P5LL</th>
+            <th class="thh">P5VV</th>
+            <th class="thh">GC3L</th>
+            <th class="thh">GC3V</th>
+            <th class="thh">GC5L</th>
+            <th class="thh">GC5V</th>
+            <th class="thh">GC3LL</th>
+            <th class="thh">GC3VV</th>
+            <th class="thh">GC5LL</th>
+            <th class="thh">GC5VV</th>
             <th class="th">Ganador</th>
 
           </tr>
@@ -423,19 +1154,127 @@
             <tr>
               <td class="td"><img src="{{prediccion.escudo_local.url}}" width="50">{{prediccion.equipo_local }}</td>
               <td class="td"><img src="{{prediccion.escudo_visitante.url}}" width="50">{{prediccion.equipo_visitante }}</td>
-              <td class="td">{{prediccion.goles_ultimos_3_partidos_equipo_local}} | {{prediccion.goles_ultimos_5_partidos_equipo_local}}</td>
-              <td class="td">{{prediccion.goles_ultimos_3_partidos_equipo_visitante}} | {{prediccion.goles_ultimos_5_partidos_equipo_visitante}}</td>
-              <td class="td">{{ prediccion.puntos_ultimos_3_partidos_equipo_local }} | {{ prediccion.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ prediccion.puntos_ultimos_3_partidos_equipo_visitante }} | {{ prediccion.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ prediccion.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ prediccion.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ prediccion.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ prediccion.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ prediccion.goles_ultimos_3_partidos_local_siendo_local}} | {{ prediccion.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ prediccion.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ prediccion.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ prediccion.puntos_ultimos_3_partidos_local_siendo_local}} | {{ prediccion.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ prediccion.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ prediccion.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ prediccion.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ prediccion.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ prediccion.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ prediccion.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
-              <td class="td">{{ prediccion.winner}}</td>
+              {%if prediccion.goles_ultimos_3_partidos_equipo_local > prediccion.goles_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ prediccion.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ prediccion.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif prediccion.goles_ultimos_3_partidos_equipo_local < prediccion.goles_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ prediccion.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ prediccion.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ prediccion.goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ prediccion.goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if prediccion.goles_ultimos_5_partidos_equipo_local > prediccion.goles_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ prediccion.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ prediccion.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif prediccion.goles_ultimos_5_partidos_equipo_local < prediccion.goles_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ prediccion.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ prediccion.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ prediccion.goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ prediccion.goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if prediccion.goles_ultimos_3_partidos_local_siendo_local > prediccion.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ prediccion.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ prediccion.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif prediccion.goles_ultimos_3_partidos_local_siendo_local < prediccion.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ prediccion.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ prediccion.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ prediccion.goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ prediccion.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if prediccion.goles_ultimos_5_partidos_local_siendo_local > prediccion.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ prediccion.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ prediccion.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif prediccion.goles_ultimos_5_partidos_local_siendo_local < prediccion.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ prediccion.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ prediccion.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ prediccion.goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ prediccion.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if prediccion.puntos_ultimos_3_partidos_equipo_local > prediccion.puntos_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ prediccion.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ prediccion.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif prediccion.puntos_ultimos_3_partidos_equipo_local < prediccion.puntos_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ prediccion.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ prediccion.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ prediccion.puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ prediccion.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if prediccion.puntos_ultimos_5_partidos_equipo_local > prediccion.puntos_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ prediccion.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ prediccion.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif prediccion.puntos_ultimos_5_partidos_equipo_local < prediccion.puntos_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ prediccion.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ prediccion.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ prediccion.puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ prediccion.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if prediccion.puntos_ultimos_3_partidos_local_siendo_local > prediccion.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ prediccion.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ prediccion.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif prediccion.puntos_ultimos_3_partidos_local_siendo_local < prediccion.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ prediccion.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ prediccion.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ prediccion.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ prediccion.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if prediccion.puntos_ultimos_5_partidos_local_siendo_local > prediccion.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ prediccion.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ prediccion.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif prediccion.puntos_ultimos_5_partidos_local_siendo_local < prediccion.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ prediccion.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ prediccion.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ prediccion.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ prediccion.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if prediccion.goles_en_contra_ultimos_3_partidos_equipo_local > prediccion.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ prediccion.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ prediccion.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif prediccion.goles_en_contra_ultimos_3_partidos_equipo_local < prediccion.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ prediccion.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ prediccion.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ prediccion.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ prediccion.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if prediccion.goles_en_contra_ultimos_5_partidos_equipo_local > prediccion.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ prediccion.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ prediccion.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif prediccion.goles_en_contra_ultimos_5_partidos_equipo_local < prediccion.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ prediccion.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ prediccion.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ prediccion.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ prediccion.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if prediccion.goles_en_contra_ultimos_3_partidos_local_siendo_local > prediccion.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ prediccion.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ prediccion.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif prediccion.goles_en_contra_ultimos_3_partidos_local_siendo_local < prediccion.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ prediccion.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ prediccion.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ prediccion.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ prediccion.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if prediccion.goles_en_contra_ultimos_5_partidos_local_siendo_local > prediccion.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ prediccion.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ prediccion.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif prediccion.goles_en_contra_ultimos_5_partidos_local_siendo_local < prediccion.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ prediccion.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ prediccion.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ prediccion.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ prediccion.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              <td class="tde">{{ prediccion.winner}}</td>
             </tr>
         </tbody>
       </table>
@@ -443,24 +1282,36 @@
 </div>
 {%else%}
 <div class="contenedorListaCompararar">
-  <h2 style="color: black;margin-left: 300px;">Predicción <img src="{{prediccion.escudo_local.url}}" width="50">{{local}} vs <img src="{{prediccion.escudo_local.url}}" width="50">{{visitante}}</h2><br>
-    <table class ="table">
+  <h2 style="color: black;margin-left: 300px;">Predicción <img src="{{escudo_local.url}}" width="50">{{local}} vs <img src="{{escudo_visitante.url}}" width="50">{{visitante}}</h2><br>
+    <table class ="tableP">
         <thead>
           <tr>
             <th class="th">Equipo Local</th>
             <th class="th">Equipo Visitante</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante Siendo Local</th>
+            <th class="thh">G3L</th>
+            <th class="thh">G3V</th>
+            <th class="thh">G5L</th>
+            <th class="thh">G5V</th>
+            <th class="thh">G3LL</th>
+            <th class="thh">G3VV</th>
+            <th class="thh">G5LL</th>
+            <th class="thh">G5VV</th>
+            <th class="thh">P3L</th>
+            <th class="thh">P3V</th>
+            <th class="thh">P5L</th>
+            <th class="thh">P5V</th>
+            <th class="thh">P3LL</th>
+            <th class="thh">P3VV</th>
+            <th class="thh">P5LL</th>
+            <th class="thh">P5VV</th>
+            <th class="thh">GC3L</th>
+            <th class="thh">GC3V</th>
+            <th class="thh">GC5L</th>
+            <th class="thh">GC5V</th>
+            <th class="thh">GC3LL</th>
+            <th class="thh">GC3VV</th>
+            <th class="thh">GC5LL</th>
+            <th class="thh">GC5VV</th>
             <th class="th">Ganador</th>
 
           </tr>
@@ -469,19 +1320,127 @@
             <tr>
               <td class="td"><img src="{{escudo_local.url}}" width="50">{{ local }}</td>
               <td class="td"><img src="{{escudo_visitante.url}}" width="50">{{ visitante }}</td>
-              <td class="td">{{ goles_ultimos_3_partidos_equipo_local }} | {{ goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ goles_ultimos_3_partidos_equipo_visitante }} | {{ goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ puntos_ultimos_3_partidos_equipo_local }} | {{ puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ puntos_ultimos_3_partidos_equipo_visitante }} | {{ puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ goles_ultimos_3_partidos_local_siendo_local}} | {{ goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ puntos_ultimos_3_partidos_local_siendo_local}} | {{ puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
-              <td class="td">{{ winner }}</td>
+              {%if goles_ultimos_3_partidos_equipo_local > goles_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif goles_ultimos_3_partidos_equipo_local < goles_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ goles_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ goles_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if goles_ultimos_5_partidos_equipo_local > goles_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif goles_ultimos_5_partidos_equipo_local < goles_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ goles_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ goles_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if goles_ultimos_3_partidos_local_siendo_local > goles_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif goles_ultimos_3_partidos_local_siendo_local < goles_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ goles_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if goles_ultimos_5_partidos_local_siendo_local > goles_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif goles_ultimos_5_partidos_local_siendo_local < goles_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ goles_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if puntos_ultimos_3_partidos_equipo_local > puntos_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif puntos_ultimos_3_partidos_equipo_local < puntos_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ puntos_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ puntos_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if puntos_ultimos_5_partidos_equipo_local > puntos_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif puntos_ultimos_5_partidos_equipo_local < puntos_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ puntos_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ puntos_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if puntos_ultimos_3_partidos_local_siendo_local > puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif puntos_ultimos_3_partidos_local_siendo_local < puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ puntos_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if puntos_ultimos_5_partidos_local_siendo_local > puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif puntos_ultimos_5_partidos_local_siendo_local < puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ puntos_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if goles_en_contra_ultimos_3_partidos_equipo_local > goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdv">{{ goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdr">{{ goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%elif goles_en_contra_ultimos_3_partidos_equipo_local < goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+              <td class="tdr">{{ goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdv">{{ goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+              <td class="tdh">{{ goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if goles_en_contra_ultimos_5_partidos_equipo_local > goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdv">{{ goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdr">{{ goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%elif goles_en_contra_ultimos_5_partidos_equipo_local < goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+              <td class="tdr">{{ goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdv">{{ goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+              <td class="tdh">{{ goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+              {%endif%}
+              {%if goles_en_contra_ultimos_3_partidos_local_siendo_local > goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%elif goles_en_contra_ultimos_3_partidos_local_siendo_local < goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              {%if goles_en_contra_ultimos_5_partidos_local_siendo_local > goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdv">{{ goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdr">{{ goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%elif goles_en_contra_ultimos_5_partidos_local_siendo_local < goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+              <td class="tdr">{{ goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdv">{{ goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%else%}
+              <td class="tdh">{{ goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+              <td class="tdh">{{ goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+              {%endif%}
+              <td class="tde">{{ winner }}</td>
             </tr>
         </tbody>
       </table>

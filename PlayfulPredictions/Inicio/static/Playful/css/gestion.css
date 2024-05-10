@@ -475,27 +475,76 @@
 
 }
 
-
 .pgina-de-inicio .table {
+
+  border-collapse: collapse;
+  width: 100%;
+  background-color: whitesmoke; /* Color marrón */
+}
+.pgina-de-inicio .tableP {
+  margin-left: -150px;
+  border-collapse: collapse;
+  width: 100%;
+  background-color: whitesmoke; /* Color marrón */
+}
+.pgina-de-inicio .tableC {
+  margin-left: -140px;
   border-collapse: collapse;
   width: 100%;
   background-color: whitesmoke; /* Color marrón */
 }
 .pgina-de-inicio .table,
+.pgina-de-inicio .tableP,
 .pgina-de-inicio .table th,
-.pgina-de-inicio .table td {
+.pgina-de-inicio .table td, 
+.pgina-de-inicio .tableP th,
+.pgina-de-inicio .tableP td,
+.pgina-de-inicio .tableP .thh,
+.pgina-de-inicio .tableP .tdh,
+.pgina-de-inicio .tableP .tdv
+.pgina-de-inicio .tableP .tdr
+.pgina-de-inicio .tableP .tde
+.pgina-de-inicio .tableC td,
+.pgina-de-inicio .tableC .thh,
+.pgina-de-inicio .tableC .tdh,
+.pgina-de-inicio .tableC .tdv
+.pgina-de-inicio .tableC .tdr
+.pgina-de-inicio .tableC .tde{
   border: 2px solid black; /* Bordes negros */
 }
 
 .pgina-de-inicio .th,
 .pgina-de-inicio td {
-  border: 1px solid white;
   padding: 2px;
+  text-align: center;
+}
+.pgina-de-inicio .thh,
+.pgina-de-inicio .tdh {
+  padding: 1px;
   text-align: center;
 }
 
 
 .pgina-de-inicio .th {
+  background-color: var(--azul);
+  color: white; /* Color marrón más oscuro para encabezados */
+}
+.pgina-de-inicio .tdv {
+  background-color:  rgb(34, 81, 249);;
+  color: white /* Color marrón más oscuro para encabezados */
+}
+
+.pgina-de-inicio .tdr {
+  background-color: rgb(50, 218, 248);
+  color: #000; /* Color marrón más oscuro para encabezados */
+}
+
+.pgina-de-inicio .tde {
+  background-color: rgb(213, 215, 215);
+  color: #000; /* Color marrón más oscuro para encabezados */
+ 
+}
+.pgina-de-inicio .thh {
   background-color: var(--azul);
   color: white; /* Color marrón más oscuro para encabezados */
 }
@@ -550,6 +599,20 @@
   position: absolute;
   top: 240px;
   left: 620px;
+  font-family: "Sora-Regular", Helvetica;
+  font-weight: 400;
+  color: #000000;
+  font-size: 39px;
+  text-align: center;
+  letter-spacing: -0.78px;
+  line-height: 46.8px;
+  white-space: nowrap;
+}
+
+.pgina-de-inicio .com {
+  position: absolute;
+  top: 240px;
+  left: 550px;
   font-family: "Sora-Regular", Helvetica;
   font-weight: 400;
   color: #000000;
@@ -829,7 +892,7 @@
 }
 .pgina-de-inicio .acc {
   position: absolute;
-  top: 1550px;
+  top: 1460px;
   left: 580px;
   font-family: "Sora-Regular", Helvetica;
   font-weight: 400;
@@ -847,6 +910,16 @@
   margin-top: 0px;
   margin-bottom: 0px;
   margin-left: 270px;
+  border-radius: 5px;
+  padding: 10px 0; 
+}
+
+.pgina-de-inicio .contenedorLeyenda {
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 0px;
+  margin-left: 225px;
   border-radius: 5px;
   padding: 10px 0; 
 }
