@@ -23,10 +23,10 @@ def populateDatabaseSinPredecir():
     PartidoReal.objects.all().delete()
     le = cargarPartidoRealLigaEsp()
     esp2 = cargarPartidoRealEsp2()
+    im = cargar_Imagenes_Equipos_Reales()
     pr = cargarPartidoSinPredecir_Ultimos_5_Partidos()
     pr2 = cargarPartidoSinPredecir_Ultimos_3_Partidos()
     el = PartidoSinPredecir.objects.last().delete()
-    im = cargar_Imagenes_Equipos_Sin_Predicir()
     return (le,esp2,pr,pr2, el, im)
 
 def cargarPartidoEntrenamiento():
@@ -1304,8 +1304,11 @@ def cargarPartidoSinPredecir_Ultimos_5_Partidos():
         local = partido.equipo_local
         visitante = partido.equipo_visitante
         liga = partido.liga
+        logo_liga = partido.logo_liga
         jornada = partido.jornada
         temporada = partido.temporada
+        escudo_local = partido.escudo_local
+        escudo_visitante = partido.escudo_visitante
             
         goles_ultimos_5_partidos_local_siendo_local = 0
         goles_ultimos_5_partidos_visitante_siendo_visitante = 0
@@ -1425,10 +1428,13 @@ def cargarPartidoSinPredecir_Ultimos_5_Partidos():
         else:
             pe = PartidoSinPredecir.objects.create(id=id,
                                                     liga=liga,
+                                                    logo_liga = logo_liga,
                                                     jornada=jornada,
                                                     temporada=temporada, 
                                                     equipo_local = local, 
                                                     equipo_visitante=visitante,
+                                                    escudo_local = escudo_local,
+                                                    escudo_visitante = escudo_visitante,
                                                     goles_ultimos_5_partidos_equipo_local =  goles_ultimos_5_partidos_equipo_local,
                                                     goles_ultimos_5_partidos_equipo_visitante = goles_ultimos_5_partidos_equipo_visitante, 
                                                     puntos_ultimos_5_partidos_equipo_local = puntos_ultimos_5_partidos_equipo_local, 
@@ -1582,8 +1588,8 @@ def cargarPartidoSinPredecir_Ultimos_3_Partidos():
             partido_actualizar.goles_en_contra_ultimos_3_partidos_equipo_visitante = goles_en_contra_ultimos_3_partidos_equipo_visitante
             partido_actualizar.save()
 
-def cargar_Imagenes_Equipos_Sin_Predicir():
-    partidos = PartidoSinPredecir.objects.all()
+def cargar_Imagenes_Equipos_Reales():
+    partidos = PartidoReal.objects.all()
     for partido in partidos:
         local = partido.equipo_local
         visitante = partido.equipo_visitante
@@ -1783,7 +1789,7 @@ def cargar_Imagenes_Equipos_Sin_Predicir():
             if local == "Albacete":
                 partido.escudo_local = f"equipos/Albacete.png"
             else:
-                partido.escudo_visitante = f"equipos/Eldense.png"
+                partido.escudo_visitante = f"equipos/Albacete.png"
 
         if local == "Espanyol" or visitante == "Espanyol":
             if local == "Espanyol":

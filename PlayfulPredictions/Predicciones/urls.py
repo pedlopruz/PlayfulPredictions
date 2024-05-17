@@ -34,6 +34,7 @@ urlpatterns = [
 
    path("predecir/partidos_sin_predecir", prediccion_partidos_sin_predecir),
    path("mostrarPredicciones/", mostrar_predicciones, name = "Partidos_Predichos"),
+   path('detallePredicciones/<int:partido_id>/', mostrar_partido, name = "Mostrar_Detalles"),
    path("filtrarPredicciones/", filtrado_predicciones, name = "Filtrar_Predicciones"),
    path("compararEquipos/", comparar_equipos, name = "Comparar_Equipos"),
    path("crearQuiniela/", crear_quiniela, name = "Crear_Quiniela"),

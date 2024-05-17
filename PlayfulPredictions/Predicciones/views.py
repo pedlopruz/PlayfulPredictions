@@ -1381,13 +1381,24 @@ def filtrado_predicciones(request):
                 raise Http404
     return render(request, 'predicciones/mostrarPrediccionesFiltradas.html', {"entity": partidos, "paginator":paginator})
 
+def mostrar_partido(request, partido_id):
+    partido = PartidosPredichos.objects.filter(id = partido_id).first()
+    local = partido.equipo_local
+    visitante = partido.equipo_visitante
+    escudo_local = partido.escudo_local
+    escudo_visitante = partido.escudo_visitante
+    real = PartidoReal.objects.filter(equipo_local=local, equipo_visitante = visitante).first()
+    id_real = real.id
+    ultimos_partidos_local = PartidoReal.objects.filter(Q(equipo_local=local) | Q(equipo_visitante=local),id__range=(1, id_real-1)).order_by("-id")[:5]
+    ultimos_partidos_visitante = PartidoReal.objects.filter(Q(equipo_local=visitante) | Q(equipo_visitante=visitante),id__range=(1, id_real-1)).order_by("-id")[:5]
+    return render(request, 'predicciones/mostrarPartido.html', {"prediccion":partido, "entity1":ultimos_partidos_local, "entity2":ultimos_partidos_visitante,"local":local,"visitante":visitante,"escudo_local":escudo_local,"escudo_visitante":escudo_visitante})
 
 def comparar_equipos(request):
     partidos_local_visitante = None
     existe = True
     winner = None
     partidos_cruzados = None
-    ultimos_partidos_partidos_local = None
+    ultimos_partidos_local = None
     partidos_local_siendo_local = None
     partidos_visitante_siendo_visitante = None
     ultimos_partidos_visitante = None
@@ -1431,10 +1442,10 @@ def comparar_equipos(request):
             else:
                 partidos_local_visitante=PartidosEntrenamiento.objects.filter(equipo_local = local, equipo_visitante = visitante).order_by("-id")[:5]
                 partidos_cruzados = PartidosEntrenamiento.objects.filter(Q(equipo_local=local, equipo_visitante=visitante) | Q(equipo_local=visitante, equipo_visitante=local)).order_by("-id")[:5]
-                ultimos_partidos_partidos_local = PartidosEntrenamiento.objects.filter(Q(equipo_local=local) | Q(equipo_visitante=local)).order_by("-id")[:5]
+                ultimos_partidos_local = PartidosEntrenamiento.objects.filter(Q(equipo_local=local) | Q(equipo_visitante=local)).order_by("-id")[:5]
                 partidos_local_siendo_local = PartidosEntrenamiento.objects.filter(equipo_local = local).order_by("-id")[:5]
-                partidos_visitante_siendo_visitante = PartidosEntrenamiento.objects.filter(Q(equipo_visitante=visitante) | Q(equipo_local=visitante)).order_by("-id")[:5]
-                ultimos_partidos_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante = visitante).order_by("-id")[:5]
+                ultimos_partidos_visitante = PartidosEntrenamiento.objects.filter(Q(equipo_visitante=visitante) | Q(equipo_local=visitante)).order_by("-id")[:5]
+                partidos_visitante_siendo_visitante = PartidosEntrenamiento.objects.filter(equipo_visitante = visitante).order_by("-id")[:5]
 
                 p_local = PartidosPredichos.objects.filter(equipo_local = local).first()
                 escudo_local = p_local.escudo_local
@@ -1548,10 +1559,10 @@ def comparar_equipos(request):
     return render(request, 'predicciones/compararEquipos.html', {"formulario":formulario, 
                                                                  "entity": partidos_local_visitante, 
                                                                  "entity2": partidos_cruzados,
-                                                                 "entity3": ultimos_partidos_partidos_local,
+                                                                 "entity3": ultimos_partidos_local,
                                                                  "entity4": partidos_local_siendo_local,
-                                                                 "entity5":partidos_visitante_siendo_visitante,
-                                                                 "entity6": ultimos_partidos_visitante, 
+                                                                 "entity5": ultimos_partidos_visitante,
+                                                                 "entity6":partidos_visitante_siendo_visitante,
                                                                  "local":local, 
                                                                  "visitante":visitante, 
                                                                  "prediccion":prediccion,

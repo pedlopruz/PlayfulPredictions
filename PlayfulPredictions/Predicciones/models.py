@@ -51,10 +51,13 @@ class PartidosEntrenamiento(models.Model):
 class PartidoReal(models.Model):
     id = models.IntegerField(primary_key=True)
     liga = models.CharField(max_length=50)
+    logo_liga = models.ImageField(blank = True)
     jornada = models.IntegerField()
     temporada = models.CharField(max_length=50)
     equipo_local = models.CharField(max_length=100)
     equipo_visitante = models.CharField(max_length=100)
+    escudo_local = models.ImageField(blank = True)
+    escudo_visitante = models.ImageField(blank = True)
     goles_local = models.IntegerField(default = -1)
     goles_visitante = models.IntegerField(default = -1)
     puntos_local = models.IntegerField(default = -1)

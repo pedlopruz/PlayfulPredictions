@@ -482,13 +482,26 @@
   background-color: whitesmoke; /* Color marrón */
 }
 .pgina-de-inicio .tableP {
-  margin-left: -150px;
+  margin-left: -170px;
+  border-collapse: collapse;
+  width: 100%;
+  background-color: whitesmoke; /* Color marrón */
+}
+.pgina-de-inicio .tableR {
+  margin-left: -225px;
   border-collapse: collapse;
   width: 100%;
   background-color: whitesmoke; /* Color marrón */
 }
 .pgina-de-inicio .tableC {
   margin-left: -140px;
+  border-collapse: collapse;
+  width: 100%;
+  background-color: whitesmoke; /* Color marrón */
+}
+.pgina-de-inicio .tableD {
+  margin-left: 560px;
+  margin-top: -413px;
   border-collapse: collapse;
   width: 100%;
   background-color: whitesmoke; /* Color marrón */
@@ -501,15 +514,30 @@
 .pgina-de-inicio .tableP td,
 .pgina-de-inicio .tableP .thh,
 .pgina-de-inicio .tableP .tdh,
-.pgina-de-inicio .tableP .tdv
-.pgina-de-inicio .tableP .tdr
-.pgina-de-inicio .tableP .tde
+.pgina-de-inicio .tableP .tdv,
+.pgina-de-inicio .tableP .tdr,
+.pgina-de-inicio .tableP .tde,
 .pgina-de-inicio .tableC td,
 .pgina-de-inicio .tableC .thh,
 .pgina-de-inicio .tableC .tdh,
-.pgina-de-inicio .tableC .tdv
-.pgina-de-inicio .tableC .tdr
-.pgina-de-inicio .tableC .tde{
+.pgina-de-inicio .tableC .tdv,
+.pgina-de-inicio .tableC .tdr,
+.pgina-de-inicio .tableC .tde,
+.pgina-de-inicio .tableD .td,
+.pgina-de-inicio .tableD .thh,
+.pgina-de-inicio .tableD .tdh,
+.pgina-de-inicio .tableD .tdv,
+.pgina-de-inicio .tableD .tdr,
+.pgina-de-inicio .tableD .tde,
+.pgina-de-inicio .tableR .td,
+.pgina-de-inicio .tableR .thh,
+.pgina-de-inicio .tableR .tdh,
+.pgina-de-inicio .tableR .tdv,
+.pgina-de-inicio .tableR .tdr,
+.pgina-de-inicio .tableR .tde,
+.pgina-de-inicio .tableC,
+.pgina-de-inicio .tableD,
+.pgina-de-inicio .tableR{
   border: 2px solid black; /* Bordes negros */
 }
 
@@ -715,6 +743,15 @@
   position: relative;
   background-color: var(--azul);
 }
+.pgina-de-inicio .bodet{
+  width: 1466px;
+  height: 157px;
+  margin-top: calc(100% - 1300px);
+  left: 0;
+  right: 0;
+  position: relative;
+  background-color: var(--azul);
+}
 .pgina-de-inicio .contenedorFormularioCompararFiltro{
   background-color: #1935c6;
   margin-top: 350px;
@@ -728,6 +765,25 @@
   background-color: rgb(255, 255, 255);
   width: 50%;
   margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 170px;
+  border-radius: 5px;
+  padding: 10px 0; 
+}
+
+.pgina-de-inicio .contenedorDetalles {
+  background-color: rgb(255, 255, 255);
+  width: 50%;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 170px;
+  border-radius: 5px;
+  padding: 10px 0; 
+}
+.pgina-de-inicio .contenedorTituloDetalles {
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  margin-top: 300px;
   margin-bottom: 0px;
   margin-left: 170px;
   border-radius: 5px;

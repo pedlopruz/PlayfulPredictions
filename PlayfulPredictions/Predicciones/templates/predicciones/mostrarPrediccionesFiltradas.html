@@ -45,8 +45,8 @@
         <tr>
           <td class="td"><img src="{{partido.logo_liga.url}}" width="50"></td>
           <td class="td">{{ partido.jornada }}</td>
-          <td class="td"><img src="{{partido.escudo_local.url}}" width="50">{{ partido.equipo_local }}</td>
-          <td class="td"><img src="{{partido.escudo_visitante.url}}" width="50">{{ partido.equipo_visitante }}</td>
+          <td class="td"><a href="{% url 'Mostrar_Detalles' partido.id %}"style="color: black;"><img src="{{partido.escudo_local.url}}" width="50">{{ partido.equipo_local }}</a></td>
+          <td class="td"><a href="{% url 'Mostrar_Detalles' partido.id %}"style="color: black;"><img src="{{partido.escudo_visitante.url}}" width="50">{{ partido.equipo_visitante }}</a></td>
           {%if partido.goles_ultimos_3_partidos_equipo_local > partido.goles_ultimos_3_partidos_equipo_visitante%}
           <td class="tdv">{{ partido.goles_ultimos_3_partidos_equipo_local }}</td>
           <td class="tdr">{{ partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
