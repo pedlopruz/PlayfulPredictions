@@ -8,235 +8,1328 @@
 <div class="contenedorListaRealizarPorra">
   <form method="post" action="" style="color: black;">
     {% csrf_token %}
-    <table class ="table">
-        <thead>
+    <table class ="tableP">
+      <thead>
+        <tr>
+          <th class="th">Liga</th>
+          <th class="th">Jornada</th>
+          <th class="th">Equipo Local</th>
+          <th class="th">Equipo Visitante</th>
+          <th class="thh">G3L</th>
+          <th class="thh">G3V</th>
+          <th class="thh">G5L</th>
+          <th class="thh">G5V</th>
+          <th class="thh">G3LL</th>
+          <th class="thh">G3VV</th>
+          <th class="thh">G5LL</th>
+          <th class="thh">G5VV</th>
+          <th class="thh">P3L</th>
+          <th class="thh">P3V</th>
+          <th class="thh">P5L</th>
+          <th class="thh">P5V</th>
+          <th class="thh">P3LL</th>
+          <th class="thh">P3VV</th>
+          <th class="thh">P5LL</th>
+          <th class="thh">P5VV</th>
+          <th class="thh">GC3L</th>
+          <th class="thh">GC3V</th>
+          <th class="thh">GC5L</th>
+          <th class="thh">GC5V</th>
+          <th class="thh">GC3LL</th>
+          <th class="thh">GC3VV</th>
+          <th class="thh">GC5LL</th>
+          <th class="thh">GC5VV</th>
+          <th class="thh">Ganador</th>
+          <th class="thh">Porra</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for quiniela in entity %}
           <tr>
-            <th class="th">Liga</th>
-            <th class="th">Jornada</th>
-            <th class="th">Equipo Local</th>
-            <th class="th">Equipo Visitante</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante</th>
-            <th class="th">Goles Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Puntos Ultimos 3 Y 5 Visitante Siendo Visitante</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Local Siendo Local</th>
-            <th class="th">Goles En Contra Ultimos 3 Y 5 Visitante Siendo Local</th>
-            <th class="th">Ganador</th>
-            <th class="th">Porra</th>
+            <td class="td"><img src="{{quiniela.primer_partido.logo_liga.url}}" width="50"></td>
+            <td class="td">{{ quiniela.primer_partido.jornada }}</td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.primer_partido.id %}"style="color: black;"><img src="{{quiniela.primer_partido.escudo_local.url}}" width="50">{{ quiniela.primer_partido.equipo_local }}</a></td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.primer_partido.id %}"style="color: black;"><img src="{{quiniela.primer_partido.escudo_visitante.url}}" width="50">{{ quiniela.primer_partido.equipo_visitante }}</a></td>
+            {%if quiniela.primer_partido.goles_ultimos_3_partidos_equipo_local > quiniela.primer_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.primer_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.primer_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.primer_partido.goles_ultimos_3_partidos_equipo_local < quiniela.primer_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.primer_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.primer_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.primer_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.primer_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.primer_partido.goles_ultimos_5_partidos_equipo_local > quiniela.primer_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.primer_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.primer_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.primer_partido.goles_ultimos_5_partidos_equipo_local < quiniela.primer_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.primer_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.primer_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.primer_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.primer_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.primer_partido.goles_ultimos_3_partidos_local_siendo_local > quiniela.primer_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.primer_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.primer_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.primer_partido.goles_ultimos_3_partidos_local_siendo_local < quiniela.primer_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.primer_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.primer_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.primer_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.primer_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.primer_partido.goles_ultimos_5_partidos_local_siendo_local > quiniela.primer_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.primer_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.primer_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.primer_partido.goles_ultimos_5_partidos_local_siendo_local < quiniela.primer_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.primer_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.primer_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.primer_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.primer_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.primer_partido.puntos_ultimos_3_partidos_equipo_local > quiniela.primer_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.primer_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.primer_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.primer_partido.puntos_ultimos_3_partidos_equipo_local < quiniela.primer_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.primer_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.primer_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.primer_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.primer_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.primer_partido.puntos_ultimos_5_partidos_equipo_local > quiniela.primer_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.primer_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.primer_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.primer_partido.puntos_ultimos_5_partidos_equipo_local < quiniela.primer_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.primer_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.primer_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.primer_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.primer_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.primer_partido.puntos_ultimos_3_partidos_local_siendo_local > quiniela.primer_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.primer_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.primer_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.primer_partido.puntos_ultimos_3_partidos_local_siendo_local < quiniela.primer_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.primer_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.primer_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.primer_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.primer_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.primer_partido.puntos_ultimos_5_partidos_local_siendo_local > quiniela.primer_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.primer_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.primer_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.primer_partido.puntos_ultimos_5_partidos_local_siendo_local < quiniela.primer_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.primer_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.primer_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.primer_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.primer_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_equipo_local > quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_equipo_local < quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_equipo_local > quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_equipo_local < quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local > quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local < quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local > quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local < quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            <td class="tde">{{quiniela.primer_partido.winner}}</td>
+            <td class="tde">{{formulario.partido1}}</td>
           </tr>
-        </thead>
-        <tbody>
-          {% for quiniela in entity %}
-            <tr>
-              <td class="td"><img src="{{quiniela.primer_partido.logo_liga.url}}" width="50"></td>
-              <td class="td">{{ quiniela.primer_partido.jornada }}</td>
-              <td class="td"><img src="{{quiniela.primer_partido.escudo_local.url}}" width="50">{{ quiniela.primer_partido.equipo_local }}</td>
-              <td class="td"><img src="{{quiniela.primer_partido.escudo_visitante.url}}" width="50">{{ quiniela.primer_partido.equipo_visitante }}</td>
-              <td class="td">{{ quiniela.primer_partido.goles_ultimos_3_partidos_equipo_local }} | {{ quiniela.primer_partido.goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.primer_partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.primer_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.primer_partido.puntos_ultimos_3_partidos_equipo_local }} | {{ quiniela.primer_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.primer_partido.puntos_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.primer_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.primer_partido.goles_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.primer_partido.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.primer_partido.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.primer_partido.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.primer_partido.puntos_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.primer_partido.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.primer_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.primer_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ quiniela.primer_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ quiniela.primer_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
-              <td class="td">{{quiniela.primer_partido.winner}}</td>
-              <td class="td">{{formulario.partido1}}</td>
-            </tr>
-            <tr>
-              <td class="td"><img src="{{quiniela.segundo_partido.logo_liga.url}}" width="50"></td>
-              <td class="td">{{ quiniela.segundo_partido.jornada }}</td>
-              <td class="td"><img src="{{quiniela.segundo_partido.escudo_local.url}}" width="50">{{ quiniela.segundo_partido.equipo_local }}</td>
-              <td class="td"><img src="{{quiniela.segundo_partido.escudo_visitante.url}}" width="50">{{ quiniela.segundo_partido.equipo_visitante }}</td>
-              <td class="td">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_local }} | {{ quiniela.segundo_partido.goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.segundo_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.segundo_partido.puntos_ultimos_3_partidos_equipo_local }} | {{ quiniela.segundo_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.segundo_partido.puntos_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.segundo_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.segundo_partido.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.segundo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.segundo_partido.puntos_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.segundo_partido.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.segundo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.segundo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
-              <td class="td">{{quiniela.segundo_partido.winner}}</td>
-              <td class="td">{{formulario.partido2}}</td>
-            </tr>
-            <tr>
-              <td class="td"><img src="{{quiniela.tercer_partido.logo_liga.url}}" width="50"></td>
-              <td class="td">{{ quiniela.tercer_partido.jornada }}</td>
-              <td class="td"><img src="{{quiniela.tercer_partido.escudo_local.url}}" width="50">{{ quiniela.tercer_partido.equipo_local }}</td>
-              <td class="td"><img src="{{quiniela.tercer_partido.escudo_visitante.url}}" width="50">{{ quiniela.tercer_partido.equipo_visitante }}</td>
-              <td class="td">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_local }} | {{ quiniela.tercer_partido.goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.tercer_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.tercer_partido.puntos_ultimos_3_partidos_equipo_local }} | {{ quiniela.tercer_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.tercer_partido.puntos_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.tercer_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.tercer_partido.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.tercer_partido.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.tercer_partido.puntos_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.tercer_partido.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.tercer_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.tercer_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
-              <td class="td">{{quiniela.tercer_partido.winner}}</td>
-              <td class="td">{{formulario.partido3}}</td>
-            </tr>
-            <tr>
-              <td class="td"><img src="{{quiniela.cuarto_partido.logo_liga.url}}" width="50"></td>
-              <td class="td">{{ quiniela.cuarto_partido.jornada }}</td>
-              <td class="td"><img src="{{quiniela.cuarto_partido.escudo_local.url}}" width="50">{{ quiniela.cuarto_partido.equipo_local }}</td>
-              <td class="td"><img src="{{quiniela.cuarto_partido.escudo_visitante.url}}" width="50">{{ quiniela.cuarto_partido.equipo_visitante }}</td>
-              <td class="td">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_local }} | {{ quiniela.cuarto_partido.goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.cuarto_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.cuarto_partido.puntos_ultimos_3_partidos_equipo_local }} | {{ quiniela.cuarto_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.cuarto_partido.puntos_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.cuarto_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.cuarto_partido.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.cuarto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.cuarto_partido.puntos_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.cuarto_partido.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.cuarto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.cuarto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
-              <td class="td">{{quiniela.cuarto_partido.winner}}</td>
-              <td class="td">{{formulario.partido4}}</td>
-            </tr>
-            <tr>
-              <td class="td"><img src="{{quiniela.quinto_partido.logo_liga.url}}" width="50"></td>
-              <td class="td">{{ quiniela.quinto_partido.jornada }}</td>
-              <td class="td"><img src="{{quiniela.quinto_partido.escudo_local.url}}" width="50">{{ quiniela.quinto_partido.equipo_local }}</td>
-              <td class="td"><img src="{{quiniela.quinto_partido.escudo_visitante.url}}" width="50">{{ quiniela.quinto_partido.equipo_visitante }}</td>
-              <td class="td">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_local }} | {{ quiniela.quinto_partido.goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.quinto_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.quinto_partido.puntos_ultimos_3_partidos_equipo_local }} | {{ quiniela.quinto_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.quinto_partido.puntos_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.quinto_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.quinto_partido.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.quinto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.quinto_partido.puntos_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.quinto_partido.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.quinto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.quinto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
-              <td class="td">{{quiniela.quinto_partido.winner}}</td>
-              <td class="td">{{formulario.partido5}}</td>
-            </tr>
-            <tr>
-              <td class="td"><img src="{{quiniela.sexto_partido.logo_liga.url}}" width="50"></td>
-              <td class="td">{{ quiniela.sexto_partido.jornada }}</td>
-              <td class="td"><img src="{{quiniela.sexto_partido.escudo_local.url}}" width="50">{{ quiniela.sexto_partido.equipo_local }}</td>
-              <td class="td"><img src="{{quiniela.sexto_partido.escudo_visitante.url}}" width="50">{{ quiniela.sexto_partido.equipo_visitante }}</td>
-              <td class="td">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_local }} | {{ quiniela.sexto_partido.goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.sexto_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.sexto_partido.puntos_ultimos_3_partidos_equipo_local }} | {{ quiniela.sexto_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.sexto_partido.puntos_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.sexto_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.sexto_partido.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.sexto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.sexto_partido.puntos_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.sexto_partido.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.sexto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.sexto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
-              <td class="td">{{quiniela.sexto_partido.winner}}</td>
-              <td class="td">{{formulario.partido6}}</td>
-            </tr>
-            <tr>
-              <td class="td"><img src="{{quiniela.septimo_partido.logo_liga.url}}" width="50"></td>
-              <td class="td">{{ quiniela.septimo_partido.jornada }}</td>
-              <td class="td"><img src="{{quiniela.septimo_partido.escudo_local.url}}" width="50">{{ quiniela.septimo_partido.equipo_local }}</td>
-              <td class="td"><img src="{{quiniela.septimo_partido.escudo_visitante.url}}" width="50">{{ quiniela.septimo_partido.equipo_visitante }}</td>
-              <td class="td">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_equipo_local }} | {{ quiniela.septimo_partido.goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.septimo_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.septimo_partido.puntos_ultimos_3_partidos_equipo_local }} | {{ quiniela.septimo_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.septimo_partido.puntos_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.septimo_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.septimo_partido.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.septimo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.septimo_partido.puntos_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.septimo_partido.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.septimo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.septimo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
-              <td class="td">{{quiniela.septimo_partido.winner}}</td>
-              <td class="td">{{formulario.partido7}}</td>
-            </tr>
-            <tr>
-              <td class="td"><img src="{{quiniela.octavo_partido.logo_liga.url}}" width="50"></td>
-              <td class="td">{{ quiniela.octavo_partido.jornada }}</td>
-              <td class="td"><img src="{{quiniela.octavo_partido.escudo_local.url}}" width="50">{{ quiniela.octavo_partido.equipo_local }}</td>
-              <td class="td"><img src="{{quiniela.octavo_partido.escudo_visitante.url}}" width="50">{{ quiniela.octavo_partido.equipo_visitante }}</td>
-              <td class="td">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_local }} | {{ quiniela.octavo_partido.goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.octavo_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.octavo_partido.puntos_ultimos_3_partidos_equipo_local }} | {{ quiniela.octavo_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.octavo_partido.puntos_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.octavo_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.octavo_partido.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.octavo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.octavo_partido.puntos_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.octavo_partido.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.octavo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.octavo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
-              <td class="td">{{quiniela.octavo_partido.winner}}</td>
-              <td class="td">{{formulario.partido8}}</td>
-            </tr>
-            <tr>
-              <td class="td"><img src="{{quiniela.noveno_partido.logo_liga.url}}" width="50"></td>
-              <td class="td">{{ quiniela.noveno_partido.jornada }}</td>
-              <td class="td"><img src="{{quiniela.noveno_partido.escudo_local.url}}" width="50">{{ quiniela.noveno_partido.equipo_local }}</td>
-              <td class="td"><img src="{{quiniela.noveno_partido.escudo_visitante.url}}" width="50">{{ quiniela.noveno_partido.equipo_visitante }}</td>
-              <td class="td">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_local }} | {{ quiniela.noveno_partido.goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.noveno_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.noveno_partido.puntos_ultimos_3_partidos_equipo_local }} | {{ quiniela.noveno_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.noveno_partido.puntos_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.noveno_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.noveno_partido.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.noveno_partido.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.noveno_partido.puntos_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.noveno_partido.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.noveno_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.noveno_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
-              <td class="td">{{quiniela.noveno_partido.winner}}</td>
-              <td class="td">{{formulario.partido9}}</td>
-            </tr>
-            <tr>
-              <td class="td"><img src="{{quiniela.decimo_partido.logo_liga.url}}" width="50"></td>
-              <td class="td">{{ quiniela.decimo_partido.jornada }}</td>
-              <td class="td"><img src="{{quiniela.decimo_partido.escudo_local.url}}" width="50">{{ quiniela.decimo_partido.equipo_local }}</td>
-              <td class="td"><img src="{{quiniela.decimo_partido.escudo_visitante.url}}" width="50">{{ quiniela.decimo_partido.equipo_visitante }}</td>
-              <td class="td">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_local }} | {{ quiniela.decimo_partido.goles_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.decimo_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.decimo_partido.puntos_ultimos_3_partidos_equipo_local }} | {{ quiniela.decimo_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.decimo_partido.puntos_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.decimo_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_equipo_local }} | {{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
-              <td class="td">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }} | {{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
-              <td class="td">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.decimo_partido.goles_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.decimo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.decimo_partido.puntos_ultimos_3_partidos_local_siendo_local}} | {{ quiniela.decimo_partido.puntos_ultimos_5_partidos_local_siendo_local}}</td>
-              <td class="td">{{ quiniela.decimo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante}} | {{ quiniela.decimo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante}}</td>
-              <td class="td">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }} | {{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
-              <td class="td">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}|{{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
-              <td class="td">{{quiniela.decimo_partido.winner}}</td>
-              <td class="td">{{formulario.partido10}}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <button type="submit" class="btn btn-success" style="margin-top: 20px; margin-bottom: 20px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:525px;padding: 10px 15px;">Enviar Porra</button>
+          <tr>
+            <td class="td"><img src="{{quiniela.segundo_partido.logo_liga.url}}" width="50"></td>
+            <td class="td">{{ quiniela.segundo_partido.jornada }}</td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.segundo_partido.id %}"style="color: black;"><img src="{{quiniela.segundo_partido.escudo_local.url}}" width="50">{{ quiniela.segundo_partido.equipo_local }}</a></td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.segundo_partido.id %}"style="color: black;"><img src="{{quiniela.segundo_partido.escudo_visitante.url}}" width="50">{{ quiniela.segundo_partido.equipo_visitante }}</a></td>
+            {%if quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_local > quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_local < quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.segundo_partido.goles_ultimos_5_partidos_equipo_local > quiniela.segundo_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.segundo_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.segundo_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.segundo_partido.goles_ultimos_5_partidos_equipo_local < quiniela.segundo_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.segundo_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.segundo_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.segundo_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.segundo_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.segundo_partido.goles_ultimos_3_partidos_local_siendo_local > quiniela.segundo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.segundo_partido.goles_ultimos_3_partidos_local_siendo_local < quiniela.segundo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.segundo_partido.goles_ultimos_5_partidos_local_siendo_local > quiniela.segundo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.segundo_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.segundo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.segundo_partido.goles_ultimos_5_partidos_local_siendo_local < quiniela.segundo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.segundo_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.segundo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.segundo_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.segundo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.segundo_partido.puntos_ultimos_3_partidos_equipo_local > quiniela.segundo_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.segundo_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.segundo_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.segundo_partido.puntos_ultimos_3_partidos_equipo_local < quiniela.segundo_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.segundo_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.segundo_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.segundo_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.segundo_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.segundo_partido.puntos_ultimos_5_partidos_equipo_local > quiniela.segundo_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.segundo_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.segundo_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.segundo_partido.puntos_ultimos_5_partidos_equipo_local < quiniela.segundo_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.segundo_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.segundo_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.segundo_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.segundo_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.segundo_partido.puntos_ultimos_3_partidos_local_siendo_local > quiniela.segundo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.segundo_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.segundo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.segundo_partido.puntos_ultimos_3_partidos_local_siendo_local < quiniela.segundo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.segundo_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.segundo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.segundo_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.segundo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.segundo_partido.puntos_ultimos_5_partidos_local_siendo_local > quiniela.segundo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.segundo_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.segundo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.segundo_partido.puntos_ultimos_5_partidos_local_siendo_local < quiniela.segundo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.segundo_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.segundo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.segundo_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.segundo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_equipo_local > quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_equipo_local < quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_equipo_local > quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_equipo_local < quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local > quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local < quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.segundo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local > quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local < quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.segundo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            <td class="tde">{{quiniela.segundo_partido.winner}}</td>
+            <td class="tde">{{formulario.partido2}}</td>
+          </tr>
+          <tr>
+            <td class="td"><img src="{{quiniela.tercer_partido.logo_liga.url}}" width="50"></td>
+            <td class="td">{{ quiniela.tercer_partido.jornada }}</td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.tercer_partido.id %}"style="color: black;"><img src="{{quiniela.tercer_partido.escudo_local.url}}" width="50">{{ quiniela.tercer_partido.equipo_local }}</a></td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.tercer_partido.id %}"style="color: black;"><img src="{{quiniela.tercer_partido.escudo_visitante.url}}" width="50">{{ quiniela.tercer_partido.equipo_visitante }}</a></td>
+            {%if quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_local > quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_local < quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.tercer_partido.goles_ultimos_5_partidos_equipo_local > quiniela.tercer_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.tercer_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.tercer_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.tercer_partido.goles_ultimos_5_partidos_equipo_local < quiniela.tercer_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.tercer_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.tercer_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.tercer_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.tercer_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.tercer_partido.goles_ultimos_3_partidos_local_siendo_local > quiniela.tercer_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.tercer_partido.goles_ultimos_3_partidos_local_siendo_local < quiniela.tercer_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.tercer_partido.goles_ultimos_5_partidos_local_siendo_local > quiniela.tercer_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.tercer_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.tercer_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.tercer_partido.goles_ultimos_5_partidos_local_siendo_local < quiniela.tercer_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.tercer_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.tercer_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.tercer_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.tercer_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.tercer_partido.puntos_ultimos_3_partidos_equipo_local > quiniela.tercer_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.tercer_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.tercer_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.tercer_partido.puntos_ultimos_3_partidos_equipo_local < quiniela.tercer_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.tercer_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.tercer_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.tercer_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.tercer_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.tercer_partido.puntos_ultimos_5_partidos_equipo_local > quiniela.tercer_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.tercer_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.tercer_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.tercer_partido.puntos_ultimos_5_partidos_equipo_local < quiniela.tercer_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.tercer_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.tercer_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.tercer_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.tercer_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.tercer_partido.puntos_ultimos_3_partidos_local_siendo_local > quiniela.tercer_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.tercer_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.tercer_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.tercer_partido.puntos_ultimos_3_partidos_local_siendo_local < quiniela.tercer_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.tercer_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.tercer_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.tercer_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.tercer_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.tercer_partido.puntos_ultimos_5_partidos_local_siendo_local > quiniela.tercer_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.tercer_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.tercer_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.tercer_partido.puntos_ultimos_5_partidos_local_siendo_local < quiniela.tercer_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.tercer_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.tercer_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.tercer_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.tercer_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_equipo_local > quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_equipo_local < quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_equipo_local > quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_equipo_local < quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local > quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local < quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.tercer_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local > quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local < quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.tercer_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            <td class="tde">{{quiniela.tercer_partido.winner}}</td>
+            <td class="tde">{{formulario.partido3}}</td>
+          </tr>
+          <tr>
+            <td class="td"><img src="{{quiniela.cuarto_partido.logo_liga.url}}" width="50"></td>
+            <td class="td">{{ quiniela.cuarto_partido.jornada }}</td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.cuarto_partido.id %}"style="color: black;"><img src="{{quiniela.cuarto_partido.escudo_local.url}}" width="50">{{ quiniela.cuarto_partido.equipo_local }}</a></td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.cuarto_partido.id %}"style="color: black;"><img src="{{quiniela.cuarto_partido.escudo_visitante.url}}" width="50">{{ quiniela.cuarto_partido.equipo_visitante }}</a></td>
+            {%if quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_local > quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_local < quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.cuarto_partido.goles_ultimos_5_partidos_equipo_local > quiniela.cuarto_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.cuarto_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.cuarto_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.cuarto_partido.goles_ultimos_5_partidos_equipo_local < quiniela.cuarto_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.cuarto_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.cuarto_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.cuarto_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.cuarto_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.cuarto_partido.goles_ultimos_3_partidos_local_siendo_local > quiniela.cuarto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.cuarto_partido.goles_ultimos_3_partidos_local_siendo_local < quiniela.cuarto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.cuarto_partido.goles_ultimos_5_partidos_local_siendo_local > quiniela.cuarto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.cuarto_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.cuarto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.cuarto_partido.goles_ultimos_5_partidos_local_siendo_local < quiniela.cuarto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.cuarto_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.cuarto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.cuarto_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.cuarto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.cuarto_partido.puntos_ultimos_3_partidos_equipo_local > quiniela.cuarto_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.cuarto_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.cuarto_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.cuarto_partido.puntos_ultimos_3_partidos_equipo_local < quiniela.cuarto_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.cuarto_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.cuarto_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.cuarto_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.cuarto_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.cuarto_partido.puntos_ultimos_5_partidos_equipo_local > quiniela.cuarto_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.cuarto_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.cuarto_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.cuarto_partido.puntos_ultimos_5_partidos_equipo_local < quiniela.cuarto_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.cuarto_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.cuarto_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.cuarto_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.cuarto_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.cuarto_partido.puntos_ultimos_3_partidos_local_siendo_local > quiniela.cuarto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.cuarto_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.cuarto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.cuarto_partido.puntos_ultimos_3_partidos_local_siendo_local < quiniela.cuarto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.cuarto_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.cuarto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.cuarto_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.cuarto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.cuarto_partido.puntos_ultimos_5_partidos_local_siendo_local > quiniela.cuarto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.cuarto_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.cuarto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.cuarto_partido.puntos_ultimos_5_partidos_local_siendo_local < quiniela.cuarto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.cuarto_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.cuarto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.cuarto_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.cuarto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_equipo_local > quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_equipo_local < quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_equipo_local > quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_equipo_local < quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local > quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local < quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local > quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local < quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.cuarto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            <td class="tde">{{quiniela.cuarto_partido.winner}}</td>
+            <td class="tde">{{formulario.partido4}}</td>
+          </tr>
+          <tr>
+            <td class="td"><img src="{{quiniela.octavo_partido.logo_liga.url}}" width="50"></td>
+            <td class="td">{{ quiniela.octavo_partido.jornada }}</td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.quinto_partido.id %}"style="color: black;"><img src="{{quiniela.quinto_partido.escudo_local.url}}" width="50">{{ quiniela.quinto_partido.equipo_local }}</a></td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.quinto_partido.id %}"style="color: black;"><img src="{{quiniela.quinto_partido.escudo_visitante.url}}" width="50">{{ quiniela.quinto_partido.equipo_visitante }}</a></td>
+            {%if quiniela.goles_ultimos_3_partidos_equipo_local > quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_local < quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.quinto_partido.goles_ultimos_5_partidos_equipo_local > quiniela.quinto_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.quinto_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.quinto_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.quinto_partido.goles_ultimos_5_partidos_equipo_local < quiniela.quinto_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.quinto_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.quinto_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.quinto_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.quinto_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.quinto_partido.goles_ultimos_3_partidos_local_siendo_local > quiniela.quinto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.quinto_partido.goles_ultimos_3_partidos_local_siendo_local < quiniela.quinto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.quinto_partido.goles_ultimos_5_partidos_local_siendo_local > quiniela.quinto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.quinto_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.quinto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.quinto_partido.goles_ultimos_5_partidos_local_siendo_local < quiniela.quinto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.quinto_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.quinto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.quinto_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.quinto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.quinto_partido.puntos_ultimos_3_partidos_equipo_local > quiniela.quinto_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.quinto_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.quinto_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.quinto_partido.puntos_ultimos_3_partidos_equipo_local < quiniela.quinto_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.quinto_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.quinto_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.quinto_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.quinto_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.quinto_partido.puntos_ultimos_5_partidos_equipo_local > quiniela.quinto_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.quinto_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.quinto_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.quinto_partido.puntos_ultimos_5_partidos_equipo_local < quiniela.quinto_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.quinto_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.quinto_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.quinto_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.quinto_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.quinto_partido.puntos_ultimos_3_partidos_local_siendo_local > quiniela.quinto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.quinto_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.quinto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.quinto_partido.puntos_ultimos_3_partidos_local_siendo_local < quiniela.quinto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.quinto_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.quinto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.quinto_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.quinto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.quinto_partido.puntos_ultimos_5_partidos_local_siendo_local > quiniela.quinto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.quinto_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.quinto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.quinto_partido.puntos_ultimos_5_partidos_local_siendo_local < quiniela.quinto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.quinto_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.quinto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.quinto_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.quinto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_equipo_local > quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_equipo_local < quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_equipo_local > quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_equipo_local < quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local > quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local < quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.quinto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local > quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local < quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.quinto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            <td class="tde">{{quiniela.quinto_partido.winner}}</td>
+            <td class="tde">{{formulario.partido5}}</td>
+          </tr>
+          <tr>
+            <td class="td"><img src="{{quiniela.sexto_partido.logo_liga.url}}" width="50"></td>
+            <td class="td">{{ quiniela.sexto_partido.jornada }}</td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.sexto_partido.id %}"style="color: black;"><img src="{{quiniela.sexto_partido.escudo_local.url}}" width="50">{{ quiniela.sexto_partido.equipo_local }}</a></td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.sexto_partido.id %}"style="color: black;"><img src="{{quiniela.sexto_partido.escudo_visitante.url}}" width="50">{{ quiniela.sexto_partido.equipo_visitante }}</a></td>
+            {%if quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_local > quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_local < quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.sexto_partido.goles_ultimos_5_partidos_equipo_local > quiniela.sexto_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.sexto_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.sexto_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.sexto_partido.goles_ultimos_5_partidos_equipo_local < quiniela.sexto_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.sexto_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.sexto_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.sexto_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.sexto_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.sexto_partido.goles_ultimos_3_partidos_local_siendo_local > quiniela.sexto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.sexto_partido.goles_ultimos_3_partidos_local_siendo_local < quiniela.sexto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.sexto_partido.goles_ultimos_5_partidos_local_siendo_local > quiniela.sexto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.sexto_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.sexto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.sexto_partido.goles_ultimos_5_partidos_local_siendo_local < quiniela.sexto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.sexto_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.sexto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.sexto_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.sexto_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.sexto_partido.puntos_ultimos_3_partidos_equipo_local > quiniela.sexto_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.sexto_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.sexto_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.sexto_partido.puntos_ultimos_3_partidos_equipo_local < quiniela.sexto_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.sexto_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.sexto_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.sexto_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.sexto_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.sexto_partido.puntos_ultimos_5_partidos_equipo_local > quiniela.sexto_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.sexto_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.sexto_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.sexto_partido.puntos_ultimos_5_partidos_equipo_local < quiniela.sexto_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.sexto_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.sexto_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.sexto_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.sexto_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.sexto_partido.puntos_ultimos_3_partidos_local_siendo_local > quiniela.sexto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.sexto_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.sexto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.sexto_partido.puntos_ultimos_3_partidos_local_siendo_local < quiniela.sexto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.sexto_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.sexto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.sexto_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.sexto_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.sexto_partido.puntos_ultimos_5_partidos_local_siendo_local > quiniela.sexto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.sexto_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.sexto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.sexto_partido.puntos_ultimos_5_partidos_local_siendo_local < quiniela.sexto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.sexto_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.sexto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.sexto_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.sexto_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_equipo_local > quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_equipo_local < quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_equipo_local > quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_equipo_local < quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local > quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local < quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.sexto_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local > quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local < quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.sexto_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            <td class="tde">{{quiniela.sexto_partido.winner}}</td>
+            <td class="tde">{{formulario.partido6}}</td>
+
+          </tr>
+          <tr>
+            <td class="td"><img src="{{quiniela.septimo_partido.logo_liga.url}}" width="50"></td>
+            <td class="td">{{ quiniela.septimo_partido.jornada }}</td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.septimo_partido.id %}"style="color: black;"><img src="{{quiniela.septimo_partido.escudo_local.url}}" width="50">{{ quiniela.septimo_partido.equipo_local }}</a></td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.septimo_partido.id %}"style="color: black;"><img src="{{quiniela.septimo_partido.escudo_visitante.url}}" width="50">{{ quiniela.septimo_partido.equipo_visitante }}</a></td>
+            {%if quiniela.primer_quiniela.septimo_partido.goles_ultimos_3_partidos_equipo_local > quiniela.septimo_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.septimo_partido.goles_ultimos_3_partidos_equipo_local < quiniela.septimo_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.septimo_partido.goles_ultimos_5_partidos_equipo_local > quiniela.septimo_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.septimo_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.septimo_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.septimo_partido.goles_ultimos_5_partidos_equipo_local < quiniela.septimo_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.septimo_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.septimo_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.septimo_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.septimo_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.septimo_partido.goles_ultimos_3_partidos_local_siendo_local > quiniela.septimo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.septimo_partido.goles_ultimos_3_partidos_local_siendo_local < quiniela.septimo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.septimo_partido.goles_ultimos_5_partidos_local_siendo_local > quiniela.septimo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.septimo_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.septimo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.septimo_partido.goles_ultimos_5_partidos_local_siendo_local < quiniela.septimo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.septimo_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.septimo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.septimo_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.septimo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.septimo_partido.puntos_ultimos_3_partidos_equipo_local > quiniela.septimo_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.septimo_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.septimo_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.septimo_partido.puntos_ultimos_3_partidos_equipo_local < quiniela.septimo_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.septimo_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.septimo_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.septimo_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.septimo_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.septimo_partido.puntos_ultimos_5_partidos_equipo_local > quiniela.septimo_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.septimo_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.septimo_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.septimo_partido.puntos_ultimos_5_partidos_equipo_local < quiniela.septimo_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.septimo_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.septimo_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.septimo_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.septimo_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.septimo_partido.puntos_ultimos_3_partidos_local_siendo_local > quiniela.septimo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.septimo_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.septimo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.septimo_partido.puntos_ultimos_3_partidos_local_siendo_local < quiniela.septimo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.septimo_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.septimo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.septimo_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.septimo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.septimo_partido.puntos_ultimos_5_partidos_local_siendo_local > quiniela.septimo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.septimo_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.septimo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.septimo_partido.puntos_ultimos_5_partidos_local_siendo_local < quiniela.septimo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.septimo_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.septimo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.septimo_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.septimo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_equipo_local > quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_equipo_local < quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_equipo_local > quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_equipo_local < quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local > quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local < quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.septimo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local > quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local < quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.septimo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            <td class="tde">{{quiniela.septimo_partido.winner}}</td>
+            <td class="tde">{{formulario.partido7}}</td>
+          </tr>
+          <tr>
+            <td class="td"><img src="{{quiniela.octavo_partido.logo_liga.url}}" width="50"></td>
+            <td class="td">{{ quiniela.octavo_partido.jornada }}</td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.octavo_partido.id %}"style="color: black;"><img src="{{quiniela.octavo_partido.escudo_local.url}}" width="50">{{ quiniela.octavo_partido.equipo_local }}</a></td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.octavo_partido.id %}"style="color: black;"><img src="{{quiniela.octavo_partido.escudo_visitante.url}}" width="50">{{ quiniela.octavo_partido.equipo_visitante }}</a></td>
+            {%if quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_local > quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_local < quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.octavo_partido.goles_ultimos_5_partidos_equipo_local > quiniela.octavo_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.octavo_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.octavo_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.octavo_partido.goles_ultimos_5_partidos_equipo_local < quiniela.octavo_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.octavo_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.octavo_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.octavo_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.octavo_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.octavo_partido.goles_ultimos_3_partidos_local_siendo_local > quiniela.octavo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.octavo_partido.goles_ultimos_3_partidos_local_siendo_local < quiniela.octavo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.octavo_partido.goles_ultimos_5_partidos_local_siendo_local > quiniela.octavo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.octavo_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.octavo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.octavo_partido.goles_ultimos_5_partidos_local_siendo_local < quiniela.octavo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.octavo_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.octavo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.octavo_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.octavo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.octavo_partido.puntos_ultimos_3_partidos_equipo_local > quiniela.octavo_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.octavo_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.octavo_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.octavo_partido.puntos_ultimos_3_partidos_equipo_local < quiniela.octavo_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.octavo_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.octavo_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.octavo_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.octavo_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.octavo_partido.puntos_ultimos_5_partidos_equipo_local > quiniela.octavo_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.octavo_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.octavo_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.octavo_partido.puntos_ultimos_5_partidos_equipo_local < quiniela.octavo_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.octavo_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.octavo_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.octavo_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.octavo_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.octavo_partido.puntos_ultimos_3_partidos_local_siendo_local > quiniela.octavo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.octavo_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.octavo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.octavo_partido.puntos_ultimos_3_partidos_local_siendo_local < quiniela.octavo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.octavo_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.octavo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.octavo_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.octavo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.octavo_partido.puntos_ultimos_5_partidos_local_siendo_local > quiniela.octavo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.octavo_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.octavo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.octavo_partido.puntos_ultimos_5_partidos_local_siendo_local < quiniela.octavo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.octavo_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.octavo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.octavo_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.octavo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_equipo_local > quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_equipo_local < quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_equipo_local > quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_equipo_local < quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local > quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local < quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.octavo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local > quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local < quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.octavo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            <td class="tde">{{quiniela.octavo_partido.winner}}</td>
+            <td class="tde">{{formulario.partido8}}</td>
+          </tr>
+          <tr>
+            <td class="td"><img src="{{quiniela.noveno_partido.logo_liga.url}}" width="50"></td>
+            <td class="td">{{ quiniela.noveno_partido.jornada }}</td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.noveno_partido.id %}"style="color: black;"><img src="{{quiniela.noveno_partido.escudo_local.url}}" width="50">{{ quiniela.noveno_partido.equipo_local }}</a></td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.noveno_partido.id %}"style="color: black;"><img src="{{quiniela.noveno_partido.escudo_visitante.url}}" width="50">{{ quiniela.octavo_partido.equipo_visitante }}</a></td>
+            {%if quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_local > quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_local < quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.noveno_partido.goles_ultimos_5_partidos_equipo_local > quiniela.noveno_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.noveno_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.noveno_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.noveno_partido.goles_ultimos_5_partidos_equipo_local < quiniela.noveno_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.noveno_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.noveno_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.noveno_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.noveno_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.noveno_partido.goles_ultimos_3_partidos_local_siendo_local > quiniela.noveno_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.noveno_partido.goles_ultimos_3_partidos_local_siendo_local < quiniela.noveno_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.noveno_partido.goles_ultimos_5_partidos_local_siendo_local > quiniela.noveno_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.noveno_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.noveno_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.noveno_partido.goles_ultimos_5_partidos_local_siendo_local < quiniela.noveno_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.noveno_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.noveno_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.noveno_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.noveno_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.noveno_partido.puntos_ultimos_3_partidos_equipo_local > quiniela.noveno_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.noveno_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.noveno_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.noveno_partido.puntos_ultimos_3_partidos_equipo_local < quiniela.noveno_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.noveno_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.noveno_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.noveno_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.noveno_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.noveno_partido.puntos_ultimos_5_partidos_equipo_local > quiniela.noveno_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.noveno_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.noveno_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.noveno_partido.puntos_ultimos_5_partidos_equipo_local < quiniela.noveno_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.noveno_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.noveno_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.noveno_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.noveno_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.noveno_partido.puntos_ultimos_3_partidos_local_siendo_local > quiniela.noveno_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.noveno_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.noveno_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.noveno_partido.puntos_ultimos_3_partidos_local_siendo_local < quiniela.noveno_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.noveno_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.noveno_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.noveno_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.noveno_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.noveno_partido.puntos_ultimos_5_partidos_local_siendo_local > quiniela.noveno_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.noveno_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.noveno_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.noveno_partido.puntos_ultimos_5_partidos_local_siendo_local < quiniela.noveno_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.noveno_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.noveno_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.noveno_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.noveno_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_equipo_local > quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_equipo_local < quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_equipo_local > quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_equipo_local < quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local > quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local < quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.noveno_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local > quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local < quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.noveno_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            <td class="tde">{{quiniela.noveno_partido.winner}}</td>
+            <td class="tde">{{formulario.partido9}}</td>
+          </tr>
+          <tr>
+            <td class="td"><img src="{{quiniela.decimo_partido.logo_liga.url}}" width="50"></td>
+            <td class="td">{{ quiniela.decimo_partido.jornada }}</td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.decimo_partido.id %}"style="color: black;"><img src="{{quiniela.decimo_partido.escudo_local.url}}" width="50">{{ quiniela.decimo_partido.equipo_local }}</a></td>
+            <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.decimo_partido.id %}"style="color: black;"><img src="{{quiniela.decimo_partido.escudo_visitante.url}}" width="50">{{ quiniela.decimo_partido.equipo_visitante }}</a></td>
+            {%if quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_local > quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_local < quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.decimo_partido.goles_ultimos_5_partidos_equipo_local > quiniela.decimo_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.decimo_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.decimo_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.decimo_partido.goles_ultimos_5_partidos_equipo_local < quiniela.decimo_partido.goles_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.decimo_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.decimo_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.decimo_partido.goles_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.decimo_partido.goles_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.decimo_partido.goles_ultimos_3_partidos_local_siendo_local > quiniela.decimo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.decimo_partido.goles_ultimos_3_partidos_local_siendo_local < quiniela.decimo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.decimo_partido.goles_ultimos_5_partidos_local_siendo_local > quiniela.decimo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.decimo_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.decimo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.decimo_partido.goles_ultimos_5_partidos_local_siendo_local < quiniela.decimo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.decimo_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.decimo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.decimo_partido.goles_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.decimo_partido.goles_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.decimo_partido.puntos_ultimos_3_partidos_equipo_local > quiniela.decimo_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.decimo_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.decimo_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.decimo_partido.puntos_ultimos_3_partidos_equipo_local < quiniela.decimo_partido.puntos_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.decimo_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.decimo_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.decimo_partido.puntos_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.decimo_partido.puntos_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.decimo_partido.puntos_ultimos_5_partidos_equipo_local > quiniela.decimo_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.decimo_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.decimo_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.decimo_partido.puntos_ultimos_5_partidos_equipo_local < quiniela.decimo_partido.puntos_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.decimo_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.decimo_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.decimo_partido.puntos_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.decimo_partido.puntos_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.decimo_partido.puntos_ultimos_3_partidos_local_siendo_local > quiniela.decimo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.decimo_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.decimo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.decimo_partido.puntos_ultimos_3_partidos_local_siendo_local < quiniela.decimo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.decimo_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.decimo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.decimo_partido.puntos_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.decimo_partido.puntos_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.decimo_partido.puntos_ultimos_5_partidos_local_siendo_local > quiniela.decimo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.decimo_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.decimo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.decimo_partido.puntos_ultimos_5_partidos_local_siendo_local < quiniela.decimo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.decimo_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.decimo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.decimo_partido.puntos_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.decimo_partido.puntos_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_equipo_local > quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%elif quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_equipo_local < quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_equipo_local > quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdv">{{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdr">{{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%elif quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_equipo_local < quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante%}
+            <td class="tdr">{{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdv">{{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_equipo_local }}</td>
+            <td class="tdh">{{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_equipo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local > quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local < quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.decimo_partido.goles_en_contra_ultimos_3_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            {%if quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local > quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdv">{{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdr">{{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%elif quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local < quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante%}
+            <td class="tdr">{{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdv">{{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%else%}
+            <td class="tdh">{{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_local_siendo_local }}</td>
+            <td class="tdh">{{ quiniela.decimo_partido.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante }}</td>
+            {%endif%}
+            <td class="tde">{{quiniela.decimo_partido.winner}}</td>
+            <td class="tde">{{formulario.partido10}}</td>
+          </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+      <button type="submit" class="btn btn-success" style="margin-top: 20px; margin-bottom: 20px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:450px;padding: 10px 15px;">Enviar Porra</button>
   </form>
 </div>
 <div class="boPre">

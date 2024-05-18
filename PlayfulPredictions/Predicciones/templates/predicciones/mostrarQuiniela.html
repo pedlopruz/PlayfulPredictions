@@ -44,9 +44,9 @@
         <tr>
           <td class="td"><img src="{{quiniela.primer_partido.logo_liga.url}}" width="50"></td>
           <td class="td">{{ quiniela.primer_partido.jornada }}</td>
-          <td class="td"><img src="{{quiniela.primer_partido.escudo_local.url}}" width="50">{{ quiniela.primer_partido.equipo_local }}</td>
-          <td class="td"><img src="{{quiniela.primer_partido.escudo_visitante.url}}" width="50">{{ quiniela.primer_partido.equipo_visitante }}</td>
-          {%if quiniela.primer_quiniela.primer_partido.goles_ultimos_3_partidos_equipo_local > quiniela.primer_partido.goles_ultimos_3_partidos_equipo_visitante%}
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.primer_partido.id %}"style="color: black;"><img src="{{quiniela.primer_partido.escudo_local.url}}" width="50">{{ quiniela.primer_partido.equipo_local }}</a></td>
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.primer_partido.id %}"style="color: black;"><img src="{{quiniela.primer_partido.escudo_visitante.url}}" width="50">{{ quiniela.primer_partido.equipo_visitante }}</a></td>
+          {%if quiniela.primer_partido.goles_ultimos_3_partidos_equipo_local > quiniela.primer_partido.goles_ultimos_3_partidos_equipo_visitante%}
           <td class="tdv">{{ quiniela.primer_partido.goles_ultimos_3_partidos_equipo_local }}</td>
           <td class="tdr">{{ quiniela.primer_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
           {%elif quiniela.primer_partido.goles_ultimos_3_partidos_equipo_local < quiniela.primer_partido.goles_ultimos_3_partidos_equipo_visitante%}
@@ -171,9 +171,9 @@
         <tr>
           <td class="td"><img src="{{quiniela.segundo_partido.logo_liga.url}}" width="50"></td>
           <td class="td">{{ quiniela.segundo_partido.jornada }}</td>
-          <td class="td"><img src="{{quiniela.segundo_partido.escudo_local.url}}" width="50">{{ quiniela.segundo_partido.equipo_local }}</td>
-          <td class="td"><img src="{{quiniela.segundo_partido.escudo_visitante.url}}" width="50">{{ quiniela.segundo_partido.equipo_visitante }}</td>
-          {%if quiniela.primer_quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_local > quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_visitante%}
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.segundo_partido.id %}"style="color: black;"><img src="{{quiniela.segundo_partido.escudo_local.url}}" width="50">{{ quiniela.segundo_partido.equipo_local }}</a></td>
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.segundo_partido.id %}"style="color: black;"><img src="{{quiniela.segundo_partido.escudo_visitante.url}}" width="50">{{ quiniela.segundo_partido.equipo_visitante }}</a></td>
+          {%if quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_local > quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_visitante%}
           <td class="tdv">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_local }}</td>
           <td class="tdr">{{ quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
           {%elif quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_local < quiniela.segundo_partido.goles_ultimos_3_partidos_equipo_visitante%}
@@ -298,9 +298,9 @@
         <tr>
           <td class="td"><img src="{{quiniela.tercer_partido.logo_liga.url}}" width="50"></td>
           <td class="td">{{ quiniela.tercer_partido.jornada }}</td>
-          <td class="td"><img src="{{quiniela.tercer_partido.escudo_local.url}}" width="50">{{ quiniela.tercer_partido.equipo_local }}</td>
-          <td class="td"><img src="{{quiniela.tercer_partido.escudo_visitante.url}}" width="50">{{ quiniela.tercer_partido.equipo_visitante }}</td>
-          {%if quiniela.primer_quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_local > quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_visitante%}
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.tercer_partido.id %}"style="color: black;"><img src="{{quiniela.tercer_partido.escudo_local.url}}" width="50">{{ quiniela.tercer_partido.equipo_local }}</a></td>
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.tercer_partido.id %}"style="color: black;"><img src="{{quiniela.tercer_partido.escudo_visitante.url}}" width="50">{{ quiniela.tercer_partido.equipo_visitante }}</a></td>
+          {%if quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_local > quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_visitante%}
           <td class="tdv">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_local }}</td>
           <td class="tdr">{{ quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
           {%elif quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_local < quiniela.tercer_partido.goles_ultimos_3_partidos_equipo_visitante%}
@@ -425,9 +425,9 @@
         <tr>
           <td class="td"><img src="{{quiniela.cuarto_partido.logo_liga.url}}" width="50"></td>
           <td class="td">{{ quiniela.cuarto_partido.jornada }}</td>
-          <td class="td"><img src="{{quiniela.cuarto_partido.escudo_local.url}}" width="50">{{ quiniela.cuarto_partido.equipo_local }}</td>
-          <td class="td"><img src="{{quiniela.cuarto_partido.escudo_visitante.url}}" width="50">{{ quiniela.cuarto_partido.equipo_visitante }}</td>
-          {%if quiniela.primer_quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_local > quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_visitante%}
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.cuarto_partido.id %}"style="color: black;"><img src="{{quiniela.cuarto_partido.escudo_local.url}}" width="50">{{ quiniela.cuarto_partido.equipo_local }}</a></td>
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.cuarto_partido.id %}"style="color: black;"><img src="{{quiniela.cuarto_partido.escudo_visitante.url}}" width="50">{{ quiniela.cuarto_partido.equipo_visitante }}</a></td>
+          {%if quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_local > quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_visitante%}
           <td class="tdv">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_local }}</td>
           <td class="tdr">{{ quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
           {%elif quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_local < quiniela.cuarto_partido.goles_ultimos_3_partidos_equipo_visitante%}
@@ -550,11 +550,11 @@
           <td class="tde">{{quiniela.cuarto_partido.winner}}</td>
         </tr>
         <tr>
-          <td class="td"><img src="{{quiniela.quinto_partido.logo_liga.url}}" width="50"></td>
-          <td class="td">{{ quiniela.quinto_partido.jornada }}</td>
-          <td class="td"><img src="{{quiniela.quinto_partido.escudo_local.url}}" width="50">{{ quiniela.quinto_partido.equipo_local }}</td>
-          <td class="td"><img src="{{quiniela.quinto_partido.escudo_visitante.url}}" width="50">{{ quiniela.quinto_partido.equipo_visitante }}</td>
-          {%if quiniela.primer_quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_local > quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_visitante%}
+          <td class="td"><img src="{{quiniela.octavo_partido.logo_liga.url}}" width="50"></td>
+          <td class="td">{{ quiniela.octavo_partido.jornada }}</td>
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.quinto_partido.id %}"style="color: black;"><img src="{{quiniela.quinto_partido.escudo_local.url}}" width="50">{{ quiniela.quinto_partido.equipo_local }}</a></td>
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.quinto_partido.id %}"style="color: black;"><img src="{{quiniela.quinto_partido.escudo_visitante.url}}" width="50">{{ quiniela.quinto_partido.equipo_visitante }}</a></td>
+          {%if quiniela.goles_ultimos_3_partidos_equipo_local > quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_visitante%}
           <td class="tdv">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_local }}</td>
           <td class="tdr">{{ quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
           {%elif quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_local < quiniela.quinto_partido.goles_ultimos_3_partidos_equipo_visitante%}
@@ -679,9 +679,9 @@
         <tr>
           <td class="td"><img src="{{quiniela.sexto_partido.logo_liga.url}}" width="50"></td>
           <td class="td">{{ quiniela.sexto_partido.jornada }}</td>
-          <td class="td"><img src="{{quiniela.sexto_partido.escudo_local.url}}" width="50">{{ quiniela.sexto_partido.equipo_local }}</td>
-          <td class="td"><img src="{{quiniela.sexto_partido.escudo_visitante.url}}" width="50">{{ quiniela.sexto_partido.equipo_visitante }}</td>
-          {%if quiniela.primer_quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_local > quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_visitante%}
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.sexto_partido.id %}"style="color: black;"><img src="{{quiniela.sexto_partido.escudo_local.url}}" width="50">{{ quiniela.sexto_partido.equipo_local }}</a></td>
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.sexto_partido.id %}"style="color: black;"><img src="{{quiniela.sexto_partido.escudo_visitante.url}}" width="50">{{ quiniela.sexto_partido.equipo_visitante }}</a></td>
+          {%if quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_local > quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_visitante%}
           <td class="tdv">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_local }}</td>
           <td class="tdr">{{ quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
           {%elif quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_local < quiniela.sexto_partido.goles_ultimos_3_partidos_equipo_visitante%}
@@ -806,8 +806,8 @@
         <tr>
           <td class="td"><img src="{{quiniela.septimo_partido.logo_liga.url}}" width="50"></td>
           <td class="td">{{ quiniela.septimo_partido.jornada }}</td>
-          <td class="td"><img src="{{quiniela.septimo_partido.escudo_local.url}}" width="50">{{ quiniela.septimo_partido.equipo_local }}</td>
-          <td class="td"><img src="{{quiniela.septimo_partido.escudo_visitante.url}}" width="50">{{ quiniela.septimo_partido.equipo_visitante }}</td>
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.septimo_partido.id %}"style="color: black;"><img src="{{quiniela.septimo_partido.escudo_local.url}}" width="50">{{ quiniela.septimo_partido.equipo_local }}</a></td>
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.septimo_partido.id %}"style="color: black;"><img src="{{quiniela.septimo_partido.escudo_visitante.url}}" width="50">{{ quiniela.septimo_partido.equipo_visitante }}</a></td>
           {%if quiniela.primer_quiniela.septimo_partido.goles_ultimos_3_partidos_equipo_local > quiniela.septimo_partido.goles_ultimos_3_partidos_equipo_visitante%}
           <td class="tdv">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_equipo_local }}</td>
           <td class="tdr">{{ quiniela.septimo_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
@@ -933,9 +933,9 @@
         <tr>
           <td class="td"><img src="{{quiniela.octavo_partido.logo_liga.url}}" width="50"></td>
           <td class="td">{{ quiniela.octavo_partido.jornada }}</td>
-          <td class="td"><img src="{{quiniela.octavo_partido.escudo_local.url}}" width="50">{{ quiniela.octavo_partido.equipo_local }}</td>
-          <td class="td"><img src="{{quiniela.octavo_partido.escudo_visitante.url}}" width="50">{{ quiniela.octavo_partido.equipo_visitante }}</td>
-          {%if quiniela.primer_quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_local > quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_visitante%}
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.octavo_partido.id %}"style="color: black;"><img src="{{quiniela.octavo_partido.escudo_local.url}}" width="50">{{ quiniela.octavo_partido.equipo_local }}</a></td>
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.octavo_partido.id %}"style="color: black;"><img src="{{quiniela.octavo_partido.escudo_visitante.url}}" width="50">{{ quiniela.octavo_partido.equipo_visitante }}</a></td>
+          {%if quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_local > quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_visitante%}
           <td class="tdv">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_local }}</td>
           <td class="tdr">{{ quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
           {%elif quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_local < quiniela.octavo_partido.goles_ultimos_3_partidos_equipo_visitante%}
@@ -1060,9 +1060,9 @@
         <tr>
           <td class="td"><img src="{{quiniela.noveno_partido.logo_liga.url}}" width="50"></td>
           <td class="td">{{ quiniela.noveno_partido.jornada }}</td>
-          <td class="td"><img src="{{quiniela.noveno_partido.escudo_local.url}}" width="50">{{ quiniela.noveno_partido.equipo_local }}</td>
-          <td class="td"><img src="{{quiniela.noveno_partido.escudo_visitante.url}}" width="50">{{ quiniela.noveno_partido.equipo_visitante }}</td>
-          {%if quiniela.primer_quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_local > quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_visitante%}
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.noveno_partido.id %}"style="color: black;"><img src="{{quiniela.noveno_partido.escudo_local.url}}" width="50">{{ quiniela.noveno_partido.equipo_local }}</a></td>
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.noveno_partido.id %}"style="color: black;"><img src="{{quiniela.noveno_partido.escudo_visitante.url}}" width="50">{{ quiniela.octavo_partido.equipo_visitante }}</a></td>
+          {%if quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_local > quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_visitante%}
           <td class="tdv">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_local }}</td>
           <td class="tdr">{{ quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
           {%elif quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_local < quiniela.noveno_partido.goles_ultimos_3_partidos_equipo_visitante%}
@@ -1187,9 +1187,9 @@
         <tr>
           <td class="td"><img src="{{quiniela.decimo_partido.logo_liga.url}}" width="50"></td>
           <td class="td">{{ quiniela.decimo_partido.jornada }}</td>
-          <td class="td"><img src="{{quiniela.decimo_partido.escudo_local.url}}" width="50">{{ quiniela.decimo_partido.equipo_local }}</td>
-          <td class="td"><img src="{{quiniela.decimo_partido.escudo_visitante.url}}" width="50">{{ quiniela.decimo_partido.equipo_visitante }}</td>
-          {%if quiniela.primer_quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_local > quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_visitante%}
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.decimo_partido.id %}"style="color: black;"><img src="{{quiniela.decimo_partido.escudo_local.url}}" width="50">{{ quiniela.decimo_partido.equipo_local }}</a></td>
+          <td class="td"><a href="{% url 'Mostrar_Detalles' quiniela.decimo_partido.id %}"style="color: black;"><img src="{{quiniela.decimo_partido.escudo_visitante.url}}" width="50">{{ quiniela.decimo_partido.equipo_visitante }}</a></td>
+          {%if quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_local > quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_visitante%}
           <td class="tdv">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_local }}</td>
           <td class="tdr">{{ quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_visitante }}</td>
           {%elif quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_local < quiniela.decimo_partido.goles_ultimos_3_partidos_equipo_visitante%}
