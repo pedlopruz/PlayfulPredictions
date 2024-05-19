@@ -1317,7 +1317,7 @@
       <button type="submit" class="btn btn-success" style="margin-top: 20px; margin-bottom: 20px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:380px;padding: 10px 15px;"><a href="{% url 'Crear_Quiniela' %}" style="color: aliceblue;">Crear Quiniela</a></button>
       {%endif%}
       {% if user.is_staff and num_quiniela != 0%}
-      <button type="submit" class="btn btn-success" style="margin-top: 20px; margin-bottom: 20px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:380px;padding: 10px 15px;"><a href="{% url 'Crear_Quiniela' %}" style="color: aliceblue;">Crear Quiniela</a></button><button type="submit" class="btn btn-success" style="margin-bottom: 53px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:53px;padding: 10px 15px;"><a href="{% url 'Mostrar_Quinielas_Creadas' %}" style="color: aliceblue;">Mostrar Quinielas </a></button>
+      <button type="submit" class="btn btn-success" style="margin-bottom: 53px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:450px;margin-top: 10px;padding: 10px 15px;"><a href="{% url 'Mostrar_Quinielas_Creadas' %}" style="color: aliceblue;">Mostrar Quinielas </a></button>
       {%endif%}
       {% if not user.is_staff and user.is_authenticated and num_esta_porra_hechas == 1 and num_porras_usuario > 0%}
       <button type="submit" class="btn btn-success" style="margin-top: 20px; margin-bottom: 20px;background-color: rgba(144, 3, 79, 1); border-radius: 10px; color: white; margin-left:450px;padding: 10px 15px;"><a href="{% url 'Mostrar_Porras_Pasadas' %}" style="color: aliceblue;">Porras Realizadas</a></button>
