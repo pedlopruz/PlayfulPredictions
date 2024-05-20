@@ -602,12 +602,23 @@
 .pgina-de-inicio .boPre {
   width: 1466px;
   height: 157px;
-  margin-top: calc(100% - 1300px);
+  margin-top: calc(100% - 1400px);
   left: 0;
   right: 0;
-  position: relative;
+  position: absolute;
   background-color: var(--azul);
 }
+
+.pgina-de-inicio .boPro {
+  width: 1466px;
+  height: 157px;
+  margin-top: calc(100% - 900px);
+  left: 0;
+  right: 0;
+  position: absolute;
+  background-color: var(--azul);
+}
+
 
 .pgina-de-inicio .gestion {
   position: absolute;

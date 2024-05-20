@@ -19,8 +19,6 @@ def populateDatabaseEntrenamiento():
 
 
 def populateDatabaseSinPredecir():
-    PartidoSinPredecir.objects.all().delete()
-    PartidoReal.objects.all().delete()
     le = cargarPartidoRealLigaEsp()
     esp2 = cargarPartidoRealEsp2()
     im = cargar_Imagenes_Equipos_Reales()
@@ -499,13 +497,27 @@ def cargarPartidoRealLigaEsp():
                     goles_visitante = 0
                     puntos_local = 1
                     puntos_visitante = 1
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, 
+                partido_existe = PartidoReal.objects.filter(id = id).first()
+                if partido_existe is None:
+                    pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, 
                                                 equipo_local=equipo_local, equipo_visitante=equipo_visitante, 
                                                 goles_local=goles_local, goles_visitante = goles_visitante, 
                                                 winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
+                else:
+                    partido_existe.liga = liga
+                    partido_existe.jornada=jornada
+                    partido_existe.temporada = temporada, 
+                    partido_existe.equipo_local=equipo_local
+                    partido_existe.equipo_visitante=equipo_visitante
+                    partido_existe.goles_local=goles_local
+                    partido_existe.goles_visitante = goles_visitante 
+                    partido_existe.winner=winner
+                    partido_existe.puntos_local=puntos_local
+                    partido_existe.puntos_visitante=puntos_visitante
+                    partido_existe.save()
                 id = id+1
 
-    return pr
+    return print("Todo Ok")
 
 def cargarPartidoRealPremier():
     id = 381
@@ -846,10 +858,27 @@ def cargarPartidoRealEsp2():
                     goles_visitante = 0
                     puntos_local = 1
                     puntos_visitante = 1
-                pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, equipo_local=equipo_local, equipo_visitante=equipo_visitante, goles_local=goles_local, goles_visitante = goles_visitante, winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
+                partido_existe = PartidoReal.objects.filter(id = id).first()
+                if partido_existe is None:
+                    pr = PartidoReal.objects.create(id = id, liga = liga, jornada=jornada, temporada = temporada, 
+                                                equipo_local=equipo_local, equipo_visitante=equipo_visitante, 
+                                                goles_local=goles_local, goles_visitante = goles_visitante, 
+                                                winner=winner, puntos_local=puntos_local, puntos_visitante=puntos_visitante)
+                else:
+                    partido_existe.liga = liga
+                    partido_existe.jornada=jornada
+                    partido_existe.temporada = temporada
+                    partido_existe.equipo_local=equipo_local
+                    partido_existe.equipo_visitante=equipo_visitante
+                    partido_existe.goles_local=goles_local
+                    partido_existe.goles_visitante = goles_visitante
+                    partido_existe.winner=winner
+                    partido_existe.puntos_local=puntos_local
+                    partido_existe.puntos_visitante=puntos_visitante
+                    partido_existe.save()
                 id = id+1
 
-    return pr
+    return print("Todo Ok")
 
 def cargarPartidoRealMLS():
     id = 2827
@@ -1415,18 +1444,29 @@ def cargarPartidoSinPredecir_Ultimos_5_Partidos():
                 else:
                     continue
                 
-
+        partido_existe = PartidoSinPredecir.objects.filter(id=id).first()
         if goles_puntos_equipo_local < 5 and goles_puntos_equipo_visitante <5 and goles_puntos_local_siendo_local <5 and goles_puntos_visitante_siendo_visitante <5:
-            pe = PartidoSinPredecir.objects.create(id=id,
+            if partido_existe is None:
+                pe = PartidoSinPredecir.objects.create(id=id,
                                                         liga=liga,
                                                         jornada=jornada,
                                                         temporada=temporada, 
                                                         equipo_local = local, 
                                                         equipo_visitante=visitante,
                                                         falta = True)
+            else:
+                partido_existe.liga=liga
+                partido_existe.jornada=jornada
+                partido_existe.temporada=temporada
+                partido_existe.equipo_local = local 
+                partido_existe.equipo_visitante=visitante
+                partido_existe.falta = True
+                partido_existe.save()
+
                     
         else:
-            pe = PartidoSinPredecir.objects.create(id=id,
+                if partido_existe is None:
+                    pe = PartidoSinPredecir.objects.create(id=id,
                                                     liga=liga,
                                                     logo_liga = logo_liga,
                                                     jornada=jornada,
@@ -1447,10 +1487,33 @@ def cargarPartidoSinPredecir_Ultimos_5_Partidos():
                                                     goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra_ultimos_5_partidos_equipo_visitante,
                                                     goles_en_contra_ultimos_5_partidos_local_siendo_local = goles_en_contra_ultimos_5_partidos_local_siendo_local,
                                                     goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante)
+                else:
+                    partido_existe.liga=liga
+                    partido_existe.logo_liga = logo_liga
+                    partido_existe.jornada=jornada
+                    partido_existe.temporada=temporada
+                    partido_existe.equipo_local = local
+                    partido_existe.equipo_visitante=visitante
+                    partido_existe.escudo_local = escudo_local
+                    partido_existe.escudo_visitante = escudo_visitante
+                    partido_existe.goles_ultimos_5_partidos_equipo_local =  goles_ultimos_5_partidos_equipo_local
+                    partido_existe.goles_ultimos_5_partidos_equipo_visitante = goles_ultimos_5_partidos_equipo_visitante
+                    partido_existe.puntos_ultimos_5_partidos_equipo_local = puntos_ultimos_5_partidos_equipo_local 
+                    partido_existe.puntos_ultimos_5_partidos_equipo_visitante=puntos_ultimos_5_partidos_equipo_visitante
+                    partido_existe.goles_ultimos_5_partidos_local_siendo_local=goles_ultimos_5_partidos_local_siendo_local 
+                    partido_existe.goles_ultimos_5_partidos_visitante_siendo_visitante = goles_ultimos_5_partidos_visitante_siendo_visitante
+                    partido_existe.puntos_ultimos_5_partidos_local_siendo_local = puntos_ultimos_5_partidos_local_siendo_local
+                    partido_existe.puntos_ultimos_5_partidos_visitante_siendo_visitante = puntos_ultimos_5_partidos_visitante_siendo_visitante
+                    partido_existe.goles_en_contra_ultimos_5_partidos_equipo_local = goles_en_contra_ultimos_5_partidos_equipo_local
+                    partido_existe.goles_en_contra_ultimos_5_partidos_equipo_visitante = goles_en_contra_ultimos_5_partidos_equipo_visitante
+                    partido_existe.goles_en_contra_ultimos_5_partidos_local_siendo_local = goles_en_contra_ultimos_5_partidos_local_siendo_local
+                    partido_existe.goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante = goles_en_contra_ultimos_5_partidos_visitante_siendo_visitante
+                    partido_existe.save()
+
                 
 
 
-    return pe
+    return print("Todo Ok")
 
 def cargarPartidoSinPredecir_Ultimos_3_Partidos():
     numero_partidos = PartidoReal.objects.all().count()
