@@ -454,7 +454,7 @@ def cargarDatosEntrenamientoAdicionales_Ultimos_3_Partidos():
 
 def cargarPartidoRealLigaEsp():
     id = 1
-    temporada = "2023-24"
+    temporada = "2023/2024"
     url = "https://www.marca.com/futbol/primera-division/calendario.html?intcmp=MENUMIGA&s_kw=calendario"
     headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
@@ -506,7 +506,7 @@ def cargarPartidoRealLigaEsp():
                 else:
                     partido_existe.liga = liga
                     partido_existe.jornada=jornada
-                    partido_existe.temporada = temporada, 
+                    partido_existe.temporada = temporada
                     partido_existe.equipo_local=equipo_local
                     partido_existe.equipo_visitante=equipo_visitante
                     partido_existe.goles_local=goles_local
